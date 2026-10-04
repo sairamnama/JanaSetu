@@ -1,0 +1,19 @@
+# Environment variables and secrets
+.env
+.env.local
+.env.*.local
+
+# Python cache & artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Local databases
+*.db
+*.sqlite3
+
+# Uploaded evidence and proofs (preserve directory with .gitkeep)
+uploads/*
+!uploads/.gitkeep
