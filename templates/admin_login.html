@@ -1,0 +1,251 @@
+{% extends "base.html" %}
+
+{% block title %}Admin & Officials Login | Rangapuram Gram Panchayat{% endblock %}
+
+{% block navbar %}
+<!-- Admin Login Header -->
+<nav class="main-navbar" style="border-bottom: 3px solid var(--civic-dark);">
+  <div class="navbar-container">
+    <a href="{{ url_for('index') }}" class="brand-wrapper">
+      <img src="{{ url_for('static', filename='img/crest.svg') }}" alt="GramSeva Seal" class="brand-crest">
+      <div class="brand-text-col">
+        <div class="brand-title">
+          GramSeva <span class="badge"
+            style="background:#0F172A; color:#FFFFFF; font-size:0.65rem; padding:2px 7px; border-radius:4px; vertical-align:middle;">ADMIN
+            & OFFICIALS</span>
+        </div>
+        <div class="brand-subtext">Panchayat Administration & Departmental Governance</div>
+      </div>
+    </a>
+
+    <!-- Top Links -->
+    <div style="display:flex; align-items:center; gap:1rem;">
+      <a href="{{ url_for('index') }}" class="btn btn-outline btn-sm">🏠 Home</a>
+    </div>
+  </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 600px; padding: 2.5rem 1rem;">
+
+  <!-- Portal Navigation Tabs (Separated Logins) -->
+  <div
+    style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 2px solid #E2E8F0; padding-bottom: 0.5rem;">
+    <a href="{{ url_for('citizen_login_page') }}" class="btn btn-sm btn-outline"
+      style="flex: 1; text-align: center; border-radius: 6px;">
+      Citizen Login
+    </a>
+    <a href="{{ url_for('worker_login_page') }}" class="btn btn-sm btn-outline"
+      style="flex: 1; text-align: center; border-radius: 6px;">
+      Worker Login
+    </a>
+    <a href="{{ url_for('admin_login_page') }}" class="btn btn-sm btn-primary"
+      style="flex: 1; text-align: center; border-radius: 6px; font-weight: 700; background: var(--civic-dark); border-color: var(--civic-dark);">
+      Admin Login
+    </a>
+  </div>
+
+  <!-- Admin Login Card -->
+  <div class="card"
+    style="padding: 2.25rem 2rem; border-top: 5px solid var(--civic-dark); box-shadow: var(--shadow-md); border-radius: 12px;">
+
+    <div style="text-align: center; margin-bottom: 1.75rem;">
+      <div
+        style="width: 52px; height: 52px; background: #F1F5F9; color: var(--civic-dark); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin: 0 auto 0.75rem;">
+
+      </div>
+      <h1 style="font-size: 1.6rem; color: var(--civic-dark); font-weight: 800; margin-bottom: 0.35rem;">
+        Panchayat Admin Login
+      </h1>
+      <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.45; margin: 0;">
+        Authorized access for Panchayat Secretary, Sarpanch, and designated Department Officers.
+      </p>
+    </div>
+
+    <!-- Security Notice: Restricted Public Registration -->
+    <div
+      style="background: #F8FAFC; border: 1px solid #CBD5E1; color: #334155; padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.85rem; margin-bottom: 1.25rem; display: flex; gap: 0.6rem; align-items: flex-start;">
+      <span style="font-size: 1.1rem; line-height: 1;">🔒</span>
+      <div>
+        <strong style="color: #0F172A; display: block; margin-bottom: 2px;">Restricted Access & Registration
+          Policy</strong>
+        <span>Public administrator registration is disabled. Administrative and departmental officer accounts are
+          provisioned exclusively by authorized Panchayat authorities.</span>
+      </div>
+    </div>
+
+    <!-- Error Alert Box -->
+    <div id="adm-error-alert" style="display: none; margin-bottom: 1.25rem;">
+      <div
+        style="background: #FEE2E2; border: 1px solid #FCA5A5; color: #991B1B; padding: 0.85rem 1rem; border-radius: 8px; font-size: 0.88rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+        <span></span>
+        <span id="adm-error-text">Administrative verification failed.</span>
+      </div>
+    </div>
+
+    <!-- Admin Login Form -->
+    <form id="admin-login-form" onsubmit="handleAdminLogin(event)" novalidate>
+
+      <!-- Official Name -->
+      <div class="form-group" style="margin-bottom: 1.25rem;">
+        <label for="admin-name" class="form-label" style="font-weight: 600;">
+          Official Full Name <span class="required" style="color:#DC2626;">*</span>
+        </label>
+        <input type="text" id="admin-name" name="name" class="form-control" required
+          placeholder="e.g. Sri K. Venkat Rao or Sri Ramesh Varma" style="padding: 0.75rem 1rem; font-size: 0.95rem;">
+      </div>
+
+      <!-- Mobile & Employee ID in 2 Columns -->
+      <div class="form-grid-2" style="margin-bottom: 1.25rem;">
+        <!-- Registered Mobile Number -->
+        <div class="form-group">
+          <label for="admin-mobile" class="form-label" style="font-weight: 600;">
+            Mobile Number <span class="required" style="color:#DC2626;">*</span>
+          </label>
+          <input type="tel" id="admin-mobile" name="mobile" class="form-control" required maxlength="15"
+            placeholder="e.g. 9848011223" style="padding: 0.75rem 1rem; font-size: 0.95rem;">
+        </div>
+
+        <!-- Employee ID -->
+        <div class="form-group">
+          <label for="admin-employee-id" class="form-label" style="font-weight: 600;">
+            Employee / Badge ID <span class="required" style="color:#DC2626;">*</span>
+          </label>
+          <input type="text" id="admin-employee-id" name="employee_id" class="form-control" required
+            placeholder="e.g. admin or OFF-WAT-01"
+            style="padding: 0.75rem 1rem; font-size: 0.95rem; font-family: monospace; font-weight: 700;">
+        </div>
+      </div>
+
+      <!-- Role Selection -->
+      <div class="form-group" style="margin-bottom: 1.25rem;">
+        <label for="admin-role" class="form-label" style="font-weight: 600;">
+          Role <span class="required" style="color:#DC2626;">*</span>
+        </label>
+        <select id="admin-role" name="role" class="form-control" required
+          style="padding: 0.75rem 1rem; font-size: 0.95rem;">
+          <option value="">-- Select Designated Role --</option>
+          <option value="admin"> Panchayat Secretary / Sarpanch (Admin)</option>
+          <option value="officer"> Department Officer (Water, Power, Roads, Sanitation)</option>
+        </select>
+        <div style="font-size: 0.78rem; color: #475569; margin-top: 0.25rem;">
+          Role is validated against authorized municipal service records.
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group" style="margin-bottom: 1.5rem;">
+        <label for="admin-password" class="form-label" style="font-weight: 600;">
+          Administrative Password <span class="required" style="color:#DC2626;">*</span>
+        </label>
+        <input type="password" id="admin-password" name="password" class="form-control" required
+          placeholder="Enter password" style="padding: 0.75rem 1rem; font-size: 0.95rem;">
+        <div style="font-size: 0.78rem; color: #64748B; margin-top: 0.25rem;">
+          Demo credentials: Secretary: <code>admin</code> / <code>9848011223</code> / pass: <code>admin123</code> |
+          Officer: <code>OFF-WAT-01</code> / pass: <code>officer123</code>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" id="btn-adm-submit" class="btn"
+        style="width: 100%; padding: 0.85rem; font-size: 1.05rem; font-weight: 700; border-radius: 8px; background: var(--civic-dark); color: #FFFFFF; border: none; cursor: pointer;">
+        Sign In to Admin Portal &rarr;
+      </button>
+
+    </form>
+
+    <!-- Alternative Links: Switch to Citizen or Worker -->
+    <div
+      style="margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid #E2E8F0; text-align: center; font-size: 0.88rem; color: var(--text-muted);">
+      <div style="margin-bottom: 0.5rem;">
+        <span>Are you a village citizen?</span>
+        <a href="{{ url_for('citizen_login_page') }}"
+          style="font-weight: 700; color: #16A34A; margin-left: 4px;">Citizen Login &rarr;</a>
+      </div>
+      <div>
+        <span>Are you a field technician?</span>
+        <a href="{{ url_for('worker_login_page') }}" style="font-weight: 700; color: #D97706; margin-left: 4px;">Worker
+          Login &rarr;</a>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  function showAdminError(msg) {
+    const alertBox = document.getElementById('adm-error-alert');
+    const textEl = document.getElementById('adm-error-text');
+    textEl.textContent = msg;
+    alertBox.style.display = 'block';
+  }
+
+  function hideAdminError() {
+    document.getElementById('adm-error-alert').style.display = 'none';
+  }
+
+  async function handleAdminLogin(e) {
+    e.preventDefault();
+    hideAdminError();
+
+    const name = document.getElementById('admin-name').value.trim();
+    const mobile = document.getElementById('admin-mobile').value.trim();
+    const employeeId = document.getElementById('admin-employee-id').value.trim();
+    const role = document.getElementById('admin-role').value;
+    const password = document.getElementById('admin-password').value;
+
+    if (!name) {
+      showAdminError('Please enter official full name.');
+      return;
+    }
+    if (!mobile) {
+      showAdminError('Please enter registered mobile number.');
+      return;
+    }
+    if (!employeeId) {
+      showAdminError('Please enter Employee ID or Officer Badge ID.');
+      return;
+    }
+    if (!role) {
+      showAdminError('Please select designated role.');
+      return;
+    }
+    if (!password) {
+      showAdminError('Please enter administrative password.');
+      return;
+    }
+
+    const btn = document.getElementById('btn-adm-submit');
+    btn.disabled = true;
+    btn.textContent = 'Verifying Credentials...';
+
+    try {
+      const res = await fetch('/api/login/admin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: name,
+          mobile: mobile,
+          employee_id: employeeId,
+          role: role,
+          password: password
+        })
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        window.location.href = data.redirect || '/admin';
+      } else {
+        showAdminError(data.error || 'Authentication denied: Invalid administrative records.');
+      }
+    } catch (err) {
+      showAdminError(err.message || 'Error authenticating admin credentials.');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Sign In to Admin Portal →';
+    }
+  }
+</script>
+{% endblock %}

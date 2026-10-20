@@ -1,0 +1,538 @@
+{% extends "citizen_layout.html" %}
+
+{% block title %}Track Grievance | Rangapuram Panchayat{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 960px; padding: 2rem 1.25rem;">
+
+  <!-- Page Header -->
+  <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1.75rem; flex-wrap: wrap; gap: 1rem;">
+    <div>
+      <div style="display: inline-flex; align-items: center; gap: 0.4rem; color: var(--civic-primary); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em;">
+        🔍 Rangapuram Gram Panchayat
+      </div>
+      <h1 style="font-size: 1.85rem; color: var(--civic-dark); margin-top: 0.25rem; font-weight: 800;">
+        Track Grievance
+      </h1>
+      <p style="font-size: 0.95rem; color: var(--text-muted); margin-top: 0.25rem;">
+        View your submitted complaints and inspect their real-time progress updates.
+      </p>
+    </div>
+
+    <div>
+      <a href="{{ url_for('citizen_submit') }}" class="btn btn-primary" style="font-weight: 700; padding: 0.65rem 1.25rem; border-radius: 8px;">
+        📝 Submit New Grievance
+      </a>
+    </div>
+  </div>
+
+  <!-- Search & Filter Card -->
+  <div class="card" style="padding: 1.25rem; margin-bottom: 1.5rem; box-shadow: var(--shadow-sm);">
+    <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+      <div style="flex: 1; min-width: 260px; position: relative;">
+        <input type="text" id="track-filter-input" class="form-control" 
+               placeholder="Filter by Grievance ID or Problem Title..." 
+               value="{{ initial_tracking_id }}"
+               oninput="filterCitizenGrievances()"
+               style="padding: 0.7rem 1rem 0.7rem 2.5rem; font-size: 0.95rem;">
+        <span style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); color: #94A3B8; font-size: 1rem;">🔍</span>
+      </div>
+      <button type="button" onclick="loadCitizenGrievances()" class="btn btn-outline" style="min-height: 42px;">
+        🔄 Refresh
+      </button>
+    </div>
+  </div>
+
+  <!-- Authentication Alert (If not logged in) -->
+  <div id="track-guest-alert" class="card" style="display:none; text-align:center; padding: 3rem 1.5rem; border-top: 4px solid var(--civic-primary); margin-bottom: 1.5rem;">
+    <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">👤</div>
+    <h3 style="font-size: 1.3rem; color: var(--civic-dark); margin-bottom: 0.4rem; font-weight: 700;">
+      Please Log In to View Your Grievances
+    </h3>
+    <p style="font-size: 0.95rem; color: var(--text-muted); max-width: 460px; margin: 0 auto 1.5rem;">
+      Each citizen can only view and track their own submitted grievances. Please log in with your citizen account.
+    </p>
+    <button onclick="openLoginModal('login')" class="btn btn-primary" style="padding: 0.75rem 2rem; font-weight: 700;">
+      Citizen Login
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div id="track-loading-state" class="card" style="text-align: center; padding: 3rem 1.5rem; color: #64748B;">
+    <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">⏳</div>
+    <div style="font-weight: 600;">Loading your grievances from Rangapuram Panchayat...</div>
+  </div>
+
+  <!-- Empty State (No grievances submitted yet) -->
+  <div id="track-empty-state" class="card" style="display:none; text-align: center; padding: 3rem 1.5rem;">
+    <div style="font-size: 3rem; margin-bottom: 0.75rem;">📂</div>
+    <h3 style="font-size: 1.3rem; color: var(--civic-dark); margin-bottom: 0.4rem; font-weight: 700;">
+      No Grievances Found
+    </h3>
+    <p style="font-size: 0.95rem; color: var(--text-muted); max-width: 480px; margin: 0 auto 1.5rem;">
+      You have not submitted any complaints yet. If you have an issue in your ward, submit a new grievance now.
+    </p>
+    <a href="{{ url_for('citizen_submit') }}" class="btn btn-primary" style="padding: 0.75rem 2rem; font-weight: 700;">
+      📝 Submit Your First Grievance
+    </a>
+  </div>
+
+  <!-- Grievances List Container -->
+  <div id="citizen-grievances-list" style="display: flex; flex-direction: column; gap: 1.25rem;">
+    <!-- Grievance cards injected here via JavaScript -->
+  </div>
+
+</div>
+
+<!-- Feedback Modal -->
+<div id="modal-feedback" class="modal-backdrop">
+  <div class="modal-box" style="max-width: 480px;">
+    <div class="modal-header">
+      <div>
+        <div style="font-size: 0.75rem; color: #64748B; font-weight: 700; text-transform: uppercase;">Service Feedback</div>
+        <h3 id="feedback-tracking-id" style="font-size: 1.2rem; color: var(--civic-dark); font-family: monospace; font-weight: 800;"></h3>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal('modal-feedback')">&times;</button>
+    </div>
+
+    <form onsubmit="handleFeedbackSubmit(event)">
+      <div class="modal-body" style="padding: 1.5rem;">
+        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+          How satisfied are you with the resolution of this grievance by Rangapuram Panchayat?
+        </p>
+
+        <!-- Star Rating -->
+        <div style="text-align: center; margin-bottom: 1.25rem;">
+          <div style="font-weight: 700; font-size: 0.9rem; margin-bottom: 0.4rem;">Rating</div>
+          <div class="star-rating" id="feedback-stars-container">
+            <span class="star filled" onclick="setFeedbackStars(1)">★</span>
+            <span class="star filled" onclick="setFeedbackStars(2)">★</span>
+            <span class="star filled" onclick="setFeedbackStars(3)">★</span>
+            <span class="star filled" onclick="setFeedbackStars(4)">★</span>
+            <span class="star filled" onclick="setFeedbackStars(5)">★</span>
+          </div>
+        </div>
+
+        <!-- Satisfaction Options -->
+        <div class="form-group">
+          <label class="form-label">Satisfaction</label>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; cursor: pointer;">
+              <input type="radio" name="satisfaction" value="Satisfied" checked> Satisfied
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; cursor: pointer;">
+              <input type="radio" name="satisfaction" value="Partially Satisfied"> Partially Satisfied
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; cursor: pointer;">
+              <input type="radio" name="satisfaction" value="Unsatisfied"> Unsatisfied
+            </label>
+          </div>
+        </div>
+
+        <!-- Comments -->
+        <div class="form-group" style="margin-bottom: 0;">
+          <label class="form-label">Comments (Optional)</label>
+          <textarea id="feedback-comments" class="form-control" rows="3" placeholder="Share your experience with the Panchayat service..."></textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="padding: 1rem 1.5rem;">
+        <button type="button" onclick="closeModal('modal-feedback')" class="btn btn-outline btn-sm">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-sm" style="font-weight: 700;">Submit Feedback</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  let citizenGrievances = [];
+  let currentRatingStars = 5;
+  let activeFeedbackId = null;
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    await loadCitizenGrievances();
+
+    // Check URL parameter for initial ID
+    const urlParams = new URLSearchParams(window.location.search);
+    const idParam = urlParams.get('id') || "{{ initial_tracking_id }}";
+    if (idParam) {
+      const filterInput = document.getElementById('track-filter-input');
+      if (filterInput) {
+        filterInput.value = idParam;
+        filterCitizenGrievances();
+      }
+    }
+  });
+
+  async function loadCitizenGrievances() {
+    const loadingState = document.getElementById('track-loading-state');
+    const emptyState = document.getElementById('track-empty-state');
+    const guestAlert = document.getElementById('track-guest-alert');
+    const listContainer = document.getElementById('citizen-grievances-list');
+
+    loadingState.style.display = 'block';
+    emptyState.style.display = 'none';
+    guestAlert.style.display = 'none';
+
+    try {
+      if (typeof checkAuth === 'function') {
+        const user = await checkAuth();
+        if (!user) {
+          loadingState.style.display = 'none';
+          guestAlert.style.display = 'block';
+          return;
+        }
+      }
+
+      // Fetch logged-in citizen's real grievances from backend
+      const res = await fetch('/api/grievances?scope=my');
+      const data = await res.json();
+
+      loadingState.style.display = 'none';
+
+      if (!data.success || !data.grievances) {
+        emptyState.style.display = 'block';
+        return;
+      }
+
+      citizenGrievances = data.grievances;
+
+      if (citizenGrievances.length === 0) {
+        emptyState.style.display = 'block';
+        listContainer.innerHTML = '';
+        return;
+      }
+
+      renderCitizenGrievances(citizenGrievances);
+
+      // Auto-open first grievance or searched grievance if specified
+      const filterInput = document.getElementById('track-filter-input');
+      const term = filterInput ? filterInput.value.trim().toUpperCase() : '';
+      if (term) {
+        const matched = citizenGrievances.find(g => g.tracking_id.toUpperCase().includes(term));
+        if (matched) {
+          toggleProgressUpdates(matched.tracking_id, true);
+        }
+      }
+
+    } catch (err) {
+      loadingState.style.display = 'none';
+      listContainer.innerHTML = `
+        <div class="card" style="background:#FEE2E2; border:1px solid #FCA5A5; color:#991B1B; padding:1.25rem;">
+          Failed to load grievances: ${escapeHtml(err.message)}
+        </div>
+      `;
+    }
+  }
+
+  function filterCitizenGrievances() {
+    const term = (document.getElementById('track-filter-input')?.value || '').toLowerCase().trim();
+    if (!term) {
+      renderCitizenGrievances(citizenGrievances);
+      return;
+    }
+
+    const filtered = citizenGrievances.filter(g => {
+      const matchId = (g.tracking_id || '').toLowerCase().includes(term);
+      const matchTitle = (g.title || '').toLowerCase().includes(term);
+      const matchCategory = (g.category || '').toLowerCase().includes(term);
+      return matchId || matchTitle || matchCategory;
+    });
+
+    renderCitizenGrievances(filtered);
+  }
+
+  function renderCitizenGrievances(list) {
+    const listContainer = document.getElementById('citizen-grievances-list');
+    const emptyState = document.getElementById('track-empty-state');
+
+    if (!list || list.length === 0) {
+      listContainer.innerHTML = `
+        <div class="card" style="text-align:center; padding:2.5rem 1.5rem; color:#64748B;">
+          <div style="font-size:2rem; margin-bottom:0.5rem;">🔍</div>
+          <div style="font-weight:600; font-size:1.05rem; color:var(--civic-dark);">No matching grievances found</div>
+          <p style="font-size:0.88rem; margin-top:0.25rem;">Try adjusting your search filter.</p>
+        </div>
+      `;
+      return;
+    }
+
+    emptyState.style.display = 'none';
+
+    listContainer.innerHTML = list.map(g => {
+      const isPendingVerification = (g.status === 'CITIZEN_VERIFICATION');
+      const isResolved = (g.status === 'RESOLVED' || g.status === 'CLOSED');
+      const hasFeedback = g.star_rating != null;
+
+      return `
+        <div class="card" id="card-${g.tracking_id}" style="border-top: 4px solid ${getStatusBorderColor(g.status)}; padding: 1.5rem; box-shadow: var(--shadow-sm); transition: var(--transition);">
+          
+          <!-- Top Row: Grievance ID, Date, Status -->
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.85rem;">
+            <div>
+              <span style="font-size: 0.72rem; color: #64748B; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Grievance ID</span>
+              <div style="font-size: 1.25rem; font-weight: 800; font-family: monospace; color: var(--civic-dark); letter-spacing: 0.02em;">
+                ${g.tracking_id}
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+              <span style="font-size: 0.8rem; color: #64748B;">
+                📅 ${formatDate(g.created_at)}
+              </span>
+              <div>
+                ${getStatusBadge(g.status)}
+              </div>
+            </div>
+          </div>
+
+          <!-- Problem Title -->
+          <h2 style="font-size: 1.25rem; color: var(--text-main); font-weight: 700; margin-bottom: 0.5rem; line-height: 1.35;">
+            ${escapeHtml(g.title)}
+          </h2>
+
+          <!-- Category and Location details -->
+          <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; font-size: 0.88rem; color: #475569; margin-bottom: 1rem;">
+            <span class="category-pill" style="background: #F1F5F9; color: #1E293B; font-weight: 600; padding: 0.25rem 0.65rem; border-radius: 6px;">
+              ${escapeHtml(g.category)}
+            </span>
+            <span>
+              📍 Ward ${g.ward_number}${g.location_landmark ? ' • ' + escapeHtml(g.location_landmark) : ''}
+            </span>
+          </div>
+
+          <!-- Citizen Verification Prompt Box (When Worker reports completion) -->
+          ${isPendingVerification ? `
+            <div style="background: #F0FDF4; border: 2px solid #16A34A; border-radius: 8px; padding: 1.25rem; margin-bottom: 1.25rem;">
+              <div style="font-weight: 800; color: #14532D; font-size: 1rem; display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.35rem;">
+                <span>🏁</span> Work Reported Complete — Confirm Resolution
+              </div>
+              <div style="font-size: 0.9rem; color: #166534; margin-bottom: 1rem; line-height: 1.45;">
+                The field worker has reported that the repair work is completed. Please confirm whether your original problem has actually been solved.
+              </div>
+              <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+                <button type="button" onclick="submitVerification('${g.id}', '${g.tracking_id}', 'YES')" class="btn btn-sm" style="background:#16A34A; color:#FFFFFF; font-weight:700; border:none; padding:0.6rem 1.2rem; border-radius:6px; cursor:pointer;">
+                  ✓ Yes, Completely Solved
+                </button>
+                <button type="button" onclick="submitVerification('${g.id}', '${g.tracking_id}', 'NO')" class="btn btn-sm" style="background:#DC2626; color:#FFFFFF; font-weight:700; border:none; padding:0.6rem 1.2rem; border-radius:6px; cursor:pointer;">
+                  ✕ No, Still Not Solved
+                </button>
+                <button type="button" onclick="submitVerification('${g.id}', '${g.tracking_id}', 'PARTIALLY')" class="btn btn-sm" style="background:#D97706; color:#FFFFFF; font-weight:700; border:none; padding:0.6rem 1.2rem; border-radius:6px; cursor:pointer;">
+                  ◐ Partially Solved
+                </button>
+              </div>
+            </div>
+          ` : ''}
+
+          <!-- Progress Updates Container (Collapsible / Expandable) -->
+          <div id="updates-box-${g.tracking_id}" style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #E2E8F0; display: none;">
+            <div style="font-size: 0.85rem; font-weight: 700; color: var(--civic-dark); margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em;">
+              📜 Progress Updates & Timeline
+            </div>
+            <div id="updates-list-${g.tracking_id}" style="font-size: 0.88rem; color: #475569;">
+              Loading updates...
+            </div>
+          </div>
+
+          <!-- Bottom Action Buttons -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; pt: 0.5rem; flex-wrap: wrap; gap: 0.75rem;">
+            <div>
+              <button type="button" id="toggle-btn-${g.tracking_id}" onclick="toggleProgressUpdates('${g.tracking_id}')" class="btn btn-outline btn-sm" style="font-weight: 600;">
+                📜 View Progress Updates ▾
+              </button>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+              ${isResolved ? (
+                hasFeedback ? `
+                  <span style="font-size:0.85rem; color:#F59E0B; font-weight:700; padding:0.3rem 0.6rem; background:#FFFBEB; border-radius:6px;">
+                    ⭐ Rated ${g.star_rating}/5
+                  </span>
+                ` : `
+                  <button type="button" onclick="openFeedbackModal('${g.id}', '${g.tracking_id}')" class="btn btn-accent btn-sm" style="font-weight:700;">
+                    ⭐ Rate Service
+                  </button>
+                `
+              ) : ''}
+              
+              <button type="button" onclick="printGrievance('${g.tracking_id}')" class="btn btn-outline btn-sm" title="Print Complaint Receipt">
+                🖨️ Print
+              </button>
+            </div>
+          </div>
+
+        </div>
+      `;
+    }).join('');
+  }
+
+  function getStatusBorderColor(status) {
+    if (status === 'RESOLVED' || status === 'CLOSED' || status === 'VERIFIED') return '#16A34A';
+    if (status === 'CITIZEN_VERIFICATION') return '#D97706';
+    if (status === 'IN_PROGRESS' || status === 'WORK_COMPLETED') return '#2563EB';
+    if (status === 'REJECTED' || status === 'REOPENED') return '#DC2626';
+    return '#0F5132';
+  }
+
+  function formatDate(dtStr) {
+    if (!dtStr) return 'Recently';
+    return dtStr.split(' ')[0];
+  }
+
+  async function toggleProgressUpdates(trackingId, forceOpen = false) {
+    const box = document.getElementById(`updates-box-${trackingId}`);
+    const btn = document.getElementById(`toggle-btn-${trackingId}`);
+    const listEl = document.getElementById(`updates-list-${trackingId}`);
+    if (!box) return;
+
+    const isCurrentlyOpen = box.style.display !== 'none';
+    if (isCurrentlyOpen && !forceOpen) {
+      box.style.display = 'none';
+      if (btn) btn.textContent = '📜 View Progress Updates ▾';
+      return;
+    }
+
+    box.style.display = 'block';
+    if (btn) btn.textContent = '📜 Hide Progress Updates ▴';
+
+    try {
+      // Fetch full grievance record including updates timeline
+      const res = await fetch(`/api/grievances/${encodeURIComponent(trackingId)}`);
+      const data = await res.json();
+
+      if (data.success && data.grievance) {
+        const g = data.grievance;
+        const timeline = g.timeline || [];
+
+        if (timeline.length === 0) {
+          listEl.innerHTML = `
+            <div style="padding:0.75rem; background:#F8FAFC; border-radius:6px; font-size:0.85rem; color:#64748B;">
+              Grievance submitted. Awaiting Panchayat worker assignment.
+            </div>
+          `;
+          return;
+        }
+
+        listEl.innerHTML = `
+          <div style="position:relative; padding-left:1.5rem; border-left:2px solid #CBD5E1; display:flex; flex-direction:column; gap:1rem; margin-top:0.5rem;">
+            ${timeline.map(item => `
+              <div style="position:relative;">
+                <div style="position:absolute; left:-1.95rem; top:0.2rem; width:12px; height:12px; border-radius:50%; background:#16A34A; border:2px solid #fff;"></div>
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+                  <div style="font-weight:700; color:var(--text-main); font-size:0.9rem;">
+                    ${getStatusBadge(item.to_status)}
+                  </div>
+                  <div style="font-size:0.75rem; color:#64748B;">
+                    ${item.created_at}
+                  </div>
+                </div>
+                ${item.remarks ? `
+                  <div style="font-size:0.85rem; color:#334155; margin-top:0.35rem; background:#F8FAFC; padding:0.5rem 0.75rem; border-radius:6px; border:1px solid #E2E8F0;">
+                    ${escapeHtml(item.remarks)}
+                  </div>
+                ` : ''}
+              </div>
+            `).join('')}
+          </div>
+        `;
+      } else {
+        listEl.innerHTML = `<div style="color:#DC2626; font-size:0.85rem;">Could not load updates: ${escapeHtml(data.error || 'Unknown error')}</div>`;
+      }
+    } catch (e) {
+      listEl.innerHTML = `<div style="color:#DC2626; font-size:0.85rem;">Error loading progress: ${escapeHtml(e.message)}</div>`;
+    }
+  }
+
+  // Citizen Verification Action
+  async function submitVerification(id, trackingId, responseType) {
+    let confirmMsg = 'Are you sure?';
+    if (responseType === 'YES') confirmMsg = 'Confirm that the problem is completely solved?';
+    if (responseType === 'NO') confirmMsg = 'Report that the problem is still NOT solved and request rework?';
+    if (responseType === 'PARTIALLY') confirmMsg = 'Report that the problem is partially solved?';
+
+    if (!confirm(confirmMsg)) return;
+
+    try {
+      const res = await fetch(`/api/grievances/${id}/citizen-verify`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          response: responseType,
+          verification_method: 'PORTAL',
+          remarks: `Citizen verified as ${responseType} via Citizen Portal`
+        })
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        if (typeof showToast === 'function') {
+          showToast('Thank you! Your verification has been recorded.', 'success');
+        }
+        await loadCitizenGrievances();
+      } else {
+        alert(data.error || 'Failed to submit verification.');
+      }
+    } catch (e) {
+      alert('Error: ' + e.message);
+    }
+  }
+
+  // Rating & Feedback Modal
+  function openFeedbackModal(id, trackingId) {
+    activeFeedbackId = id;
+    document.getElementById('feedback-tracking-id').textContent = trackingId;
+    setFeedbackStars(5);
+    openModal('modal-feedback');
+  }
+
+  function setFeedbackStars(num) {
+    currentRatingStars = num;
+    const stars = document.querySelectorAll('#feedback-stars-container .star');
+    stars.forEach((star, index) => {
+      star.classList.toggle('filled', index < num);
+    });
+  }
+
+  async function handleFeedbackSubmit(event) {
+    event.preventDefault();
+    if (!activeFeedbackId) return;
+
+    const satisfaction = document.querySelector('input[name="satisfaction"]:checked')?.value || 'Satisfied';
+    const comments = document.getElementById('feedback-comments')?.value || '';
+
+    try {
+      const res = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          grievance_id: activeFeedbackId,
+          star_rating: currentRatingStars,
+          satisfaction: satisfaction,
+          comments: comments
+        })
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        if (typeof showToast === 'function') {
+          showToast('Thank you for rating our service!', 'success');
+        }
+        closeModal('modal-feedback');
+        await loadCitizenGrievances();
+      } else {
+        alert(data.error || 'Failed to save feedback.');
+      }
+    } catch (e) {
+      alert('Error: ' + e.message);
+    }
+  }
+
+  function printGrievance(trackingId) {
+    const card = document.getElementById(`card-${trackingId}`);
+    if (card) {
+      toggleProgressUpdates(trackingId, true);
+      setTimeout(() => window.print(), 350);
+    }
+  }
+</script>
+{% endblock %}

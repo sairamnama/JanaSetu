@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}403 Forbidden - Access Denied | GramSeva{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 680px; margin: 4rem auto; text-align: center;">
+  <div class="card" style="padding: 3rem 2rem; border-top: 4px solid #DC2626; box-shadow: var(--shadow-lg);">
+    <div style="font-size: 3.5rem; margin-bottom: 1rem;">🛡️</div>
+    <div style="display:inline-block; background:#FEF2F2; color:#DC2626; font-weight:800; font-size:0.8rem; padding:4px 12px; border-radius:9999px; letter-spacing:0.05em; margin-bottom:1rem; border:1px solid #FECACA;">
+      HTTP 403 FORBIDDEN
+    </div>
+    <h1 style="font-size: 1.85rem; color: var(--civic-dark); margin-bottom: 0.75rem;">
+      Access Restricted
+    </h1>
+    <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 2rem;">
+      You do not have administrative or role-based clearance to access this portal or resource.
+      {% if role %}
+      <br>Your active session is authenticated as: <strong style="text-transform: capitalize; color: var(--civic-dark);">{{ role }}</strong>.
+      {% endif %}
+    </p>
+
+    <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+      {% if role == 'citizen' %}
+        <a href="{{ url_for('citizen_portal') }}" class="btn btn-primary" style="padding: 0.65rem 1.5rem;">
+          👤 Go to Citizen Portal
+        </a>
+      {% elif role == 'worker' %}
+        <a href="{{ url_for('worker_portal') }}" class="btn btn-primary" style="padding: 0.65rem 1.5rem;">
+          🔧 Go to Worker Portal
+        </a>
+      {% elif role in ('admin', 'officer') %}
+        <a href="{{ url_for('admin_portal') }}" class="btn btn-primary" style="padding: 0.65rem 1.5rem;">
+          🏛️ Go to Admin Portal
+        </a>
+      {% else %}
+        <a href="{{ url_for('index') }}" class="btn btn-primary" style="padding: 0.65rem 1.5rem;">
+          🏠 Return to Homepage
+        </a>
+      {% endif %}
+      <button onclick="handleLogout()" class="btn btn-outline" style="padding: 0.65rem 1.5rem;">
+        Sign Out / Switch Persona
+      </button>
+    </div>
+  </div>
+</div>
+{% endblock %}

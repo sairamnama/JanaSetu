@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+
+{% block title %}GramSeva | Rural Panchayat Grievance Management System{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section style="background: linear-gradient(135deg, #0A3622 0%, #0F5132 60%, #15803D 100%); color:#FFFFFF; padding: 4rem 1.5rem 3.5rem; position:relative; overflow:hidden;">
+  <!-- Subtle decorative circular patterns -->
+  <div style="position:absolute; right:-50px; top:-50px; width:350px; height:350px; border-radius:50%; background:radial-gradient(circle, rgba(245,158,11,0.15) 0%, transparent 70%); pointer-events:none;"></div>
+  
+  <div class="container" style="padding-top:0; padding-bottom:0; position:relative; z-index:2;">
+    <div style="max-width: 820px; margin: 0 auto; text-align: center;">
+      <div style="display:inline-flex; align-items:center; gap:0.5rem; background:rgba(255,255,255,0.12); backdrop-filter:blur(8px); padding:0.35rem 1rem; border-radius:9999px; font-size:0.82rem; font-weight:600; color:#FDE68A; margin-bottom:1.25rem; border:1px solid rgba(253,230,138,0.3);">
+        🏛️ Digital Gram Panchayat Initiative • Ananthapur District
+      </div>
+      
+      <h1 style="font-size: 2.75rem; font-weight: 800; color: #FFFFFF; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 1rem;">
+        Fast, Transparent Civic Grievance Redressal for Rural Citizens
+      </h1>
+
+      <p style="font-size: 1.1rem; color: #E2E8F0; line-height: 1.6; margin-bottom: 2rem; max-width: 700px; margin-left:auto; margin-right:auto;">
+        Register issues regarding drinking water, streetlights, sanitation, road damage, or health hazards directly to Panchayat officials with photo proof and live status tracking.
+      </p>
+
+      <!-- Prominent Quick Tracking Input Box -->
+      <div style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); border-radius: var(--radius-xl); padding: 0.6rem 0.6rem 0.6rem 1.25rem; display: flex; align-items: center; gap: 0.75rem; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3); max-width: 620px; margin: 0 auto 1.75rem;">
+        <span style="font-size: 1.25rem; color: var(--civic-primary);">🔍</span>
+        <input type="text" id="quick-track-input" 
+               placeholder="Enter Tracking ID (e.g. GRV-2026-00101)" 
+               data-i18n="quick_track_placeholder"
+               style="flex: 1; border: none; background: transparent; font-size: 0.95rem; font-family: inherit; color: var(--text-main); font-weight: 600; outline: none;">
+        <button onclick="handleQuickTrack(event)" class="btn btn-primary" style="padding: 0.75rem 1.5rem; font-weight: 700;">
+          Track Status
+        </button>
+      </div>
+
+      <!-- Quick Action Buttons -->
+      <div style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap;">
+        <a href="{{ url_for('citizen_portal') }}" class="btn btn-accent" style="padding:0.75rem 1.5rem; font-size:0.95rem;">
+          📝 Submit New Grievance
+        </a>
+        <a href="{{ url_for('admin_portal') }}" class="btn btn-outline" style="border-color:rgba(255,255,255,0.4); color:#FFFFFF; padding:0.75rem 1.5rem;">
+          ⚙️ Panchayat Official Login
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Live Metric Counters -->
+<section style="margin-top:-2rem; position:relative; z-index:10;">
+  <div class="container" style="padding-top:0;">
+    <div class="stats-grid">
+      <div class="stat-card stat-blue">
+        <div class="stat-icon-wrap">📋</div>
+        <div class="stat-data">
+          <div class="stat-value" id="landing-stat-total">6</div>
+          <div class="stat-label">Total Registered Grievances</div>
+        </div>
+      </div>
+      <div class="stat-card stat-amber">
+        <div class="stat-icon-wrap">⏳</div>
+        <div class="stat-data">
+          <div class="stat-value" id="landing-stat-progress">3</div>
+          <div class="stat-label">Under Remediation</div>
+        </div>
+      </div>
+      <div class="stat-card stat-green">
+        <div class="stat-icon-wrap">✅</div>
+        <div class="stat-data">
+          <div class="stat-value" id="landing-stat-resolved">2</div>
+          <div class="stat-label">Successfully Resolved</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon-wrap">⚡</div>
+        <div class="stat-data">
+          <div class="stat-value">2.4 Days</div>
+          <div class="stat-label">Average Resolution SLA</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Active Panchayat Announcements & Notice Board -->
+<section class="container" style="padding-top:1rem; padding-bottom:2rem;">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem;">
+    <div>
+      <h2 style="font-size:1.4rem; color:var(--civic-dark); display:flex; align-items:center; gap:0.5rem;">
+        📢 Panchayat Notice Board & Alerts
+      </h2>
+      <p style="font-size:0.85rem; color:var(--text-muted);">Important civic announcements from the Sarpanch and Panchayat Secretary</p>
+    </div>
+  </div>
+
+  <div id="landing-notices-container">
+    <!-- Populated by JavaScript -->
+    <div class="announcement-banner">
+      <div class="announcement-icon">💧</div>
+      <div>
+        <div class="announcement-title">Scheduled Drinking Water Supply Maintenance</div>
+        <div class="announcement-desc">Drinking water supply will be paused in Wards 3, 4, and 5 on Sunday between 10:00 AM and 3:00 PM due to pipeline overhaul. Residents are requested to store adequate water.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4-Step Grievance Redressal Process -->
+<section style="background:#FFFFFF; border-top:1px solid #E2E8F0; border-bottom:1px solid #E2E8F0; padding:3.5rem 1.5rem;">
+  <div class="container" style="padding:0;">
+    <div style="text-align:center; max-width:650px; margin:0 auto 2.5rem;">
+      <h2 style="font-size:1.6rem; color:var(--civic-dark); margin-bottom:0.5rem;">How GramSeva Works for Rural Citizens</h2>
+      <p style="font-size:0.9rem; color:var(--text-muted);">A clear, transparent 4-step journey from civic problem to verified resolution.</p>
+    </div>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:1.5rem;">
+      <div class="card card-lift" style="text-align:center; padding:1.75rem 1.25rem;">
+        <div style="width:56px; height:56px; border-radius:50%; background:#E0F2FE; color:#0284C7; font-size:1.6rem; display:flex; align-items:center; justify-content:center; margin:0 auto 1rem;">
+          📱
+        </div>
+        <h3 style="font-size:1.05rem; margin-bottom:0.5rem;">1. Submit Issue</h3>
+        <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">
+          Select civic category (Water, Power, Roads, Sanitation), provide location landmark, attach photo, and receive an instant Tracking ID.
+        </p>
+      </div>
+
+      <div class="card card-lift" style="text-align:center; padding:1.75rem 1.25rem;">
+        <div style="width:56px; height:56px; border-radius:50%; background:#EEF2FF; color:#4F46E5; font-size:1.6rem; display:flex; align-items:center; justify-content:center; margin:0 auto 1rem;">
+          🔍
+        </div>
+        <h3 style="font-size:1.05rem; margin-bottom:0.5rem;">2. Panchayat Verification</h3>
+        <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">
+          Panchayat Secretary reviews the complaint, verifies priority, and routes it to the designated department and field officer.
+        </p>
+      </div>
+
+      <div class="card card-lift" style="text-align:center; padding:1.75rem 1.25rem;">
+        <div style="width:56px; height:56px; border-radius:50%; background:#FEF3C7; color:#D97706; font-size:1.6rem; display:flex; align-items:center; justify-content:center; margin:0 auto 1rem;">
+          🛠️
+        </div>
+        <h3 style="font-size:1.05rem; margin-bottom:0.5rem;">3. Field Remediation</h3>
+        <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">
+          Assigned field officers (e.g. Line Inspector, Sanitary Supervisor) initiate on-site repairs with continuous status updates and remarks.
+        </p>
+      </div>
+
+      <div class="card card-lift" style="text-align:center; padding:1.75rem 1.25rem;">
+        <div style="width:56px; height:56px; border-radius:50%; background:#DCFCE7; color:#15803D; font-size:1.6rem; display:flex; align-items:center; justify-content:center; margin:0 auto 1rem;">
+          ⭐
+        </div>
+        <h3 style="font-size:1.05rem; margin-bottom:0.5rem;">4. Citizen Rating</h3>
+        <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">
+          Once the work is completed, citizen reviews resolution proof and rates the quality of service from 1 to 5 stars.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Recent Public Grievance Feed -->
+<section class="container" style="padding-top:2.5rem; padding-bottom:3rem;">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem;">
+    <div>
+      <h2 style="font-size:1.35rem; color:var(--civic-dark);">Recent Village Civic Complaints</h2>
+      <p style="font-size:0.85rem; color:var(--text-muted);">Real-time transparency feed of grievances logged across village wards</p>
+    </div>
+    <a href="{{ url_for('track_page') }}" class="btn btn-outline-primary btn-sm">Full Tracker →</a>
+  </div>
+
+  <div class="card" style="padding:0; overflow:hidden;">
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Tracking ID</th>
+            <th>Grievance Subject</th>
+            <th>Ward / Location</th>
+            <th>Category</th>
+            <th>Priority</th>
+            <th>Current Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="landing-feed-tbody">
+          <!-- Populated by JS -->
+          <tr><td colspan="7" style="text-align:center; padding:1.5rem;">Loading grievances...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    try {
+      const [grvRes, noticeRes, statRes] = await Promise.all([
+        fetch('/api/public-feed'),
+        fetch('/api/announcements'),
+        fetch('/api/analytics')
+      ]);
+
+      const grvData = await grvRes.json();
+      const noticeData = await noticeRes.json();
+      const statData = await statRes.json();
+
+      // Update counters
+      if (statData.success) {
+        document.getElementById('landing-stat-total').textContent = statData.summary.total;
+        document.getElementById('landing-stat-progress').textContent = statData.summary.in_progress + statData.summary.assigned;
+        document.getElementById('landing-stat-resolved').textContent = statData.summary.resolved;
+      }
+
+      // Populate notices
+      if (noticeData.success && noticeData.announcements.length > 0) {
+        const noticesContainer = document.getElementById('landing-notices-container');
+        noticesContainer.innerHTML = noticeData.announcements.slice(0, 3).map(a => `
+          <div class="announcement-banner ${a.is_emergency ? 'announcement-emergency' : ''}">
+            <div class="announcement-icon">${a.is_emergency ? '🚨' : '📢'}</div>
+            <div>
+              <div class="announcement-title">
+                ${a.is_emergency ? '[EMERGENCY ALERT] ' : ''}${escapeHtml(a.title)}
+              </div>
+              <div class="announcement-desc">${escapeHtml(a.content)}</div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // Populate table feed from sanitized public feed
+      if (grvData.success) {
+        const feedList = grvData.feed || grvData.grievances || [];
+        const feedTbody = document.getElementById('landing-feed-tbody');
+        feedTbody.innerHTML = feedList.slice(0, 5).map(g => `
+          <tr>
+            <td>
+              <a href="/track/${encodeURIComponent(g.tracking_id)}" class="tracking-link">${g.tracking_id}</a>
+            </td>
+            <td style="font-weight:600; color:var(--text-main);">${escapeHtml(g.title)}</td>
+            <td style="font-size:0.8rem; color:#64748B;">Ward ${g.ward_number}</td>
+            <td><span class="category-pill">${getCategoryIcon(g.category)} ${escapeHtml(g.category.split(' ')[0])}</span></td>
+            <td>${getPriorityBadge(g.priority)}</td>
+            <td>${getStatusBadge(g.status)}</td>
+            <td>
+              <a href="/track/${encodeURIComponent(g.tracking_id)}" class="btn btn-sm btn-outline-primary">Track</a>
+            </td>
+          </tr>
+        `).join('');
+      }
+    } catch (e) {
+      console.error('Error initializing landing page:', e);
+    }
+  });
+</script>
+{% endblock %}

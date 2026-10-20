@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}GramSeva | Rural Panchayat Grievance Management System{% endblock %}</title>
+  <meta name="description" content="Digital e-Governance Grievance Redressal System for Rural Gram Panchayats. Submit, track, assign, and resolve civic complaints with transparency.">
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/crest.svg') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <!-- Chart.js CDN for analytics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- Topbar: Civic Branding, Demo Switcher, Language Toggle -->
+  <header class="civic-topbar">
+    <div class="civic-topbar-left">
+      <div class="gov-flag-stripe" title="Tricolor Motif">
+        <span class="s1"></span><span class="s2"></span><span class="s3"></span>
+      </div>
+      <span style="font-weight: 600;">Government of Andhra Pradesh • Department of Panchayati Raj & Rural Development</span>
+    </div>
+
+    <div class="civic-topbar-right">
+      <!-- Quick Demo Switcher (Available only when DEMO_MODE=true) -->
+      {% if config.DEMO_MODE %}
+      <div style="display:flex; align-items:center; gap:0.4rem; background:rgba(0,0,0,0.25); padding:2px 8px; border-radius:6px; border:1px dashed #F59E0B;">
+        <span style="background:#DC2626; color:#FFFFFF; font-weight:800; font-size:0.68rem; padding:2px 6px; border-radius:4px; letter-spacing:0.5px;">DEMO MODE</span>
+        <button onclick="switchDemoRole('citizen')" class="demo-role-badge" style="cursor:pointer; color:#FFFFFF;" title="Switch to Citizen Ramesh Naidu">
+          👤 Citizen
+        </button>
+        <button onclick="switchDemoRole('worker')" class="demo-role-badge" style="cursor:pointer; color:#FFFFFF;" title="Switch to Field Worker Shiva Kumar">
+          🔧 Worker
+        </button>
+        <button onclick="switchDemoRole('officer')" class="demo-role-badge" style="cursor:pointer; color:#FFFFFF;" title="Switch to Water Dept Officer Ramesh Varma">
+          👷 Officer
+        </button>
+        <button onclick="switchDemoRole('admin')" class="demo-role-badge" style="cursor:pointer; color:#FFFFFF;" title="Switch to Panchayat Secretary K. Venkat Rao">
+          🏛️ Admin
+        </button>
+      </div>
+      {% endif %}
+
+      <!-- Language Selector -->
+      <div style="display:flex; gap:0.25rem;">
+        <button onclick="setLanguage('en')" class="lang-switch-btn" data-lang="en">EN</button>
+        <button onclick="setLanguage('te')" class="lang-switch-btn" data-lang="te">తెలుగు</button>
+        <button onclick="setLanguage('hi')" class="lang-switch-btn" data-lang="hi">हिन्दी</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Navigation Bar -->
+  {% block navbar %}
+  <nav class="main-navbar">
+    <div class="navbar-container">
+      <a href="{{ url_for('index') }}" class="brand-wrapper">
+        <img src="{{ url_for('static', filename='img/crest.svg') }}" alt="GramSeva Seal" class="brand-crest">
+        <div class="brand-text-col">
+          <div class="brand-title">
+            GramSeva
+            <span class="telugu-sub">గ్రామసేవ</span>
+          </div>
+          <div class="brand-subtext">Ananthapur Gram Panchayat • Civic Grievance Portal</div>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="{{ url_for('index') }}" class="nav-link {% if request.endpoint == 'index' %}active{% endif %}" data-i18n="nav_home">Home</a></li>
+        <li><a href="{{ url_for('citizen_portal') }}" class="nav-link {% if request.endpoint in ('citizen_portal', 'citizen_submit', 'citizen_track') %}active{% endif %}" data-i18n="nav_citizen">Citizen Portal</a></li>
+        <li><a href="{{ url_for('worker_portal') }}" class="nav-link {% if request.endpoint in ('worker_portal', 'worker_work', 'worker_proof') %}active{% endif %}" data-i18n="nav_worker">Worker Portal</a></li>
+        <li><a href="{{ url_for('admin_portal') }}" class="nav-link {% if request.endpoint in ('admin_portal', 'admin_solve', 'admin_workers') %}active{% endif %}" data-i18n="nav_admin">Admin / Officials</a></li>
+        <li><a href="{{ url_for('track_page') }}" class="nav-link {% if request.endpoint == 'track_page' %}active{% endif %}" data-i18n="nav_track">Track Grievance</a></li>
+        <li><a href="{{ url_for('analytics_page') }}" class="nav-link {% if request.endpoint == 'analytics_page' %}active{% endif %}" data-i18n="nav_analytics">Analytics</a></li>
+      </ul>
+
+      <div class="nav-actions" id="navbar-user-area">
+        <!-- Injected via app.js -->
+        <a href="{{ url_for('citizen_login_page') }}" class="btn btn-outline-primary btn-sm">Citizen Login</a>
+        <a href="{{ url_for('worker_login_page') }}" class="btn btn-outline btn-sm">Worker Login</a>
+        <a href="{{ url_for('admin_login_page') }}" class="btn btn-outline btn-sm">Admin Login</a>
+      </div>
+    </div>
+  </nav>
+  {% endblock %}
+
+  <!-- Main Content Area -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Civic Footer -->
+  <footer class="civic-footer">
+    <div class="footer-content">
+      <div>
+        <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.75rem;">
+          <img src="{{ url_for('static', filename='img/crest.svg') }}" style="width:32px; height:32px;" alt="Logo">
+          <h3 style="color:#FFFFFF; font-size:1.15rem;">GramSeva (గ్రామసేవ)</h3>
+        </div>
+        <p style="font-size:0.85rem; color:#CBD5E1; line-height:1.6; max-width:440px;">
+          An advanced e-Governance Web Application for Rural Gram Panchayats. Designed to empower citizens, accelerate issue remediation, and ensure transparent municipal administration.
+        </p>
+        <div style="margin-top:0.75rem; font-size:0.8rem; color:#94A3B8;">
+          Community Service Project (CSP) • 3-1 B.Tech Computer Science & Engineering
+        </div>
+      </div>
+
+      <div>
+        <h4 style="color:#F59E0B; font-size:0.95rem; margin-bottom:0.75rem; text-transform:uppercase; letter-spacing:0.04em;">Panchayat Office</h4>
+        <p style="font-size:0.85rem; color:#CBD5E1; line-height:1.5;">
+          Ananthapur Gram Panchayat Bhavan<br>
+          Near Main Temple, Ward 1<br>
+          Phone: 08554 - 245678<br>
+          Toll-Free Helpline: <strong>1800-425-7890</strong>
+        </p>
+      </div>
+
+      <div>
+        <h4 style="color:#F59E0B; font-size:0.95rem; margin-bottom:0.75rem; text-transform:uppercase; letter-spacing:0.04em;">Quick Portals</h4>
+        {% block footer_quick_links %}
+        <ul style="list-style:none; font-size:0.85rem; color:#CBD5E1; display:flex; flex-direction:column; gap:0.4rem;">
+          <li><a href="{{ url_for('citizen_portal') }}" style="color:#CBD5E1;">Citizen Complaint Submission</a></li>
+          <li><a href="{{ url_for('track_page') }}" style="color:#CBD5E1;">Public Grievance Tracker</a></li>
+          <li><a href="{{ url_for('admin_portal') }}" style="color:#CBD5E1;">Officer Assignment Portal</a></li>
+          <li><a href="{{ url_for('analytics_page') }}" style="color:#CBD5E1;">Gram Sabha Reports & Analytics</a></li>
+        </ul>
+        {% endblock %}
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 GramSeva Rural Grievance Redressal System. Built for Rural Panchayat Governance.</div>
+      <div>Designed under SYSTEM_RULES.md & BRAND_GUIDELINES.md</div>
+    </div>
+  </footer>
+
+  <!-- ==========================================
+       SHARED MODAL: GRIEVANCE DETAIL & TIMELINE
+       ========================================== -->
+  <div id="modal-grievance-detail" class="modal-backdrop">
+    <div class="modal-box" style="max-width:750px;">
+      <div class="modal-header">
+        <div>
+          <div style="font-size:0.8rem; color:#64748B; font-weight:600;">GRIEVANCE DETAILS</div>
+          <h3 id="detail-tracking-id" style="color:var(--civic-dark); font-family:monospace; font-size:1.3rem;">GRV-2026-00000</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('modal-grievance-detail')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- Interactive 6-Stage Stepper -->
+        <div id="timeline-stepper-container"></div>
+
+        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:1.25rem; margin-top:1.5rem;">
+          <h4 id="detail-title" style="font-size:1.1rem; color:var(--text-main); margin-bottom:0.5rem;"></h4>
+          <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.75rem;">
+            <span id="detail-category"></span>
+            <span id="detail-priority"></span>
+            <span id="detail-status"></span>
+          </div>
+          <p id="detail-desc" style="font-size:0.9rem; color:#334155; line-height:1.5; margin-bottom:0.75rem;"></p>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; font-size:0.82rem; border-top:1px solid #E2E8F0; padding-top:0.75rem;">
+            <div>
+              <span style="color:#64748B;">Location / Landmark:</span><br>
+              <strong id="detail-ward"></strong>
+            </div>
+            <div>
+              <span style="color:#64748B;">Complainant:</span><br>
+              <strong id="detail-citizen"></strong>
+            </div>
+            <div>
+              <span style="color:#64748B;">Department & Officer:</span><br>
+              <span id="detail-dept-officer"></span>
+            </div>
+            <div>
+              <span style="color:#64748B;">Submission Date:</span><br>
+              <span id="detail-date"></span>
+            </div>
+          </div>
+
+          <div id="detail-evidence-container" style="margin-top:1rem;"></div>
+          <div id="detail-worker-proof-container"></div>
+          <div id="detail-citizen-verification-container"></div>
+          <div id="detail-resolution-notes"></div>
+          <div id="detail-feedback-box"></div>
+        </div>
+
+        <!-- Audit History Log -->
+        <div style="margin-top:1.5rem;">
+          <h4 style="font-size:0.95rem; margin-bottom:0.5rem; color:#475569;">Lifecycle Updates & Official Audit Trail</h4>
+          <div id="detail-history-list"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button onclick="printReceipt()" class="btn btn-outline btn-sm">🖨️ Print Receipt</button>
+        <button onclick="closeModal('modal-grievance-detail')" class="btn btn-primary btn-sm">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       SHARED MODAL: LOGIN / REGISTER
+       ========================================== -->
+  <div id="modal-auth" class="modal-backdrop">
+    <div class="modal-box" style="max-width:440px;">
+      <div class="modal-header">
+        <h3 id="auth-modal-title" style="font-size:1.15rem;">Citizen Login</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-auth')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- Login Form -->
+        <form id="form-login" onsubmit="handleAuthLogin(event)">
+          <div class="form-group">
+            <label class="form-label">Username / Mobile</label>
+            <input type="text" name="username" class="form-control" required placeholder="e.g. citizen_ramesh">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input type="password" name="password" class="form-control" required placeholder="••••••••">
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%; margin-top:0.5rem;">Sign In</button>
+          <div style="margin-top:1rem; text-align:center; font-size:0.85rem;">
+            New rural citizen? <a href="javascript:void(0)" onclick="toggleAuthMode('register')" style="font-weight:700;">Create Account</a>
+          </div>
+        </form>
+
+        <!-- Register Form -->
+        <form id="form-register" style="display:none;" onsubmit="handleAuthRegister(event)">
+          <div class="form-group">
+            <label class="form-label">Full Name <span class="required">*</span></label>
+            <input type="text" name="full_name" class="form-control" required placeholder="Ramesh Naidu">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Username <span class="required">*</span></label>
+            <input type="text" name="username" class="form-control" required placeholder="ramesh2026">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mobile Number <span class="required">*</span></label>
+            <input type="tel" name="mobile" class="form-control" required placeholder="9876543210">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Ward Number (1-20) <span class="required">*</span></label>
+            <input type="number" name="ward_number" class="form-control" min="1" max="20" value="4" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Address / Landmark</label>
+            <input type="text" name="address" class="form-control" placeholder="Door No 4-12, Temple Street">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password <span class="required">*</span></label>
+            <input type="password" name="password" class="form-control" required minlength="4" placeholder="••••••••">
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%; margin-top:0.5rem;">Register Citizen Account</button>
+          <div style="margin-top:1rem; text-align:center; font-size:0.85rem;">
+            Already have an account? <a href="javascript:void(0)" onclick="toggleAuthMode('login')" style="font-weight:700;">Sign In</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Client Application Scripts -->
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  <script>
+    function openLoginModal(mode = 'login') {
+      toggleAuthMode(mode);
+      openModal('modal-auth');
+    }
+
+    function toggleAuthMode(mode) {
+      const loginForm = document.getElementById('form-login');
+      const registerForm = document.getElementById('form-register');
+      const title = document.getElementById('auth-modal-title');
+      if (mode === 'register') {
+        loginForm.style.display = 'none';
+        registerForm.style.display = 'block';
+        title.textContent = 'Register Citizen Account';
+      } else {
+        loginForm.style.display = 'block';
+        registerForm.style.display = 'none';
+        title.textContent = 'Citizen Login';
+      }
+    }
+
+    async function handleAuthLogin(e) {
+      e.preventDefault();
+      const form = e.target;
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: form.username.value, password: form.password.value })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast(data.message, 'success');
+        closeModal('modal-auth');
+        checkAuth();
+        if (data.user.role === 'admin' || data.user.role === 'officer') {
+          window.location.href = '/admin';
+        } else if (data.user.role === 'worker') {
+          window.location.href = '/worker';
+        } else {
+          window.location.href = '/citizen';
+        }
+      } else {
+        showToast(data.error, 'error');
+      }
+    }
+
+    async function handleAuthRegister(e) {
+      e.preventDefault();
+      const form = e.target;
+      const res = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          full_name: form.full_name.value,
+          username: form.username.value,
+          mobile: form.mobile.value,
+          ward_number: form.ward_number.value,
+          address: form.address.value,
+          password: form.password.value
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast(data.message, 'success');
+        closeModal('modal-auth');
+        window.location.href = '/citizen';
+      } else {
+        showToast(data.error, 'error');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('login_required') === '1') {
+        openLoginModal('login');
+        showToast('Please log in to access this portal.', 'warning');
+      }
+    });
+  </script>
+</body>
+</html>

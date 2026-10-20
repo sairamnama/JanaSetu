@@ -1,0 +1,178 @@
+{% extends "worker_layout.html" %}
+
+{% block title %}Work Proof & Report | Worker Portal{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <!-- Header -->
+  <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:1.75rem; flex-wrap:wrap; gap:1rem;">
+    <div>
+      <div style="display:inline-flex; align-items:center; gap:0.4rem; color:var(--panchayat-gold-dark); font-weight:700; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.04em;">
+        📦 Official Remediation Proofs
+      </div>
+      <h1 style="font-size:1.85rem; color:var(--civic-dark); margin-top:0.25rem;">
+        Work Proof & Remediation Reports
+      </h1>
+      <p style="font-size:0.9rem; color:var(--text-muted);">
+        Submit post-remediation evidence photos and review the status of your past completion filings.
+      </p>
+    </div>
+
+    <div style="display:flex; gap:0.75rem; align-items:center;">
+      <a href="{{ url_for('worker_work') }}" class="btn btn-outline-primary btn-sm">
+        🔧 View Assigned Tasks
+      </a>
+      <a href="{{ url_for('worker_portal') }}" class="btn btn-outline btn-sm">
+        ← Worker Home
+      </a>
+    </div>
+  </div>
+
+  <!-- Compliance Banner -->
+  <div class="card" style="border-left:4px solid #DC2626; background:#FEF2F2; margin-bottom:1.5rem; padding:1.25rem;">
+    <div style="display:flex; align-items:center; gap:0.75rem;">
+      <div style="font-size:1.8rem;">⚠️</div>
+      <div>
+        <div style="font-weight:700; color:#991B1B; font-size:1rem;">
+          Double-Verification Protocol Required
+        </div>
+        <div style="font-size:0.88rem; color:#7F1D1D; margin-top:0.2rem; line-height:1.4;">
+          Submitting resolution proof transitions the status to <strong>WORK_COMPLETED</strong>. It does <em>not</em> immediately resolve the grievance. An officer will inspect your submission before routing it to the citizen for final confirmation.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Active Tasks Ready for Proof Upload -->
+  <div class="card" style="margin-bottom:2rem; box-shadow:var(--shadow-md);">
+    <div class="card-header">
+      <div>
+        <h2 class="card-title">📝 Tasks Ready for Completion Filing</h2>
+        <p style="font-size:0.82rem; color:var(--text-muted); margin-top:0.2rem;">
+          Select any task currently in progress to upload remediation proof photographs and notes.
+        </p>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Tracking ID</th>
+            <th>Complaint Subject</th>
+            <th>Category</th>
+            <th>Current Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="worker-proof-tasks-tbody">
+          <!-- Populated by script -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- Shared Worker Completion Proof Modal -->
+<div id="modal-worker-complete" class="modal-backdrop">
+  <div class="modal-box" style="max-width:560px;">
+    <div class="modal-header">
+      <div>
+        <div style="font-size:0.78rem; color:#64748B; font-weight:600;">SUBMIT RESOLUTION PROOF</div>
+        <h3 id="worker-complete-tracking-id" style="font-size:1.2rem; color:var(--civic-dark); font-family:monospace;"></h3>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal('modal-worker-complete')">&times;</button>
+    </div>
+
+    <form id="form-worker-complete" onsubmit="handleWorkerCompleteSubmit(event)" enctype="multipart/form-data">
+      <div class="modal-body">
+        <div style="background:#FEF2F2; border:2px solid #EF4444; border-radius:8px; padding:0.95rem 1.1rem; margin-bottom:1rem; font-size:0.95rem; color:#991B1B; font-weight:700; display:flex; align-items:center; gap:0.6rem; line-height:1.45; box-shadow:0 1px 3px rgba(239,68,68,0.15);">
+          <span style="font-size:1.4rem;">⚠️</span>
+          <span>Submitting this proof does not resolve the grievance. The submitted work will be verified.</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">After-Work Photograph / Evidence <span class="required">*</span></label>
+          <input type="file" name="proof_file" id="worker-proof-file" class="form-control" required accept="image/png,image/jpg,image/jpeg,image/webp,application/pdf">
+          <div id="worker-proof-preview" style="margin-top:0.5rem;"></div>
+          <div style="font-size:0.75rem; color:#64748B; margin-top:0.25rem;">Accepted: JPG, PNG, WEBP, PDF (Max: 5MB). File content verified.</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Work Completion Description <span class="required">*</span></label>
+          <textarea name="completion_notes" id="worker-completion-notes" class="form-control" required
+            placeholder="Describe the physical remediation work completed: materials used, scope of repair, personnel involved..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Resolution Remarks</label>
+          <textarea name="remarks" id="worker-completion-remarks" class="form-control"
+            placeholder="Any additional observations, recommendations for future maintenance..."></textarea>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+          <div class="form-group">
+            <label class="form-label">Completion Timestamp</label>
+            <input type="datetime-local" name="completion_timestamp" id="worker-completion-timestamp" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Optional Work Location / GPS</label>
+            <input type="text" name="location_coords" id="worker-completion-location" class="form-control" placeholder="e.g. Near Water Tank, Ward 4">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">Additional Supporting Evidence (Optional)</label>
+          <input type="file" name="additional_evidence" id="worker-additional-evidence" class="form-control" accept="image/png,image/jpg,image/jpeg,image/webp,application/pdf">
+          <div style="font-size:0.75rem; color:#64748B; margin-top:0.25rem;">Optional receipt, secondary angle photo, or measurement sheet.</div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" onclick="closeModal('modal-worker-complete')" class="btn btn-outline btn-sm">Cancel</button>
+        <button type="submit" class="btn btn-primary touch-btn" style="min-height:48px; padding:0.65rem 1.25rem;">📦 Submit Formal Completion Report</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/worker.js') }}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    try {
+      const res = await fetch('/api/grievances');
+      const data = await res.json();
+      if (!data.success) return;
+
+      const eligibleTasks = data.grievances.filter(g => 
+        ['IN_PROGRESS', 'ASSIGNED', 'REWORK_REQUIRED', 'REOPENED', 'ESCALATED'].includes(g.status)
+      );
+
+      const tbody = document.getElementById('worker-proof-tasks-tbody');
+      if (tbody) {
+        if (eligibleTasks.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:2rem; color:#64748B;">No tasks currently awaiting completion filing.</td></tr>';
+        } else {
+          tbody.innerHTML = eligibleTasks.map(t => `
+            <tr>
+              <td><strong style="font-family:monospace; color:var(--civic-dark);">${escapeHtml(t.tracking_id)}</strong></td>
+              <td><div style="font-weight:600;">${escapeHtml(t.title)}</div><div style="font-size:0.78rem; color:#64748B;">Ward ${t.ward_number} • ${escapeHtml(t.location_landmark)}</div></td>
+              <td><span class="category-pill">${escapeHtml(t.category)}</span></td>
+              <td>${getStatusBadge(t.status)}</td>
+              <td>
+                <button onclick="openWorkerCompleteModal(${t.id}, '${escapeHtml(t.tracking_id)}', '${t.status}', '')" class="btn btn-primary btn-sm">
+                  📦 Submit Proof
+                </button>
+              </td>
+            </tr>
+          `).join('');
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  });
+</script>
+{% endblock %}

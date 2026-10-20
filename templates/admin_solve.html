@@ -1,0 +1,238 @@
+{% extends "admin_layout.html" %}
+
+{% block title %}Solve Grievances | Panchayat Admin{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <!-- Header -->
+  <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:1.75rem; flex-wrap:wrap; gap:1rem;">
+    <div>
+      <div style="display:inline-flex; align-items:center; gap:0.4rem; color:var(--panchayat-gold-dark); font-weight:700; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.04em;">
+        ⚙️ Resolution & Assignment Management
+      </div>
+      <h1 style="font-size:1.85rem; color:var(--civic-dark); margin-top:0.25rem;">
+        Solve Grievances & Dispatch Operations
+      </h1>
+      <p style="font-size:0.9rem; color:var(--text-muted);">
+        Assign departments and skilled workers to open complaints, review field remediation proofs, and manage lifecycle verification.
+      </p>
+    </div>
+
+    <div style="display:flex; gap:0.75rem; align-items:center;">
+      <a href="{{ url_for('admin_workers') }}" class="btn btn-outline-primary btn-sm">
+        👷 View Workers Roster
+      </a>
+      <a href="{{ url_for('admin_portal') }}" class="btn btn-outline btn-sm">
+        ← Admin Home
+      </a>
+    </div>
+  </div>
+
+  <!-- Dedicated Officer Awaiting Verification Section -->
+  <div class="card" id="officer-awaiting-verification-section" style="margin-bottom:2rem; border-top: 4px solid var(--panchayat-gold); background: #FAFDFB;">
+    <div class="card-header" style="flex-wrap:wrap; gap:1rem; border-bottom:1.5px solid #E2E8F0; padding-bottom:0.75rem;">
+      <div>
+        <div style="font-size:0.8rem; font-weight:700; color:#D97706; text-transform:uppercase; letter-spacing:0.04em;">
+          🔍 DOUBLE VERIFICATION AUDIT STAGE
+        </div>
+        <h2 class="card-title" style="font-size:1.4rem; color:#0A3622; margin-top:0.2rem;">
+          Awaiting Verification
+        </h2>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-top:0.2rem;">
+          Field workers have submitted physical work completion proofs. Review original complaint, worker proof, and worker remarks before approving for citizen verification or requesting rework.
+        </p>
+      </div>
+      <div>
+        <span id="badge-awaiting-count" class="badge" style="background:#FEF3C7; color:#92400E; font-size:0.85rem; padding:4px 10px; border-radius:12px; font-weight:700;">
+          0 Grievances
+        </span>
+      </div>
+    </div>
+
+    <!-- Grievances Awaiting Verification List -->
+    <div id="awaiting-verification-container" style="padding:1.25rem 0;">
+      <div style="text-align:center; padding:2rem; color:#64748B;">
+        Loading grievances awaiting officer verification...
+      </div>
+    </div>
+  </div>
+
+  <!-- Grievance Management Section -->
+  <div class="card" style="margin-bottom:2rem;">
+    <div class="card-header" style="flex-wrap:wrap; gap:1rem;">
+      <div>
+        <h2 class="card-title">⚙️ Grievance Verification & Dispatch Board</h2>
+        <p style="font-size:0.82rem; color:var(--text-muted); margin-top:0.2rem;">
+          Assign responsible departments, allocate field officers/workers, and log official progress remarks.
+        </p>
+      </div>
+
+      <!-- Multi-Filter Toolbar -->
+      <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+        <input type="text" id="admin-search-input" class="form-control" style="width:180px;" placeholder="Search ID / Citizen..." oninput="renderAdminGrievancesTable()">
+
+        <select id="admin-filter-status" class="form-control" style="width:160px;" onchange="renderAdminGrievancesTable()">
+          <option value="ALL">All Statuses</option>
+          <option value="SUBMITTED">Submitted</option>
+          <option value="UNDER_REVIEW">Under Review</option>
+          <option value="ACCEPTED">Accepted</option>
+          <option value="ASSIGNED">Assigned</option>
+          <option value="IN_PROGRESS">In Progress</option>
+          <option value="WORK_COMPLETED">Work Completed</option>
+          <option value="OFFICER_VERIFICATION">Officer Verification</option>
+          <option value="CITIZEN_VERIFICATION">Citizen Verification</option>
+          <option value="VERIFIED">Verified</option>
+          <option value="RESOLVED">Resolved</option>
+          <option value="CLOSED">Closed</option>
+          <option value="REWORK_REQUIRED">Rework Required</option>
+          <option value="REOPENED">Reopened</option>
+          <option value="ESCALATED">Escalated</option>
+          <option value="REJECTED">Rejected</option>
+        </select>
+
+        <select id="admin-filter-category" class="form-control" style="width:140px;" onchange="renderAdminGrievancesTable()">
+          <option value="ALL">All Categories</option>
+        </select>
+
+        <select id="admin-filter-priority" class="form-control" style="width:120px;" onchange="renderAdminGrievancesTable()">
+          <option value="ALL">All Priority</option>
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
+        </select>
+
+        <select id="admin-filter-ward" class="form-control" style="width:110px;" onchange="renderAdminGrievancesTable()">
+          <option value="ALL">All Wards</option>
+          <option value="1">Ward 1</option>
+          <option value="2">Ward 2</option>
+          <option value="3">Ward 3</option>
+          <option value="4">Ward 4</option>
+          <option value="5">Ward 5</option>
+          <option value="7">Ward 7</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Grievances Data Table -->
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Tracking ID</th>
+            <th>Subject / Landmark</th>
+            <th>Citizen Details</th>
+            <th>Assigned To</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="admin-grievances-tbody">
+          <tr>
+            <td colspan="8" style="text-align:center; padding:2rem;">Loading administrative grievance queue...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==========================================
+     MODAL: ASSIGN DEPARTMENT & OFFICER
+     ========================================== -->
+<div id="modal-assign-grievance" class="modal-backdrop">
+  <div class="modal-box" style="max-width:580px; max-height:92vh; overflow-y:auto;">
+    <div class="modal-header">
+      <div>
+        <div style="font-size:0.78rem; color:#64748B; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;">
+          ⚙️ REVIEW & DISPATCH CIVIC GRIEVANCE
+        </div>
+        <h3 id="assign-modal-tracking-id" style="font-size:1.25rem; color:var(--civic-dark); font-family:monospace; margin-top:2px;"></h3>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal('modal-assign-grievance')">&times;</button>
+    </div>
+
+    <!-- Grievance Review Card -->
+    <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:0.9rem 1.1rem; margin:1rem 1.25rem 0.5rem; font-size:0.85rem;">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem 1rem;">
+        <div>
+          <span style="color:#64748B; font-size:0.75rem; text-transform:uppercase; font-weight:600;">Category:</span>
+          <div id="assign-modal-category" style="font-weight:700; color:var(--civic-dark);">--</div>
+        </div>
+        <div>
+          <span style="color:#64748B; font-size:0.75rem; text-transform:uppercase; font-weight:600;">Location & Ward:</span>
+          <div id="assign-modal-location" style="font-weight:600; color:var(--text-main);">--</div>
+        </div>
+        <div>
+          <span style="color:#64748B; font-size:0.75rem; text-transform:uppercase; font-weight:600;">Submission Date:</span>
+          <div id="assign-modal-date" style="color:#334155;">--</div>
+        </div>
+        <div>
+          <span style="color:#64748B; font-size:0.75rem; text-transform:uppercase; font-weight:600;">Current Status:</span>
+          <div id="assign-modal-status">--</div>
+        </div>
+      </div>
+      <div style="margin-top:0.5rem; padding-top:0.4rem; border-top:1px dashed #CBD5E1;">
+        <span style="color:#64748B; font-size:0.75rem; text-transform:uppercase; font-weight:600;">Subject / Description:</span>
+        <div id="assign-modal-title" style="font-weight:600; color:var(--civic-dark); margin-top:2px;">--</div>
+      </div>
+    </div>
+
+    <!-- Minimum Points Eligibility Rule Callout -->
+    <div style="background:#FFFDF5; border:1px solid #FDE68A; border-radius:8px; padding:0.65rem 1rem; margin:0.5rem 1.25rem 0.75rem; font-size:0.8rem; color:#92400E; display:flex; align-items:center; gap:0.4rem;">
+      <span>⭐</span>
+      <span><strong>Eligibility Rule:</strong> Field workers must possess at least <strong>60 Loyalty Points</strong> and match the required trade skill. Ineligible technicians are disabled.</span>
+    </div>
+
+    <!-- In-modal Error Box -->
+    <div id="assign-modal-error-box" style="display:none; background:#FEE2E2; border:1px solid #FCA5A5; color:#991B1B; padding:0.65rem 1rem; border-radius:8px; font-size:0.85rem; font-weight:600; margin:0.5rem 1.25rem;"></div>
+
+    <form onsubmit="handleAssignSubmit(event)">
+      <div class="modal-body" style="padding:0 1.25rem 1rem;">
+        <div class="form-group" style="margin-bottom:0.9rem;">
+          <label class="form-label" style="font-weight:600;">Responsible Department <span class="required" style="color:#DC2626;">*</span></label>
+          <select id="assign-department-select" class="form-control" required onchange="handleDepartmentSelectChange()">
+            <!-- Populated via JS -->
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom:0.9rem;">
+          <label class="form-label" style="font-weight:600;">Designated Supervising Officer</label>
+          <select id="assign-officer-select" class="form-control">
+            <option value="">-- First Select Department --</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom:0.9rem;">
+          <label class="form-label" style="font-weight:600;">
+            Assigned Field Worker / Technician <span class="required" style="color:#DC2626;">*</span>
+          </label>
+          <select id="assign-worker-select" class="form-control" required>
+            <option value="">-- First Select Department --</option>
+          </select>
+          <div id="assign-worker-hint" style="font-size:0.75rem; color:#64748B; margin-top:3px;">
+            Workers are ranked by lowest active workload and highest loyalty points.
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label" style="font-weight:600;">Administrative Assignment Instructions / Remarks</label>
+          <textarea id="assign-remarks" class="form-control" placeholder="e.g. Inspect site immediately, confirm pipeline dimensions, and submit photo verification within 24 hours."></textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="padding:0.75rem 1.25rem 1.25rem;">
+        <button type="button" onclick="closeModal('modal-assign-grievance')" class="btn btn-outline btn-sm">Cancel</button>
+        <button type="submit" id="btn-submit-assign" class="btn btn-primary btn-sm" style="font-weight:700; padding:0.6rem 1.25rem;">
+          Confirm & Dispatch Assignment &rarr;
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,541 @@
+{% extends "admin_layout.html" %}
+
+{% block title %}Workers & Field Staff | Panchayat Admin{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <!-- Header -->
+  <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:1.75rem; flex-wrap:wrap; gap:1rem;">
+    <div>
+      <div style="display:inline-flex; align-items:center; gap:0.4rem; color:var(--panchayat-gold-dark); font-weight:700; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.04em;">
+        👷 Human Resources & Field Deployment
+      </div>
+      <h1 style="font-size:1.85rem; color:var(--civic-dark); margin-top:0.25rem;">
+        Field Workers & Departmental Staff Roster
+      </h1>
+      <p style="font-size:0.9rem; color:var(--text-muted);">
+        Oversee skilled technicians, field staff trades, supervisor allocations, and operational workload distribution.
+      </p>
+    </div>
+
+    <div style="display:flex; gap:0.75rem; align-items:center;">
+      <a href="{{ url_for('admin_solve') }}" class="btn btn-outline-primary btn-sm">
+        ⚙️ Dispatch to Workers
+      </a>
+      <a href="{{ url_for('admin_portal') }}" class="btn btn-outline btn-sm">
+        ← Admin Home
+      </a>
+    </div>
+  </div>
+
+  <!-- Skilled Field Workers Roster -->
+  <div class="card" style="margin-bottom:2rem; box-shadow:var(--shadow-md);">
+    <div class="card-header" style="flex-wrap:wrap; gap:1rem;">
+      <div>
+        <h2 class="card-title">🔧 Skilled Field Workers & Technicians</h2>
+        <p style="font-size:0.82rem; color:var(--text-muted); margin-top:0.2rem;">
+          Active technical personnel assigned to execute on-site remediation across all 15 wards.
+        </p>
+      </div>
+
+      <div style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+        <button onclick="openAllTransactionsModal()" class="btn btn-outline btn-sm" style="font-weight:600;">
+          📜 System Points Audit Trail
+        </button>
+        <input type="text" id="worker-search-filter" class="form-control" style="width:200px;" placeholder="Search Worker / Skill..." oninput="filterWorkersTable()">
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Worker Name</th>
+            <th>Department</th>
+            <th>Skill / Trade</th>
+            <th>Badge ID</th>
+            <th>Contact</th>
+            <th>Workload</th>
+            <th>Loyalty Points</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="workers-roster-tbody">
+          <tr>
+            <td colspan="8" style="text-align:center; padding:2rem;">Loading field workers roster...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Supervising Field Officers Roster -->
+  <div class="card" style="margin-bottom:2rem;">
+    <div class="card-header">
+      <div>
+        <h2 class="card-title">👷 Departmental Supervising Officers</h2>
+        <p style="font-size:0.82rem; color:var(--text-muted); margin-top:0.2rem;">
+          Nodal officers responsible for site inspection, work verification, and inter-department coordination.
+        </p>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Officer Name</th>
+            <th>Department</th>
+            <th>Designation</th>
+            <th>Contact</th>
+            <th>Workload</th>
+          </tr>
+        </thead>
+        <tbody id="officer-roster-tbody">
+          <tr>
+            <td colspan="5" style="text-align:center; padding:1.5rem;">Loading officers roster...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==========================================
+     MODAL: WORKER LOYALTY POINTS MANAGEMENT
+     ========================================== -->
+<div id="modal-worker-points" class="modal-backdrop">
+  <div class="modal-box" style="max-width:760px; max-height:90vh; overflow-y:auto;">
+    <div class="modal-header">
+      <div>
+        <div style="font-size:0.78rem; color:#64748B; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;">
+          ⭐ WORKER RECOGNITION & POINTS MANAGEMENT
+        </div>
+        <h3 id="modal-points-worker-title" style="font-size:1.25rem; color:var(--civic-dark); margin:0.2rem 0 0;"></h3>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal('modal-worker-points')">&times;</button>
+    </div>
+
+    <div class="modal-body" style="padding:1.5rem;">
+      <!-- Worker Header Summary Card -->
+      <div style="background:#FFFDF5; border:1px solid #FDE68A; border-radius:10px; padding:1rem 1.25rem; margin-bottom:1.5rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+        <div>
+          <div style="font-size:0.85rem; color:#475569;">
+            Staff: <strong id="modal-points-worker-name" style="color:var(--civic-dark);"></strong> · Badge: <code id="modal-points-worker-badge"></code>
+          </div>
+          <div style="font-size:0.8rem; color:#64748B; margin-top:2px;" id="modal-points-worker-dept"></div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:0.75rem; color:#78350F; font-weight:600; text-transform:uppercase;">Current Points Balance</div>
+          <div style="font-size:1.85rem; font-weight:800; color:#B45309; line-height:1;" id="modal-points-current-balance">--</div>
+        </div>
+      </div>
+
+      <!-- Alert Box for Modal feedback -->
+      <div id="modal-points-alert" style="display:none; padding:0.75rem 1rem; border-radius:8px; font-size:0.88rem; font-weight:600; margin-bottom:1.25rem;"></div>
+
+      <!-- Points Adjustment Form -->
+      <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:1.25rem; margin-bottom:1.75rem;">
+        <h4 style="font-size:0.95rem; font-weight:700; color:var(--civic-dark); margin:0 0 0.75rem; display:flex; align-items:center; gap:0.4rem;">
+          ⚙️ Manual Points Adjustment (Mandatory Reason Required)
+        </h4>
+
+        <form id="form-adjust-points" onsubmit="handleAdminAdjustPointsSubmit(event)">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" style="font-weight:600;">Adjustment Action <span class="required" style="color:#DC2626;">*</span></label>
+              <select id="adj-points-action" class="form-control" required style="font-weight:600;">
+                <option value="add">➕ Add Points (Merit / Bonus / Commendation)</option>
+                <option value="deduct">➖ Deduct Points (Penalty / Disciplinary / SLA Delay)</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" style="font-weight:600;">Points Amount <span class="required" style="color:#DC2626;">*</span></label>
+              <input type="number" id="adj-points-amount" class="form-control" min="1" max="1000" placeholder="e.g. 5, 10, 20" required style="font-weight:700;">
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom:1rem;">
+            <label class="form-label" style="font-weight:600;">Mandatory Justification / Reason <span class="required" style="color:#DC2626;">*</span></label>
+            <input type="text" id="adj-points-reason" class="form-control" required placeholder="e.g. Commendation for swift repair of Ward 4 water pipeline burst" style="font-size:0.9rem;">
+            <div style="font-size:0.75rem; color:#64748B; margin-top:3px;">
+              Every balance adjustment is permanently recorded in the database audit log with your administrative actor ID.
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end;">
+            <button type="submit" id="btn-submit-adjust-points" class="btn btn-primary btn-sm" style="padding:0.6rem 1.25rem; font-weight:700;">
+              Apply Points Adjustment &rarr;
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Transaction History Table for this Worker -->
+      <div>
+        <h4 style="font-size:0.95rem; font-weight:700; color:var(--civic-dark); margin:0 0 0.75rem; display:flex; align-items:center; gap:0.4rem;">
+          📜 Worker Points Transaction Audit Trail
+        </h4>
+        <div class="table-responsive" style="max-height:280px; overflow-y:auto; border:1px solid #E2E8F0; border-radius:8px;">
+          <table class="data-table" style="font-size:0.85rem; margin-bottom:0;">
+            <thead>
+              <tr style="background:#F8FAFC;">
+                <th style="width:145px;">Date & Time</th>
+                <th>Reason</th>
+                <th style="width:110px; text-align:center;">Delta</th>
+                <th style="width:140px; text-align:right;">Balance</th>
+                <th style="width:160px;">Authorized Actor</th>
+              </tr>
+            </thead>
+            <tbody id="modal-points-history-tbody">
+              <tr>
+                <td colspan="5" style="text-align:center; padding:1.5rem; color:#64748B;">Loading transaction ledger...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" onclick="closeModal('modal-worker-points')" class="btn btn-outline btn-sm">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================
+     MODAL: SYSTEM-WIDE POINTS AUDIT TRAIL
+     ========================================== -->
+<div id="modal-all-transactions" class="modal-backdrop">
+  <div class="modal-box" style="max-width:860px; max-height:90vh; overflow-y:auto;">
+    <div class="modal-header">
+      <div>
+        <div style="font-size:0.78rem; color:#64748B; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;">
+          🏛️ PANCHAYAT GOVERNANCE AUDIT LEDGER
+        </div>
+        <h3 style="font-size:1.25rem; color:var(--civic-dark); margin:0.2rem 0 0;">
+          All Field Workers Points Transactions History
+        </h3>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal('modal-all-transactions')">&times;</button>
+    </div>
+
+    <div class="modal-body" style="padding:1.25rem;">
+      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">
+        Comprehensive, immutable log of all worker loyalty points allocations, adjustments, and penalties across all departments.
+      </p>
+
+      <div class="table-responsive" style="max-height:450px; overflow-y:auto; border:1px solid #E2E8F0; border-radius:8px;">
+        <table class="data-table" style="font-size:0.85rem; margin-bottom:0;">
+          <thead>
+            <tr style="background:#F8FAFC;">
+              <th style="width:145px;">Date & Time</th>
+              <th>Worker</th>
+              <th>Reason</th>
+              <th style="width:110px; text-align:center;">Delta</th>
+              <th style="width:130px; text-align:right;">Balance</th>
+              <th style="width:160px;">Authorized Actor</th>
+            </tr>
+          </thead>
+          <tbody id="all-transactions-tbody">
+            <tr>
+              <td colspan="6" style="text-align:center; padding:1.5rem; color:#64748B;">Loading full audit trail...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" onclick="closeModal('modal-all-transactions')" class="btn btn-outline btn-sm">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+<script>
+  let cachedWorkers = [];
+  let currentActiveWorkerId = null;
+
+  async function loadWorkersRoster() {
+    try {
+      const res = await fetch('/api/workers');
+      const data = await res.json();
+      if (!data.success) return;
+
+      cachedWorkers = data.workers;
+      renderCustomWorkersTable(cachedWorkers);
+    } catch (err) {
+      console.error('Error loading workers roster:', err);
+    }
+  }
+
+  function renderCustomWorkersTable(workers) {
+    const tbody = document.getElementById('workers-roster-tbody');
+    if (!tbody) return;
+
+    if (workers.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:2rem; color:#64748B;">No skilled workers registered.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = workers.map(w => {
+      const points = w.loyalty_points !== undefined ? w.loyalty_points : 100;
+      return `
+      <tr>
+        <td>
+          <div style="font-weight:700; color:var(--text-main);">${escapeHtml(w.full_name)}</div>
+          <div style="font-size:0.75rem; color:#64748B;">Staff ID: <code>#WRK-${w.id}</code></div>
+        </td>
+        <td>
+          <span class="category-pill">${escapeHtml(w.department_name)}</span>
+        </td>
+        <td>
+          <span class="badge" style="background:#EFF6FF; color:#1E40AF; border:1px solid #BFDBFE;">
+            🔨 ${escapeHtml(w.skill_trade)}
+          </span>
+        </td>
+        <td><code>${escapeHtml(w.badge_id)}</code></td>
+        <td>📞 ${escapeHtml(w.mobile)}</td>
+        <td>
+          <span class="badge ${w.active_tickets > 2 ? 'badge-priority-high' : (w.active_tickets > 0 ? 'badge-in_progress' : 'badge-resolved')}">
+            ${w.active_tickets} Active Task${w.active_tickets === 1 ? '' : 's'}
+          </span>
+        </td>
+        <td>
+          <span class="badge" style="background:#FEF3C7; color:#B45309; font-weight:700; font-size:0.88rem; padding:4px 8px; border:1px solid #FDE68A;">
+            ⭐ ${points} pts
+          </span>
+        </td>
+        <td>
+          <button type="button" onclick="openWorkerPointsModal(${w.id}, '${escapeHtml(w.full_name)}', '${escapeHtml(w.badge_id)}', ${points})" class="btn btn-outline-primary btn-sm" style="display:inline-flex; align-items:center; gap:0.35rem; font-weight:600; padding:4px 9px;">
+            ⭐ Manage Points
+          </button>
+        </td>
+      </tr>
+    `}).join('');
+  }
+
+  function filterWorkersTable() {
+    const query = document.getElementById('worker-search-filter')?.value.toLowerCase().trim() || '';
+    if (!query) {
+      renderCustomWorkersTable(cachedWorkers);
+      return;
+    }
+
+    const filtered = cachedWorkers.filter(w => 
+      w.full_name.toLowerCase().includes(query) ||
+      w.skill_trade.toLowerCase().includes(query) ||
+      w.department_name.toLowerCase().includes(query) ||
+      w.badge_id.toLowerCase().includes(query)
+    );
+    renderCustomWorkersTable(filtered);
+  }
+
+  async function openWorkerPointsModal(workerId, workerName, badgeId, currentPoints) {
+    currentActiveWorkerId = workerId;
+    document.getElementById('modal-points-worker-title').textContent = `${workerName} (${badgeId})`;
+    document.getElementById('modal-points-worker-name').textContent = workerName;
+    document.getElementById('modal-points-worker-badge').textContent = badgeId;
+    document.getElementById('modal-points-current-balance').textContent = currentPoints !== undefined ? currentPoints : '--';
+
+    const alertBox = document.getElementById('modal-points-alert');
+    if (alertBox) alertBox.style.display = 'none';
+
+    // Clear form
+    document.getElementById('adj-points-amount').value = '';
+    document.getElementById('adj-points-reason').value = '';
+
+    openModal('modal-worker-points');
+    await loadWorkerPointsHistory(workerId);
+  }
+
+  async function loadWorkerPointsHistory(workerId) {
+    const tbody = document.getElementById('modal-points-history-tbody');
+    if (!tbody) return;
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:1.5rem; color:#64748B;">Loading transaction ledger...</td></tr>';
+
+    try {
+      const res = await fetch(`/api/admin/workers/${workerId}/points`);
+      const data = await res.json();
+      if (!data.success) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:1.5rem; color:#DC2626;">${escapeHtml(data.error || 'Failed to load points ledger')}</td></tr>`;
+        return;
+      }
+
+      const worker = data.worker || {};
+      const points = worker.loyalty_points !== undefined ? worker.loyalty_points : '--';
+      document.getElementById('modal-points-current-balance').textContent = points;
+      if (worker.department_name) {
+        document.getElementById('modal-points-worker-dept').textContent = `Department: ${worker.department_name} · Trade: ${worker.skill_trade}`;
+      }
+
+      const txs = data.transactions || [];
+      if (txs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:1.5rem; color:#64748B;">No points transactions found.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = txs.map(tx => {
+        const isPositive = tx.points_changed > 0;
+        const changeBadge = isPositive 
+          ? `<span class="badge" style="background:#DCFCE7; color:#15803D; font-weight:700;">+${tx.points_changed}</span>`
+          : `<span class="badge" style="background:#FEE2E2; color:#B91C1C; font-weight:700;">${tx.points_changed}</span>`;
+        const dateStr = tx.created_at ? tx.created_at.replace('T', ' ').substring(0, 19) : 'N/A';
+
+        return `
+          <tr>
+            <td style="white-space:nowrap; font-size:0.8rem; color:#475569;">🕒 ${dateStr}</td>
+            <td>
+              <div style="font-weight:600; color:var(--text-main);">${escapeHtml(tx.reason)}</div>
+              <div style="font-size:0.75rem; color:#64748B;">Ref: <code>#TX-${tx.id}</code></div>
+            </td>
+            <td style="text-align:center;">${changeBadge}</td>
+            <td style="text-align:right; font-family:monospace;">
+              <span style="color:#64748B;">${tx.previous_balance}</span> &rarr; <strong style="color:var(--civic-dark);">${tx.new_balance}</strong>
+            </td>
+            <td style="font-size:0.8rem; color:#334155;">🛡️ ${escapeHtml(tx.actor_source || 'Admin')}</td>
+          </tr>
+        `;
+      }).join('');
+
+    } catch (err) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:1.5rem; color:#DC2626;">Network error loading history.</td></tr>';
+    }
+  }
+
+  async function handleAdminAdjustPointsSubmit(event) {
+    event.preventDefault();
+    if (!currentActiveWorkerId) return;
+
+    const action = document.getElementById('adj-points-action').value;
+    const amountVal = document.getElementById('adj-points-amount').value;
+    const reason = document.getElementById('adj-points-reason').value.trim();
+    const alertBox = document.getElementById('modal-points-alert');
+    const submitBtn = document.getElementById('btn-submit-adjust-points');
+
+    if (!amountVal || parseInt(amountVal) <= 0) {
+      showModalAlert(alertBox, 'Please enter a valid points amount greater than zero.', false);
+      return;
+    }
+
+    if (!reason) {
+      showModalAlert(alertBox, 'A mandatory reason is required for points adjustments.', false);
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Saving adjustment...';
+
+    try {
+      const res = await fetch(`/api/admin/workers/${currentActiveWorkerId}/adjust-points`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: action,
+          points: parseInt(amountVal),
+          reason: reason
+        })
+      });
+
+      const data = await res.json();
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Apply Points Adjustment \u2192';
+
+      if (!data.success) {
+        showModalAlert(alertBox, data.error || 'Failed to adjust points.', false);
+        return;
+      }
+
+      showModalAlert(alertBox, `Points adjusted successfully! New balance: ${data.new_balance} pts.`, true);
+      document.getElementById('adj-points-amount').value = '';
+      document.getElementById('adj-points-reason').value = '';
+
+      // Refresh modal history and main table
+      await loadWorkerPointsHistory(currentActiveWorkerId);
+      await loadWorkersRoster();
+
+      if (typeof showToast === 'function') {
+        showToast('Loyalty points updated successfully', 'success');
+      }
+    } catch (err) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Apply Points Adjustment \u2192';
+      showModalAlert(alertBox, 'Network error saving adjustment: ' + err.message, false);
+    }
+  }
+
+  function showModalAlert(box, message, isSuccess) {
+    if (!box) return;
+    box.style.display = 'block';
+    if (isSuccess) {
+      box.style.background = '#DCFCE7';
+      box.style.border = '1px solid #86EFAC';
+      box.style.color = '#15803D';
+    } else {
+      box.style.background = '#FEE2E2';
+      box.style.border = '1px solid #FCA5A5';
+      box.style.color = '#991B1B';
+    }
+    box.textContent = message;
+  }
+
+  async function openAllTransactionsModal() {
+    openModal('modal-all-transactions');
+    const tbody = document.getElementById('all-transactions-tbody');
+    if (!tbody) return;
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:1.5rem; color:#64748B;">Loading full audit trail...</td></tr>';
+
+    try {
+      const res = await fetch('/api/admin/points-transactions?limit=100');
+      const data = await res.json();
+      if (!data.success) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:1.5rem; color:#DC2626;">${escapeHtml(data.error || 'Failed to load transactions')}</td></tr>`;
+        return;
+      }
+
+      const txs = data.transactions || [];
+      if (txs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:1.5rem; color:#64748B;">No transactions recorded.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = txs.map(tx => {
+        const isPositive = tx.points_changed > 0;
+        const changeBadge = isPositive 
+          ? `<span class="badge" style="background:#DCFCE7; color:#15803D; font-weight:700;">+${tx.points_changed}</span>`
+          : `<span class="badge" style="background:#FEE2E2; color:#B91C1C; font-weight:700;">${tx.points_changed}</span>`;
+        const dateStr = tx.created_at ? tx.created_at.replace('T', ' ').substring(0, 19) : 'N/A';
+
+        return `
+          <tr>
+            <td style="white-space:nowrap; font-size:0.8rem; color:#475569;">🕒 ${dateStr}</td>
+            <td>
+              <div style="font-weight:700; color:var(--text-main);">${escapeHtml(tx.worker_name || 'Worker')}</div>
+              <div style="font-size:0.75rem; color:#64748B;"><code>${escapeHtml(tx.worker_badge || '')}</code> · ${escapeHtml(tx.department_name || '')}</div>
+            </td>
+            <td>
+              <div style="font-weight:600; color:var(--text-main);">${escapeHtml(tx.reason)}</div>
+              <div style="font-size:0.75rem; color:#64748B;">Ref: <code>#TX-${tx.id}</code></div>
+            </td>
+            <td style="text-align:center;">${changeBadge}</td>
+            <td style="text-align:right; font-family:monospace;">
+              <span style="color:#64748B;">${tx.previous_balance}</span> &rarr; <strong style="color:var(--civic-dark);">${tx.new_balance}</strong>
+            </td>
+            <td style="font-size:0.8rem; color:#334155;">🛡️ ${escapeHtml(tx.actor_source || 'Admin')}</td>
+          </tr>
+        `;
+      }).join('');
+    } catch (err) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:1.5rem; color:#DC2626;">Network error loading audit trail.</td></tr>';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadWorkersRoster();
+  });
+</script>
+{% endblock %}

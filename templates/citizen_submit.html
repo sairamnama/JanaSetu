@@ -1,0 +1,332 @@
+{% extends "citizen_layout.html" %}
+
+{% block title %}Submit Grievance | Rangapuram Panchayat{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 760px; padding: 2rem 1.25rem;">
+
+  <!-- Page Header -->
+  <div style="margin-bottom: 1.75rem;">
+    <div style="display: inline-flex; align-items: center; gap: 0.4rem; color: var(--civic-primary); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em;">
+      📝 Rangapuram Gram Panchayat
+    </div>
+    <h1 style="font-size: 1.85rem; color: var(--civic-dark); margin-top: 0.25rem; font-weight: 800;">
+      Submit Grievance
+    </h1>
+    <p style="font-size: 0.95rem; color: var(--text-muted); margin-top: 0.25rem;">
+      Fill in the details below to report a civic problem in your ward. Required fields are marked with an asterisk (<span style="color:#DC2626;">*</span>).
+    </p>
+  </div>
+
+  <!-- Error Notification Alert Box -->
+  <div id="submit-error-alert" style="display:none; margin-bottom: 1.25rem;">
+    <div class="card" style="background:#FEE2E2; border:1px solid #FCA5A5; color:#991B1B; padding:1rem 1.25rem; border-radius:8px; display:flex; align-items:flex-start; gap:0.75rem;">
+      <span style="font-size:1.2rem; line-height:1;">⚠️</span>
+      <div id="submit-error-message" style="font-size:0.9rem; font-weight:600;"></div>
+    </div>
+  </div>
+
+  <!-- Success Notification Box with Generated Grievance ID -->
+  <div id="submit-success-card" class="card" style="display:none; background:#F0FDF4; border:2px solid #16A34A; padding:2rem; border-radius:12px; margin-bottom:1.5rem; text-align:center; box-shadow:var(--shadow-md);">
+    <div style="width:64px; height:64px; background:#DCFCE7; color:#15803D; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2rem; margin:0 auto 1rem;">
+      ✓
+    </div>
+    <h2 style="font-size:1.5rem; color:#14532D; font-weight:800; margin-bottom:0.4rem;">
+      Grievance Submitted Successfully!
+    </h2>
+    <p style="font-size:0.95rem; color:#166534; margin-bottom:1.25rem;">
+      Your complaint has been registered with Rangapuram Gram Panchayat.
+    </p>
+
+    <!-- Prominent Grievance ID Callout -->
+    <div style="background:#FFFFFF; border:2px dashed #16A34A; border-radius:8px; padding:1.25rem; max-width:420px; margin:0 auto 1.5rem;">
+      <div style="font-size:0.75rem; text-transform:uppercase; color:#64748B; font-weight:700; letter-spacing:0.05em; margin-bottom:0.25rem;">
+        Your Grievance ID
+      </div>
+      <div id="generated-grievance-id" style="font-size:1.85rem; font-weight:800; font-family:monospace; color:#14532D;">
+        GRV-XXXX-XXXXX
+      </div>
+      <div style="font-size:0.8rem; color:#64748B; margin-top:0.35rem;">
+        Please save this ID for tracking your complaint.
+      </div>
+    </div>
+
+    <!-- Next Actions -->
+    <div style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap;">
+      <a id="btn-track-new-grievance" href="{{ url_for('citizen_track') }}" class="btn btn-primary" style="padding:0.75rem 1.75rem; font-size:0.95rem; font-weight:700; border-radius:8px;">
+        🔍 Track This Grievance
+      </a>
+      <button type="button" onclick="resetFormForNewSubmission()" class="btn btn-outline" style="padding:0.75rem 1.5rem; font-size:0.95rem; font-weight:600; border-radius:8px; background:#FFFFFF;">
+        📝 Submit Another Grievance
+      </button>
+    </div>
+  </div>
+
+  <!-- Grievance Submission Form Card -->
+  <div class="card" id="grievance-form-card" style="padding: 2rem; border-top: 5px solid var(--civic-primary); box-shadow: var(--shadow-md);">
+    
+    <form id="citizen-grievance-form" onsubmit="handleCitizenFormSubmit(event)" novalidate enctype="multipart/form-data">
+      
+      <!-- Problem Title -->
+      <div class="form-group">
+        <label for="grievance-title" class="form-label">
+          Problem Title <span class="required">*</span>
+        </label>
+        <input type="text" id="grievance-title" name="title" class="form-control" required maxlength="150" placeholder="e.g., Drinking water pipeline leakage near Primary School" style="font-size: 1rem; padding: 0.75rem 1rem;">
+        <div style="font-size:0.78rem; color:var(--text-muted); margin-top:0.25rem;">
+          Give a clear, brief title describing the problem.
+        </div>
+      </div>
+
+      <!-- Category -->
+      <div class="form-group">
+        <label for="grievance-category" class="form-label">
+          Category <span class="required">*</span>
+        </label>
+        <select id="grievance-category" name="category" class="form-control" required style="font-size: 0.95rem; padding: 0.75rem 1rem;">
+          <option value="">-- Select Problem Category --</option>
+          <option value="Drinking Water & Supply">💧 Drinking Water & Supply</option>
+          <option value="Electricity & Streetlights">⚡ Electricity & Streetlights</option>
+          <option value="Waste Management & Sanitation">🧹 Waste Management & Sanitation</option>
+          <option value="Roads & Drainage Systems">🛣️ Roads & Drainage Systems</option>
+          <option value="Public Health & Vector Control">🏥 Public Health & Vector Control</option>
+          <option value="Anganwadi & School Civic Issues">🏫 Anganwadi & School Civic Issues</option>
+          <option value="Rural Housing & Infrastructure">🏡 Rural Housing & Infrastructure</option>
+          <option value="Other Civic & Community Issues">🏛️ Other Civic & Community Issues</option>
+        </select>
+      </div>
+
+      <!-- Location / Ward Row -->
+      <div class="form-grid-2">
+        <!-- Ward Number -->
+        <div class="form-group">
+          <label for="grievance-ward" class="form-label">
+            Ward Number <span class="required">*</span>
+          </label>
+          <select id="grievance-ward" name="ward_number" class="form-control" required style="font-size: 0.95rem; padding: 0.75rem 1rem;">
+            <option value="">-- Choose Ward --</option>
+            <option value="1">Ward 1</option>
+            <option value="2">Ward 2</option>
+            <option value="3">Ward 3</option>
+            <option value="4" selected>Ward 4</option>
+            <option value="5">Ward 5</option>
+            <option value="6">Ward 6</option>
+            <option value="7">Ward 7</option>
+            <option value="8">Ward 8</option>
+            <option value="9">Ward 9</option>
+            <option value="10">Ward 10</option>
+            <option value="11">Ward 11</option>
+            <option value="12">Ward 12</option>
+            <option value="13">Ward 13</option>
+            <option value="14">Ward 14</option>
+            <option value="15">Ward 15</option>
+          </select>
+        </div>
+
+        <!-- Location Landmark -->
+        <div class="form-group">
+          <label for="grievance-landmark" class="form-label">
+            Location / Landmark <span class="required">*</span>
+          </label>
+          <input type="text" id="grievance-landmark" name="location_landmark" class="form-control" required maxlength="150" placeholder="e.g., Near Shiva Temple / Pole #12" style="font-size: 0.95rem; padding: 0.75rem 1rem;">
+        </div>
+      </div>
+
+      <!-- Problem Description -->
+      <div class="form-group">
+        <label for="grievance-desc" class="form-label">
+          Description <span class="required">*</span>
+        </label>
+        <textarea id="grievance-desc" name="description" class="form-control" required rows="4" placeholder="Please describe what is happening, how long it has been a problem, and any hazards..." style="font-size: 0.95rem; padding: 0.75rem 1rem; line-height: 1.5;"></textarea>
+      </div>
+
+      <!-- Photo Upload (Optional) -->
+      <div class="form-group">
+        <label class="form-label">
+          Photo of the Problem (Optional)
+        </label>
+        <div class="file-upload-box" onclick="document.getElementById('evidence_image').click()" style="padding: 1.5rem; border-radius: 8px;">
+          <div class="file-upload-icon" style="font-size: 2rem;">📷</div>
+          <div style="font-weight: 600; color: var(--text-main); font-size: 0.95rem;">
+            Click to upload or take photo
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">
+            JPG, PNG, or WebP (Maximum 5MB)
+          </div>
+          <input type="file" id="evidence_image" name="evidence_image" accept="image/*,.pdf" style="display:none;" onchange="handleImageSelected(this)">
+          <div id="image-preview-area" style="margin-top:0.5rem;"></div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; flex-wrap: wrap; gap: 1rem;">
+        <button type="button" onclick="resetForm()" class="btn btn-outline" style="min-height: 44px; padding: 0.65rem 1.25rem;">
+          Clear Form
+        </button>
+        <button type="submit" id="btn-submit-form" class="btn btn-primary" style="padding: 0.85rem 2.25rem; font-size: 1.05rem; font-weight: 700; border-radius: 8px; min-height: 48px;">
+          Submit Grievance &rarr;
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+
+<script>
+  // Setup preview and image handling
+  function handleImageSelected(input) {
+    const previewArea = document.getElementById('image-preview-area');
+    previewArea.innerHTML = '';
+    const file = input.files && input.files[0];
+    if (file) {
+      if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          previewArea.innerHTML = `
+            <div style="display:inline-block; position:relative; margin-top:0.75rem; border-radius:8px; overflow:hidden; border:2px solid #CBD5E1;">
+              <img src="${e.target.result}" style="max-height:140px; display:block; object-fit:cover;" alt="Selected Photo Preview">
+              <button type="button" onclick="event.stopPropagation(); removePhoto();" style="position:absolute; top:4px; right:4px; background:#DC2626; color:#fff; border:none; border-radius:50%; width:24px; height:24px; cursor:pointer; font-weight:bold; font-size:12px;">&times;</button>
+            </div>
+            <div style="font-size:0.78rem; color:#15803D; font-weight:600; margin-top:4px;">Photo selected: ${escapeHtml(file.name)}</div>
+          `;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        previewArea.innerHTML = `
+          <div style="font-size:0.85rem; color:#15803D; font-weight:600; margin-top:0.5rem;">
+            File selected: ${escapeHtml(file.name)}
+            <button type="button" onclick="event.stopPropagation(); removePhoto();" class="btn btn-sm btn-outline" style="margin-left:0.5rem; padding:0.1rem 0.4rem;">Remove</button>
+          </div>
+        `;
+      }
+    }
+  }
+
+  function removePhoto() {
+    const input = document.getElementById('evidence_image');
+    if (input) input.value = '';
+    const previewArea = document.getElementById('image-preview-area');
+    if (previewArea) previewArea.innerHTML = '';
+  }
+
+  function resetForm() {
+    document.getElementById('citizen-grievance-form').reset();
+    removePhoto();
+    hideError();
+  }
+
+  function resetFormForNewSubmission() {
+    document.getElementById('submit-success-card').style.display = 'none';
+    document.getElementById('grievance-form-card').style.display = 'block';
+    resetForm();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function showError(msg) {
+    const alertBox = document.getElementById('submit-error-alert');
+    const msgEl = document.getElementById('submit-error-message');
+    if (alertBox && msgEl) {
+      msgEl.textContent = msg;
+      alertBox.style.display = 'block';
+      alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  function hideError() {
+    const alertBox = document.getElementById('submit-error-alert');
+    if (alertBox) alertBox.style.display = 'none';
+  }
+
+  async function handleCitizenFormSubmit(event) {
+    event.preventDefault();
+    hideError();
+
+    const title = document.getElementById('grievance-title').value.trim();
+    const category = document.getElementById('grievance-category').value.trim();
+    const ward = document.getElementById('grievance-ward').value.trim();
+    const landmark = document.getElementById('grievance-landmark').value.trim();
+    const desc = document.getElementById('grievance-desc').value.trim();
+
+    // Required Field Validation
+    if (!title) {
+      showError('Please enter a problem title.');
+      document.getElementById('grievance-title').focus();
+      return;
+    }
+    if (!category) {
+      showError('Please select a problem category.');
+      document.getElementById('grievance-category').focus();
+      return;
+    }
+    if (!ward) {
+      showError('Please select a ward number.');
+      document.getElementById('grievance-ward').focus();
+      return;
+    }
+    if (!landmark) {
+      showError('Please enter a location or landmark.');
+      document.getElementById('grievance-landmark').focus();
+      return;
+    }
+    if (!desc) {
+      showError('Please enter a description of the problem.');
+      document.getElementById('grievance-desc').focus();
+      return;
+    }
+
+    const submitBtn = document.getElementById('btn-submit-form');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting Grievance...';
+
+    try {
+      const formData = new FormData(event.target);
+
+      const res = await fetch('/api/grievances', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        // Display generated Grievance ID prominently
+        const trackingId = data.tracking_id;
+        document.getElementById('generated-grievance-id').textContent = trackingId;
+        const trackLink = document.getElementById('btn-track-new-grievance');
+        if (trackLink) {
+          trackLink.href = `/citizen/track?id=${encodeURIComponent(trackingId)}`;
+        }
+
+        // Hide form and show success card
+        document.getElementById('grievance-form-card').style.display = 'none';
+        const successCard = document.getElementById('submit-success-card');
+        successCard.style.display = 'block';
+        successCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        if (typeof showToast === 'function') {
+          showToast(`Grievance registered successfully: ${trackingId}`, 'success');
+        }
+      } else {
+        showError(data.error || 'Submission failed. Please check your information and try again.');
+        if (data.error && data.error.includes('login')) {
+          if (typeof openLoginModal === 'function') openLoginModal('login');
+        }
+      }
+    } catch (err) {
+      showError('Network error while submitting: ' + err.message);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Grievance →';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    if (typeof checkAuth === 'function') {
+      const user = await checkAuth();
+      if (!user) {
+        showError('You are currently browsing as a guest. Please log in as a citizen before submitting.');
+      }
+    }
+  });
+</script>
+{% endblock %}

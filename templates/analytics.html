@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics & Gram Sabha Reports | GramSeva{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <!-- Header -->
+  <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:2rem; flex-wrap:wrap; gap:1rem;">
+    <div>
+      <div style="display:inline-flex; align-items:center; gap:0.4rem; color:var(--civic-primary); font-weight:700; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.04em;">
+        📈 Public Transparency & Performance Metrics
+      </div>
+      <h1 style="font-size:1.85rem; color:var(--civic-dark); margin-top:0.25rem;">
+        Gram Panchayat Grievance Analytics & Reports
+      </h1>
+      <p style="font-size:0.9rem; color:var(--text-muted);">
+        Interactive visual data for Sarpanch reviews, Gram Sabha meetings, and administrative resource allocation.
+      </p>
+    </div>
+
+    <div style="display:flex; gap:0.75rem;">
+      <button onclick="window.print()" class="btn btn-outline btn-sm">🖨️ Print Report</button>
+      <button onclick="location.reload()" class="btn btn-primary btn-sm">🔄 Refresh Data</button>
+    </div>
+  </div>
+
+  <!-- KPI Scorecard -->
+  <div class="stats-grid">
+    <div class="stat-card stat-blue">
+      <div class="stat-icon-wrap">📊</div>
+      <div class="stat-data">
+        <div class="stat-value" id="kpi-total">0</div>
+        <div class="stat-label">Total Grievances Logged</div>
+      </div>
+    </div>
+    <div class="stat-card stat-green">
+      <div class="stat-icon-wrap">✅</div>
+      <div class="stat-data">
+        <div class="stat-value" id="kpi-resolved">0%</div>
+        <div class="stat-label">Resolution Efficiency</div>
+      </div>
+    </div>
+    <div class="stat-card stat-amber">
+      <div class="stat-icon-wrap">⏱️</div>
+      <div class="stat-data">
+        <div class="stat-value" id="kpi-avg-days">—</div>
+        <div class="stat-label">Avg Remediation Turnaround</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon-wrap">⭐</div>
+      <div class="stat-data">
+        <div class="stat-value" id="kpi-rating">—</div>
+        <div class="stat-label">Citizen Satisfaction Rating</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status Breakdown Grid -->
+  <div class="card" style="margin-bottom:2rem;">
+    <div class="card-header">
+      <h2 class="card-title" style="font-size:1.05rem;">📋 Grievance Status Breakdown</h2>
+    </div>
+    <div id="status-breakdown-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:0.75rem; padding:1rem;">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+
+  <!-- Verification Metrics -->
+  <div class="card" style="margin-bottom:2rem; border-top: 4px solid var(--panchayat-gold);">
+    <div class="card-header">
+      <div>
+        <div style="font-size:0.8rem; font-weight:700; color:#D97706; text-transform:uppercase; letter-spacing:0.04em;">
+          🔍 DOUBLE VERIFICATION ANALYSIS
+        </div>
+        <h2 class="card-title" style="font-size:1.15rem; margin-top:0.2rem;">Worker Completion vs Citizen Confirmation</h2>
+      </div>
+    </div>
+    <div style="padding:1rem;">
+      <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:1rem;">
+        <!-- Workers Marked Completed -->
+        <div style="background:#F0FDF4; border:1px solid #BBF7D0; border-radius:8px; padding:1rem; text-align:center;">
+          <div style="font-size:0.75rem; font-weight:700; color:#166534; text-transform:uppercase; margin-bottom:0.4rem;">Workers Marked Completed</div>
+          <div id="vm-workers-completed" style="font-size:1.8rem; font-weight:800; color:#15803D;">—</div>
+        </div>
+        <!-- Citizens Confirmed Resolved -->
+        <div style="background:#EFF6FF; border:1px solid #BFDBFE; border-radius:8px; padding:1rem; text-align:center;">
+          <div style="font-size:0.75rem; font-weight:700; color:#1E40AF; text-transform:uppercase; margin-bottom:0.4rem;">Citizens Confirmed Resolved</div>
+          <div id="vm-citizens-confirmed" style="font-size:1.8rem; font-weight:800; color:#1D4ED8;">—</div>
+        </div>
+        <!-- Verification Failure Rate -->
+        <div style="background:#FEF2F2; border:1px solid #FECACA; border-radius:8px; padding:1rem; text-align:center;">
+          <div style="font-size:0.75rem; font-weight:700; color:#991B1B; text-transform:uppercase; margin-bottom:0.4rem;">Verification Failure Rate</div>
+          <div id="vm-failure-rate" style="font-size:1.8rem; font-weight:800; color:#DC2626;">—</div>
+        </div>
+        <!-- Rework Rate -->
+        <div style="background:#FFFBEB; border:1px solid #FDE68A; border-radius:8px; padding:1rem; text-align:center;">
+          <div style="font-size:0.75rem; font-weight:700; color:#92400E; text-transform:uppercase; margin-bottom:0.4rem;">Rework Rate</div>
+          <div id="vm-rework-rate" style="font-size:1.8rem; font-weight:800; color:#D97706;">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Row 1: Category Doughnut & Ward Bar Chart -->
+  <div style="display:grid; grid-template-columns: 1fr 1.6fr; gap:1.5rem; margin-bottom:2rem;">
+    <!-- Category Doughnut -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title" style="font-size:1.05rem;">💧 Grievances by Civic Category</h2>
+      </div>
+      <div style="position:relative; height:280px;">
+        <canvas id="categoryDoughnutChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Ward Bar Chart -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title" style="font-size:1.05rem;">🏘️ Ward-wise Intake vs Resolution</h2>
+      </div>
+      <div style="position:relative; height:280px;">
+        <canvas id="wardBarChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Row 2: Status Distribution & Department Performance -->
+  <div style="display:grid; grid-template-columns: 1fr 1.8fr; gap:1.5rem; margin-bottom:2rem;">
+    <!-- Status Pie -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title" style="font-size:1.05rem;">⚙️ Current Lifecycle Status</h2>
+      </div>
+      <div style="position:relative; height:260px;">
+        <canvas id="statusPieChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Department Table -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title" style="font-size:1.05rem;">🏛️ Departmental Workload & Resolution SLA</h2>
+      </div>
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Department</th>
+              <th style="text-align:center;">Total</th>
+              <th style="text-align:center;">Active</th>
+              <th style="text-align:center;">Resolved</th>
+              <th>Completion Rate</th>
+            </tr>
+          </thead>
+          <tbody id="dept-analytics-tbody">
+            <tr><td colspan="5" style="text-align:center; padding:1.5rem;">Loading department performance...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+{% endblock %}

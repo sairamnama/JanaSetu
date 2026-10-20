@@ -1,0 +1,315 @@
+{% extends "citizen_layout.html" %}
+
+{% block title %}Rangapuram Panchayat | Citizen Grievance Portal{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 960px; padding: 2rem 1.25rem;">
+
+  <!-- Pending Citizen Verification Alert (Injected if worker finished work) -->
+  <div id="citizen-home-alert" style="display:none; margin-bottom: 1.5rem;"></div>
+
+  <!-- Welcome Hero Card -->
+  <div class="card"
+    style="background: linear-gradient(135deg, #F0FDF4 0%, #FFFFFF 100%); border-left: 6px solid var(--civic-primary); padding: 2.25rem 2rem; margin-bottom: 2rem; box-shadow: var(--shadow-md);">
+    <div
+      style="display: inline-flex; align-items: center; gap: 0.4rem; background: #DCFCE7; color: #166534; font-size: 0.8rem; font-weight: 700; padding: 0.25rem 0.75rem; border-radius: 999px; margin-bottom: 0.85rem; letter-spacing: 0.04em;">
+      RANGAPURAM GRAM PANCHAYAT
+    </div>
+
+    <h1 style="font-size: 2rem; color: var(--civic-dark); margin-bottom: 0.75rem; font-weight: 800; line-height: 1.25;">
+      Welcome to Rangapuram Panchayat Grievance Service
+    </h1>
+
+    <p style="font-size: 1.05rem; color: #334155; max-width: 780px; line-height: 1.6; margin: 0;">
+      A simple and transparent way for residents of Rangapuram to report village issues—such as drinking water supply,
+      broken streetlights, sanitation, drainage, and road repairs. Submit your complaint online and track its status
+      until it is resolved by Panchayat workers.
+    </p>
+  </div>
+
+  <!-- Two Prominent Action Cards -->
+  <div
+    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+
+    <!-- Submit Grievance Card -->
+    <div class="card card-lift"
+      style="display: flex; flex-direction: column; justify-content: space-between; border-top: 5px solid var(--civic-primary); padding: 2rem 1.75rem;">
+      <div>
+        <div
+          style="width: 56px; height: 56px; border-radius: 12px; background: #DCFCE7; color: #15803D; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; margin-bottom: 1.25rem;">
+
+        </div>
+        <h2 style="font-size: 1.4rem; color: var(--civic-dark); margin-bottom: 0.5rem; font-weight: 700;">
+          Submit Grievance
+        </h2>
+        <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.75rem;">
+          Report a new civic issue in your ward. You can describe the problem and upload a photo for the Panchayat team.
+        </p>
+      </div>
+      <div>
+        <a href="{{ url_for('citizen_submit') }}" class="btn btn-primary"
+          style="width: 100%; padding: 0.85rem 1.5rem; font-size: 1rem; font-weight: 700; border-radius: 8px;">
+          Submit Grievance &rarr;
+        </a>
+      </div>
+    </div>
+
+    <!-- Track Grievance Card -->
+    <div class="card card-lift"
+      style="display: flex; flex-direction: column; justify-content: space-between; border-top: 5px solid #2563EB; padding: 2rem 1.75rem;">
+      <div>
+        <div
+          style="width: 56px; height: 56px; border-radius: 12px; background: #DBEAFE; color: #1D4ED8; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; margin-bottom: 1.25rem;">
+
+        </div>
+        <h2 style="font-size: 1.4rem; color: var(--civic-dark); margin-bottom: 0.5rem; font-weight: 700;">
+          Track Grievance
+        </h2>
+        <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.75rem;">
+          Check the real-time status and progress updates of your submitted grievances. Confirm when the problem is
+          solved.
+        </p>
+      </div>
+      <div>
+        <a href="{{ url_for('citizen_track') }}" class="btn btn-outline-primary"
+          style="width: 100%; padding: 0.85rem 1.5rem; font-size: 1rem; font-weight: 700; border-radius: 8px; border-color: #2563EB; color: #2563EB;">
+          Track Grievance &rarr;
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Double Verification Grievance Lifecycle Guide (7 Stages) -->
+  <div class="card double-verif-card"
+    style="margin-bottom: 2rem; border-left: 4px solid var(--civic-primary); padding: 1.5rem;">
+    <div
+      style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem;">
+      <h3
+        style="font-weight: 700; font-size: 1.05rem; color: var(--civic-dark); display: flex; align-items: center; gap: 0.4rem; margin: 0;">
+        <span></span> <strong>Double Verification Grievance Lifecycle</strong>
+      </h3>
+      <div style="font-size: 0.82rem; color: var(--text-muted);">
+        Every grievance requires both Field Officer review and Citizen Confirmation before final resolution.
+      </div>
+    </div>
+
+    <div class="double-verif-stepper">
+      <div class="dv-step completed">
+        <div class="dv-step-circle"></div>
+        <div class="dv-step-title">Complaint Submitted</div>
+      </div>
+      <div class="dv-arrow" aria-hidden="true">➔</div>
+      <div class="dv-step">
+        <div class="dv-step-circle"></div>
+        <div class="dv-step-title">Assigned</div>
+      </div>
+      <div class="dv-arrow" aria-hidden="true">➔</div>
+      <div class="dv-step">
+        <div class="dv-step-circle"></div>
+        <div class="dv-step-title">Work in Progress</div>
+      </div>
+      <div class="dv-arrow" aria-hidden="true">➔</div>
+      <div class="dv-step">
+        <div class="dv-step-circle"></div>
+        <div class="dv-step-title">Work Completed</div>
+      </div>
+      <div class="dv-arrow" aria-hidden="true">➔</div>
+      <div class="dv-step">
+        <div class="dv-step-circle"></div>
+        <div class="dv-step-title">Officer Verified</div>
+      </div>
+      <div class="dv-arrow" aria-hidden="true">➔</div>
+      <div class="dv-step" style="border: 1.5px dashed #16A34A; border-radius: 6px; padding: 0.25rem;">
+        <div class="dv-step-circle" style="border-color: #16A34A; color: #16A34A;">🙋</div>
+        <div class="dv-step-title" style="color: #15803D; font-weight: 700;">Citizen Verification</div>
+      </div>
+      <div class="dv-arrow" aria-hidden="true">➔</div>
+      <div class="dv-step">
+        <div class="dv-step-circle"></div>
+        <div class="dv-step-title">Resolved</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panchayat Contact & Helpline Footer Note -->
+  <div
+    style="display: flex; justify-content: space-between; align-items: center; background: #F1F5F9; border-radius: 8px; padding: 1rem 1.25rem; flex-wrap: wrap; gap: 0.75rem; font-size: 0.88rem; color: #475569;">
+    <div>
+      <strong>Panchayat Office Helpline:</strong> 1800-425-7890 (Toll-Free, 9 AM – 5 PM)
+    </div>
+    <div>
+      Rangapuram Gram Panchayat, Andhra Pradesh
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal: Citizen Resolution Verification (Double Verification Confirmation) -->
+<div id="modal-citizen-verify" class="modal-backdrop">
+  <div class="modal-box" style="max-width: 580px;">
+    <div class="modal-header" style="background: #F0FDF4; border-bottom: 1px solid #BBF7D0;">
+      <div>
+        <div
+          style="font-size: 0.75rem; color: #15803D; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;">
+          CITIZEN RESOLUTION CONFIRMATION
+        </div>
+        <h3 id="verify-modal-tracking-id"
+          style="font-size: 1.2rem; color: #14532D; font-family: monospace; margin-top: 0.2rem;"></h3>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal('modal-citizen-verify')">&times;</button>
+    </div>
+
+    <div class="modal-body" style="padding: 1.5rem;">
+      <div
+        style="text-align: center; padding-bottom: 1.25rem; border-bottom: 1px solid #E2E8F0; margin-bottom: 1.25rem;">
+        <div style="font-size: 2rem; margin-bottom: 0.4rem;">🏁</div>
+        <h3 style="font-size: 1.25rem; font-weight: 800; color: #0F172A; margin: 0 0 0.4rem 0;">
+          Citizen Resolution Verification
+        </h3>
+        <p style="font-size: 1rem; color: #166534; margin: 0; font-weight: 600; line-height: 1.5;">
+          The worker has reported that the work is complete. Please confirm whether your original problem has actually been solved.
+        </p>
+      </div>
+
+      <!-- Grievance Summary -->
+      <div
+        style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 1rem; margin-bottom: 1.25rem;">
+        <div style="font-size: 0.78rem; color: #64748B; font-weight: 600; text-transform: uppercase;">Complaint Subject:
+        </div>
+        <div id="verify-modal-title" style="font-weight: 700; color: #1E293B; font-size: 0.95rem; margin-top: 0.15rem;">
+        </div>
+        <div id="verify-modal-meta" style="font-size: 0.8rem; color: #64748B; margin-top: 0.3rem;"></div>
+      </div>
+
+      <!-- Remarks -->
+      <div class="form-group" style="margin-bottom: 1.25rem;">
+        <label for="citizen-verify-remarks" class="form-label"
+          style="font-weight: 600; font-size: 0.85rem; color: #334155;">
+          Remarks / Additional Comments (Optional)
+        </label>
+        <textarea id="citizen-verify-remarks" class="form-control" rows="2"
+          placeholder="e.g. Pipeline is working properly now, or small leak still remains..."></textarea>
+      </div>
+
+      <!-- 4 Verification Action Buttons -->
+      <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+        <button type="button" id="btn-verify-yes" onclick="submitModalCitizenVerification('YES')" class="btn touch-btn"
+          style="background:#16A34A; color:#ffffff; padding:0.85rem 1.25rem; border-radius:8px; font-weight:700; font-size:1rem; display:flex; justify-content:space-between; align-items:center; border:none; cursor:pointer;">
+          <span>✓ Yes, completely solved</span>
+          <span
+            style="font-size:0.75rem; opacity:0.9; font-weight:500; background:rgba(255,255,255,0.2); padding:2px 8px; border-radius:4px;">Problem
+            Solved</span>
+        </button>
+
+        <button type="button" id="btn-verify-partially" onclick="submitModalCitizenVerification('PARTIALLY')"
+          class="btn touch-btn"
+          style="background:#D97706; color:#ffffff; padding:0.85rem 1.25rem; border-radius:8px; font-weight:700; font-size:1rem; display:flex; justify-content:space-between; align-items:center; border:none; cursor:pointer;">
+          <span>◐ Partially solved</span>
+          <span
+            style="font-size:0.75rem; opacity:0.9; font-weight:500; background:rgba(255,255,255,0.2); padding:2px 8px; border-radius:4px;">Needs
+            More Work</span>
+        </button>
+
+        <button type="button" id="btn-verify-no" onclick="submitModalCitizenVerification('NO')" class="btn touch-btn"
+          style="background:#DC2626; color:#ffffff; padding:0.85rem 1.25rem; border-radius:8px; font-weight:700; font-size:1rem; display:flex; justify-content:space-between; align-items:center; border:none; cursor:pointer;">
+          <span>✕ No, problem still exists</span>
+          <span
+            style="font-size:0.75rem; opacity:0.9; font-weight:500; background:rgba(255,255,255,0.2); padding:2px 8px; border-radius:4px;">Reopen
+            Issue</span>
+        </button>
+
+        <button type="button" id="btn-verify-unable" onclick="submitModalCitizenVerification('UNABLE_TO_VERIFY')"
+          class="btn touch-btn"
+          style="background:#64748B; color:#ffffff; padding:0.85rem 1.25rem; border-radius:8px; font-weight:600; font-size:0.95rem; display:flex; justify-content:space-between; align-items:center; border:none; cursor:pointer;">
+          <span>? Unable to verify</span>
+          <span
+            style="font-size:0.75rem; opacity:0.9; font-weight:400; background:rgba(255,255,255,0.2); padding:2px 8px; border-radius:4px;">Keep
+            Pending</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="modal-footer" style="background: #F8FAFC;">
+      <button type="button" onclick="closeModal('modal-citizen-verify')" class="btn btn-outline btn-sm">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let activeVerifyGrievanceId = null;
+
+  function openVerificationModal(id, trackingId, title) {
+    activeVerifyGrievanceId = id;
+    document.getElementById('verify-modal-tracking-id').textContent = trackingId;
+    document.getElementById('verify-modal-title').textContent = title || 'Grievance #' + id;
+    openModal('modal-citizen-verify');
+  }
+
+  async function submitModalCitizenVerification(response) {
+    if (!activeVerifyGrievanceId) return;
+    const remarks = document.getElementById('citizen-verify-remarks')?.value.trim() || '';
+
+    try {
+      const res = await fetch(`/api/grievances/${activeVerifyGrievanceId}/citizen-verify`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          response: response,
+          verification_method: 'PORTAL',
+          remarks: remarks
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('Verification submitted successfully.', 'success');
+        closeModal('modal-citizen-verify');
+        checkVerificationAlerts();
+      } else {
+        alert(data.error || 'Verification failed.');
+      }
+    } catch (e) {
+      alert('Error: ' + e.message);
+    }
+  }
+
+  async function checkVerificationAlerts() {
+    try {
+      const user = await checkAuth();
+      if (!user) return;
+      const res = await fetch('/api/grievances?scope=my');
+      const data = await res.json();
+      if (data.success && data.grievances) {
+        const pending = data.grievances.filter(g => g.status === 'CITIZEN_VERIFICATION');
+        const alertBox = document.getElementById('citizen-home-alert');
+        if (pending.length > 0) {
+          alertBox.style.display = 'block';
+          alertBox.innerHTML = `
+            <div class="card" style="background:#FEF3C7; border:2px solid #F59E0B; padding:1.25rem; border-radius:8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+              <div>
+                <div style="font-weight:700; color:#92400E; font-size:1rem;">
+                   Action Needed: Work Completed on ${pending.length} Grievance${pending.length > 1 ? 's' : ''}
+                </div>
+                <div style="font-size:0.88rem; color:#78350F; margin-top:0.25rem;">
+                  Field workers have reported work completed. Please verify if your issue has been solved.
+                </div>
+              </div>
+              <a href="{{ url_for('citizen_track') }}" class="btn btn-sm btn-accent" style="padding:0.6rem 1.2rem; font-weight:700;">
+                Review & Confirm &rarr;
+              </a>
+            </div>
+          `;
+        } else {
+          alertBox.style.display = 'none';
+        }
+      }
+    } catch (e) {
+      console.error('Error checking verification alert:', e);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    checkVerificationAlerts();
+  });
+</script>
+{% endblock %}

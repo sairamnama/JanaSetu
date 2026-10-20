@@ -1,0 +1,404 @@
+{% extends "worker_layout.html" %}
+
+{% block title %}Worker Home | GramSeva Field Operations{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <!-- Header -->
+  <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:1.75rem; flex-wrap:wrap; gap:1rem;">
+    <div>
+      <div style="display:inline-flex; align-items:center; gap:0.4rem; color:var(--panchayat-gold-dark); font-weight:700; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.04em;">
+        🔧 Field Worker Operations Console
+      </div>
+      <h1 style="font-size:1.85rem; color:var(--civic-dark); margin-top:0.25rem;">
+        My Assigned Field Tasks
+      </h1>
+      <p style="font-size:0.9rem; color:var(--text-muted);">
+        View assigned grievances, update progress, upload resolution proof, and submit work completion reports.
+      </p>
+    </div>
+
+    <div style="display:flex; gap:0.75rem; align-items:center; flex-wrap:wrap;">
+      <div id="worker-points-badge" style="background:#FFFBEB; border:1px solid #F59E0B; padding:0.5rem 1rem; border-radius:8px; font-size:0.85rem; color:#B45309; font-weight:700; display:flex; align-items:center; gap:0.4rem;">
+        ⭐ Loyalty Points: <span id="worker-header-points">--</span>
+      </div>
+      <div id="worker-profile-badge" style="background:var(--civic-light); padding:0.5rem 1rem; border-radius:8px; font-size:0.85rem; color:var(--civic-dark); font-weight:600; border:1px solid var(--civic-green);">
+        Loading profile...
+      </div>
+    </div>
+  </div>
+
+  <!-- Operational KPI Stats -->
+  <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+    <div class="stat-card" style="border-left:4px solid #D97706; background:#FFFDF7;" title="Worker Loyalty Points">
+      <div class="stat-icon-wrap" style="background:#FEF3C7; color:#D97706;">⭐</div>
+      <div class="stat-data">
+        <div class="stat-value" id="worker-stat-points" style="color:#B45309;">--</div>
+        <div class="stat-label">Loyalty Points</div>
+      </div>
+    </div>
+    <div class="stat-card stat-blue" onclick="setWorkerStatusFilter('ASSIGNED')" style="cursor:pointer;" title="Filter Assigned">
+      <div class="stat-icon-wrap">👤</div>
+      <div class="stat-data">
+        <div class="stat-value" id="worker-stat-assigned">0</div>
+        <div class="stat-label">Assigned</div>
+      </div>
+    </div>
+    <div class="stat-card stat-amber" onclick="setWorkerStatusFilter('IN_PROGRESS')" style="cursor:pointer;" title="Filter In Progress">
+      <div class="stat-icon-wrap">⚙️</div>
+      <div class="stat-data">
+        <div class="stat-value" id="worker-stat-progress">0</div>
+        <div class="stat-label">In Progress</div>
+      </div>
+    </div>
+    <div class="stat-card" onclick="setWorkerStatusFilter('WORK_COMPLETED')" style="cursor:pointer; border-left:4px solid #854D0E;" title="Filter Work Completed">
+      <div class="stat-icon-wrap" style="background:#FEF9C3; color:#854D0E;">📦</div>
+      <div class="stat-data">
+        <div class="stat-value" id="worker-stat-completed">0</div>
+        <div class="stat-label">Work Completed</div>
+      </div>
+    </div>
+    <div class="stat-card stat-red" onclick="setWorkerStatusFilter('REWORK_REQUIRED')" style="cursor:pointer;" title="Filter Rework Required">
+      <div class="stat-icon-wrap">🔁</div>
+      <div class="stat-data">
+        <div class="stat-value" id="worker-stat-rework">0</div>
+        <div class="stat-label">Rework Required</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Worker Task Board -->
+  <div class="card" style="margin-bottom:2rem;">
+    <div class="card-header" style="flex-wrap:wrap; gap:1rem;">
+      <div>
+        <h2 class="card-title">🔧 My Field Task Board</h2>
+        <p style="font-size:0.82rem; color:var(--text-muted); margin-top:0.2rem;">
+          View your assigned grievances, update progress, and upload completion evidence.
+        </p>
+      </div>
+
+      <!-- Quick Filter Tabs & Toolbar -->
+      <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+        <div class="btn-group" style="display:flex; gap:0.25rem;">
+          <button type="button" class="btn btn-sm btn-outline active" id="tab-all" onclick="setWorkerStatusFilter('ALL')">All</button>
+          <button type="button" class="btn btn-sm btn-outline" id="tab-assigned" onclick="setWorkerStatusFilter('ASSIGNED')">👤 Assigned</button>
+          <button type="button" class="btn btn-sm btn-outline" id="tab-accepted" onclick="setWorkerStatusFilter('ACCEPTED')">✅ Accepted</button>
+          <button type="button" class="btn btn-sm btn-outline" id="tab-in-progress" onclick="setWorkerStatusFilter('IN_PROGRESS')">⚙️ In Progress</button>
+          <button type="button" class="btn btn-sm btn-outline" id="tab-completed" onclick="setWorkerStatusFilter('WORK_COMPLETED')">📦 Completed</button>
+          <button type="button" class="btn btn-sm btn-outline" id="tab-rework" onclick="setWorkerStatusFilter('REWORK_REQUIRED')">🔁 Rework</button>
+          <button type="button" class="btn btn-sm btn-outline" id="tab-escalated" onclick="setWorkerStatusFilter('ESCALATED')">🚨 Escalated</button>
+        </div>
+
+        <input type="text" id="worker-search-input" class="form-control" style="width:160px;" placeholder="Search ID / Title..." oninput="renderWorkerTasksTable()">
+
+        <select id="worker-filter-status" class="form-control" style="width:150px;" onchange="syncFilterTabs(); renderWorkerTasksTable()">
+          <option value="ALL">All Statuses</option>
+          <option value="ASSIGNED">Assigned</option>
+          <option value="ACCEPTED">Accepted</option>
+          <option value="IN_PROGRESS">In Progress</option>
+          <option value="WORK_COMPLETED">Work Completed</option>
+          <option value="REWORK_REQUIRED">Rework Required</option>
+          <option value="REOPENED">Reopened</option>
+          <option value="ESCALATED">Escalated</option>
+          <option value="OFFICER_VERIFICATION">Officer Verification</option>
+          <option value="CITIZEN_VERIFICATION">Citizen Verification</option>
+          <option value="RESOLVED">Resolved</option>
+          <option value="CLOSED">Closed</option>
+        </select>
+
+        <select id="worker-filter-priority" class="form-control" style="width:115px;" onchange="renderWorkerTasksTable()">
+          <option value="ALL">All Priority</option>
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Worker Tasks Table -->
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Tracking ID</th>
+            <th>Subject / Location</th>
+            <th>Category</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Assigned Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="worker-tasks-tbody">
+          <tr>
+            <td colspan="7" style="text-align:center; padding:2rem;">Loading assigned tasks...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Worker Loyalty Points & Recognition Ledger -->
+  <div class="card" style="margin-bottom:2rem; box-shadow:var(--shadow-md); border-top: 4px solid #D97706;">
+    <div class="card-header" style="flex-wrap:wrap; gap:1rem;">
+      <div>
+        <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+          <span style="font-size:1.3rem;">⭐</span>
+          <h2 class="card-title" style="margin:0;">My Loyalty Points & Recognition Ledger</h2>
+          <span class="badge" id="worker-points-status-badge" style="background:#FEF3C7; color:#B45309; font-weight:700; font-size:0.85rem; padding:3px 9px;">
+            Loading points...
+          </span>
+        </div>
+        <p style="font-size:0.82rem; color:var(--text-muted); margin-top:0.25rem;">
+          Transparent database ledger of performance merits, assignment adjustments, and authorized recognitions.
+        </p>
+      </div>
+      <div style="display:flex; align-items:center; gap:0.75rem;">
+        <div style="font-size:0.9rem; font-weight:700; color:var(--civic-dark);">
+          Current Balance: <span id="worker-points-current-display" style="font-size:1.35rem; color:#D97706; font-family:monospace;">--</span> pts
+        </div>
+        <button type="button" class="btn btn-outline btn-sm" onclick="loadWorkerLoyaltyPoints()">🔄 Refresh</button>
+      </div>
+    </div>
+
+    <!-- Points Transactions Table -->
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:170px;">Date & Time</th>
+            <th>Reason & Event Description</th>
+            <th style="width:130px; text-align:center;">Adjustment</th>
+            <th style="width:160px; text-align:right;">Balance (Old &rarr; New)</th>
+            <th style="width:180px;">Authorized Source</th>
+          </tr>
+        </thead>
+        <tbody id="worker-points-history-tbody">
+          <tr>
+            <td colspan="5" style="text-align:center; padding:1.75rem; color:#64748B;">Loading loyalty points history...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Worker Notifications -->
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">🔔 My Notifications</h2>
+      <button onclick="markAllWorkerNotificationsRead()" class="btn btn-outline btn-sm">Mark All Read</button>
+    </div>
+    <div id="worker-notifications-list" style="max-height:300px; overflow-y:auto; padding:0 1rem;">
+      Loading notifications...
+    </div>
+  </div>
+
+</div>
+
+<!-- ==========================================
+     MODAL: WORKER ACCEPT ASSIGNMENT
+     ========================================== -->
+<div id="modal-worker-accept" class="modal-backdrop">
+  <div class="modal-box" style="max-width:500px;">
+    <div class="modal-header">
+      <div>
+        <div style="font-size:0.78rem; color:#16A34A; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;">
+          ✅ ACCEPT TASK ASSIGNMENT
+        </div>
+        <h3 id="worker-accept-tracking-id" style="font-size:1.25rem; color:var(--civic-dark); font-family:monospace; margin-top:2px;"></h3>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal('modal-worker-accept')">&times;</button>
+    </div>
+
+    <form onsubmit="handleWorkerAcceptSubmit(event)">
+      <div class="modal-body" style="padding:1.25rem;">
+        <div style="background:#F0FDF4; border:1px solid #BBF7D0; border-radius:8px; padding:0.9rem 1rem; margin-bottom:1rem; font-size:0.88rem; color:#166534; line-height:1.5;">
+          <strong>Task:</strong> <span id="worker-accept-title" style="font-weight:600;">--</span>
+          <div style="margin-top:0.5rem; font-size:0.82rem; color:#15803D;">
+            By accepting, you confirm responsibility for on-site remediation. The grievance will advance to <strong>ACCEPTED</strong> and appear in your active operations queue.
+          </div>
+        </div>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin:0;">
+          Are you ready to undertake this civic remediation assignment?
+        </p>
+      </div>
+
+      <div class="modal-footer" style="padding:0.75rem 1.25rem 1.25rem;">
+        <button type="button" onclick="closeModal('modal-worker-accept')" class="btn btn-outline btn-sm">Cancel</button>
+        <button type="submit" id="btn-confirm-accept" class="btn btn-primary btn-sm" style="background:#16A34A; border-color:#16A34A; font-weight:700; padding:0.55rem 1.25rem;">
+          ✅ Confirm & Accept Work
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ==========================================
+     MODAL: WORKER REJECT ASSIGNMENT
+     ========================================== -->
+<div id="modal-worker-reject" class="modal-backdrop">
+  <div class="modal-box" style="max-width:540px;">
+    <div class="modal-header">
+      <div>
+        <div style="font-size:0.78rem; color:#DC2626; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;">
+          ❌ REJECT TASK ASSIGNMENT
+        </div>
+        <h3 id="worker-reject-tracking-id" style="font-size:1.25rem; color:var(--civic-dark); font-family:monospace; margin-top:2px;"></h3>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal('modal-worker-reject')">&times;</button>
+    </div>
+
+    <form onsubmit="handleWorkerRejectSubmit(event)">
+      <div class="modal-body" style="padding:1.25rem;">
+        <div style="background:#FEF2F2; border:1px solid #FECACA; border-radius:8px; padding:0.85rem 1rem; margin-bottom:1rem; font-size:0.85rem; color:#991B1B; line-height:1.45;">
+          <div style="font-weight:700; display:flex; align-items:center; gap:0.4rem; margin-bottom:4px;">
+            <span>⚠️</span> Penalty & Release Policy
+          </div>
+          Rejecting an assigned task releases it back to administration for reassignment. A mandatory penalty of <strong>5 Loyalty Points</strong> will be deducted from your ledger.
+        </div>
+
+        <div style="margin-bottom:1rem;">
+          <strong style="font-size:0.85rem; color:var(--civic-dark);">Task:</strong>
+          <span id="worker-reject-title" style="font-size:0.85rem; color:#475569;">--</span>
+        </div>
+
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label" style="font-weight:600;">
+            Mandatory Rejection Justification <span class="required" style="color:#DC2626;">*</span>
+          </label>
+          <textarea id="worker-reject-reason" class="form-control" required rows="3"
+            placeholder="State specific operational reason (e.g. specialized pipe clamp unavailable, conflict with Ward 2 emergency repair, medical leave)..."
+            style="font-size:0.88rem;"></textarea>
+          <div style="font-size:0.75rem; color:#64748B; margin-top:3px;">
+            This justification will be logged permanently in the audit trail and notified to Panchayat administrators.
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="padding:0.75rem 1.25rem 1.25rem;">
+        <button type="button" onclick="closeModal('modal-worker-reject')" class="btn btn-outline btn-sm">Keep Assignment</button>
+        <button type="submit" id="btn-confirm-reject" class="btn btn-primary btn-sm" style="background:#DC2626; border-color:#DC2626; font-weight:700; padding:0.55rem 1.25rem;">
+          ❌ Confirm Rejection & Deduct Penalty
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ==========================================
+     MODAL: WORKER UPDATE PROGRESS
+     ========================================== -->
+<div id="modal-worker-progress" class="modal-backdrop">
+  <div class="modal-box" style="max-width:540px;">
+    <div class="modal-header">
+      <div>
+        <div style="font-size:0.78rem; color:#64748B; font-weight:600;">UPDATE FIELD PROGRESS</div>
+        <h3 id="worker-progress-tracking-id" style="font-size:1.2rem; color:var(--civic-dark); font-family:monospace;"></h3>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal('modal-worker-progress')">&times;</button>
+    </div>
+
+    <form onsubmit="handleWorkerProgressSubmit(event)">
+      <div class="modal-body">
+        <div style="background:#EFF6FF; border:1px solid #93C5FD; border-radius:8px; padding:0.75rem; margin-bottom:1rem; font-size:0.82rem; color:#1E40AF;">
+          ℹ️ Update the current status. Workers can set status to <strong>IN_PROGRESS</strong> or <strong>ASSIGNED</strong>. To mark work complete, use the <strong>Submit Completion Proof</strong> action instead.
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">New Status <span class="required">*</span></label>
+          <select id="worker-progress-status" class="form-control" required>
+            <option value="IN_PROGRESS">IN_PROGRESS (Work Underway)</option>
+            <option value="ASSIGNED">ASSIGNED (Reset to Assigned)</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">Progress Remarks <span class="required">*</span></label>
+          <textarea id="worker-progress-remarks" class="form-control" required placeholder="Describe what has been done so far, obstacles encountered, tools/materials needed..."></textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" onclick="closeModal('modal-worker-progress')" class="btn btn-outline btn-sm">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-sm">Update Progress</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ==========================================
+     MODAL: SUBMIT COMPLETION PROOF
+     ========================================== -->
+<div id="modal-worker-complete" class="modal-backdrop">
+  <div class="modal-box" style="max-width:560px;">
+    <div class="modal-header">
+      <div>
+        <div style="font-size:0.78rem; color:#64748B; font-weight:600;">SUBMIT RESOLUTION PROOF</div>
+        <h3 id="worker-complete-tracking-id" style="font-size:1.2rem; color:var(--civic-dark); font-family:monospace;"></h3>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal('modal-worker-complete')">&times;</button>
+    </div>
+
+    <form id="form-worker-complete" onsubmit="handleWorkerCompleteSubmit(event)" enctype="multipart/form-data">
+      <div class="modal-body">
+        <div style="background:#FEF2F2; border:2px solid #EF4444; border-radius:8px; padding:0.95rem 1.1rem; margin-bottom:1rem; font-size:0.95rem; color:#991B1B; font-weight:700; display:flex; align-items:center; gap:0.6rem; line-height:1.45; box-shadow:0 1px 3px rgba(239,68,68,0.15);">
+          <span style="font-size:1.4rem;">⚠️</span>
+          <span>Submitting this proof does not resolve the grievance. The submitted work will be verified.</span>
+        </div>
+
+        <!-- Rework / Reopen / Escalation Reason Banner -->
+        <div id="worker-complete-rework-box" style="display:none; background:#FEF2F2; border:1px solid #FCA5A5; border-radius:8px; padding:0.85rem 1rem; margin-bottom:1rem; font-size:0.85rem; color:#991B1B;">
+          <div style="font-weight:700; display:flex; align-items:center; gap:0.4rem;">
+            <span>🔁</span> <span id="worker-complete-rework-title">Rework Required</span>
+          </div>
+          <div id="worker-complete-rework-reason" style="margin-top:0.35rem; font-style:italic; background:#fff; padding:0.5rem 0.75rem; border-radius:4px; border:1px solid #FECACA;"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">After-Work Photograph / Evidence <span class="required">*</span></label>
+          <input type="file" name="proof_file" id="worker-proof-file" class="form-control" required accept="image/png,image/jpg,image/jpeg,image/webp,application/pdf">
+          <div id="worker-proof-preview" style="margin-top:0.5rem;"></div>
+          <div style="font-size:0.75rem; color:#64748B; margin-top:0.25rem;">Accepted: JPG, PNG, WEBP, PDF (Max: 5MB). File content verified.</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Work Completion Description <span class="required">*</span></label>
+          <textarea name="completion_notes" id="worker-completion-notes" class="form-control" required
+            placeholder="Describe the physical remediation work completed: materials used, scope of repair, personnel involved..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Resolution Remarks</label>
+          <textarea name="remarks" id="worker-completion-remarks" class="form-control"
+            placeholder="Any additional observations, recommendations for future maintenance..."></textarea>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+          <div class="form-group">
+            <label class="form-label">Completion Timestamp</label>
+            <input type="datetime-local" name="completion_timestamp" id="worker-completion-timestamp" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Optional Work Location / GPS</label>
+            <input type="text" name="location_coords" id="worker-completion-location" class="form-control" placeholder="e.g. Near Water Tank, Ward 4">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">Additional Supporting Evidence (Optional)</label>
+          <input type="file" name="additional_evidence" id="worker-additional-evidence" class="form-control" accept="image/png,image/jpg,image/jpeg,image/webp,application/pdf">
+          <div style="font-size:0.75rem; color:#64748B; margin-top:0.25rem;">Optional receipt, secondary angle photo, or measurement sheet.</div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" onclick="closeModal('modal-worker-complete')" class="btn btn-outline btn-sm">Cancel</button>
+        <button type="submit" class="btn btn-primary touch-btn" style="min-height:48px; padding:0.65rem 1.25rem;">📦 Submit Formal Completion Report</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/worker.js') }}"></script>
+{% endblock %}

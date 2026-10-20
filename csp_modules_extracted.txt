@@ -1,0 +1,309 @@
+WEB-BASED GRIEVANCE MANAGEMENT SYSTEMfor Rural Panchayats
+Complete Application Module Breakdown
+Community Service Project (CSP)Project Planning & Development Document
+1. Project Overview
+The Web-Based Grievance Management System for Rural Panchayats is a digital platform designed to provide rural citizens with a simple way to register, track, and receive updates about civic grievances. Panchayat officials can verify, assign, monitor, and resolve grievances through an administrative portal.
+2. Major System Components
+Citizen Portal – grievance submission, tracking, notifications, feedback, and profile management.
+Panchayat/Admin Portal – grievance verification, assignment, status management, and administration.
+Backend/API Layer – authentication, business logic, data processing, and communication between frontend and database.
+Database – structured storage of users, grievances, departments, status history, notifications, feedback, and announcements.
+Analytics & Reporting – dashboards and charts for grievance trends, resolution performance, and category/ward analysis.
+Security & Testing – authentication, authorization, input validation, testing, and deployment readiness.
+Module 1 — User Authentication & Role Management
+Controls access to the system according to user role.
+Key features:
+Citizen registration and login
+Admin/Panchayat official login
+Logout and password management
+Role-based access control
+Session/token management
+Roles: Citizen, Panchayat Official, Admin.
+Pages: Login, Register, Forgot Password, Profile.
+Module 2 — Citizen Dashboard
+Provides citizens with a simple overview of their grievances and important actions.
+Key features:
+Total, pending, in-progress, and resolved grievance counts
+Recent grievances
+Quick Submit Grievance action
+Notifications
+Panchayat announcements
+Status overview
+Module 3 — Grievance Submission
+Core citizen module for registering a new civic complaint.
+Key features:
+Grievance title
+Description
+Category
+Ward/location
+Priority
+Photo/evidence upload
+Submission date and contact details
+Initial categories: Electricity; Waste & Sanitation; Roads & Drainage; Water Supply; Health; Education; Housing; Other Civic Issues.
+Module 4 — Grievance ID & Tracking
+Generates a unique ID and lets citizens monitor the complete grievance lifecycle.
+Key features:
+Unique Grievance ID such as GRV-2026-00125
+Track by grievance ID
+Status timeline
+Submission, review, assignment, progress, resolution, and closure stages
+Module 5 — My Grievances
+Displays all grievances submitted by the logged-in citizen.
+Key features:
+Search grievances
+Filter by category
+Filter by status
+Sort by date
+Open grievance details
+View current status and updates
+Module 6 — Panchayat/Admin Dashboard
+Administrative overview of grievance activity across the Panchayat.
+Key features:
+Total grievances
+Pending complaints
+In-progress complaints
+Resolved complaints
+Recent grievances
+High-priority complaints
+Category, ward, and department summaries
+Module 7 — Grievance Management
+Allows officials to process and resolve submitted grievances.
+Key features:
+View grievance details
+Verify grievance
+Accept/reject
+Assign department
+Assign officer
+Change priority
+Update status
+Add remarks
+Close grievance
+Module 8 — Department & Officer Management
+Maintains departments and officials responsible for resolving grievances.
+Key features:
+Add/edit departments
+Add/edit officers
+Assign officers to grievances
+View officer workload
+Track department-level grievance activity
+Example departments: Electricity, Sanitation, Roads, Water, Health, Education, and General Administration.
+Module 9 — Priority & Categorization System
+Helps officials organize grievances and identify urgent issues.
+Key features:
+Priority levels: High, Medium, Low
+Category classification
+Citizen-selected priority
+Admin verification or modification
+Future option for rule-based prioritization
+Possible factors: number of people affected, urgency, safety impact, issue type, and duration.
+Module 10 — Notifications
+Keeps citizens informed about important grievance events.
+Key features:
+Submission confirmation
+Grievance acceptance
+Assignment notification
+Status-change notification
+Resolution notification
+Requests for additional information
+Initial prototype: in-app notifications. SMS/email can be considered as a future enhancement.
+Module 11 — Feedback & Rating
+Collects citizen feedback after grievance resolution.
+Key features:
+Star rating
+Resolution satisfaction
+Yes/Partially/No response
+Comments
+Feedback linked to resolved grievance
+Module 12 — Analytics & Reports
+Provides visual insights for Panchayat officials.
+Key features:
+Grievances by category
+Grievances by ward
+Monthly grievance trends
+Pending vs resolved
+Average resolution time
+High-priority grievance count
+Department workload/performance
+Citizen satisfaction
+Recommended visualization library: Chart.js.
+Module 13 — Search & Filtering
+Makes large grievance lists easier to manage.
+Key features:
+Search by grievance ID
+Search by title
+Search by category
+Search by ward
+Search by citizen
+Search by department
+Filter by status and category
+Module 14 — Profile Management
+Allows users and officials to manage their account information.
+Key features:
+Citizen: name, mobile, email, village, ward, address, password
+Officer/Admin: name, designation, department, contact, username
+Module 15 — Panchayat Announcements
+Allows officials to publish notices relevant to rural residents.
+Key features:
+Water-supply announcements
+Electricity maintenance notices
+Sanitation drives
+Government-scheme information
+Panchayat meetings
+Emergency notices
+Module 16 — Database
+Stores and organizes all system data.
+Key features:
+Users
+Grievances
+Categories
+Departments
+Officers
+Grievance updates/status history
+Attachments
+Notifications
+Feedback
+Announcements
+Suggested database: MySQL.
+Module 17 — Backend/API
+Connects the frontend to application logic and the database.
+Key features:
+Authentication APIs
+Registration/login
+Grievance creation and retrieval
+Status update APIs
+Assignment APIs
+Notification APIs
+Feedback APIs
+Analytics APIs
+Suggested backend: Python + Flask.
+Module 18 — Security
+Protects user accounts and grievance information.
+Key features:
+Password hashing
+Authentication
+Role-based authorization
+Input validation
+File-upload validation
+SQL-injection protection
+Protected admin routes
+Secure session/token handling
+Module 19 — UI/UX Design
+Creates an accessible, professional, and rural-user-friendly interface.
+Key features:
+Simple navigation
+Mobile-responsive design
+Large and clear actions
+Readable status indicators
+Minimal technical terminology
+Accessible form design
+Optional bilingual/local-language support in a future version
+Module 20 — Testing & Deployment
+Ensures the application works reliably and can be demonstrated or hosted.
+Key features:
+Registration/login testing
+Grievance submission testing
+Tracking testing
+Admin workflow testing
+Database testing
+Security testing
+Responsive/mobile testing
+Integration testing
+Deployment and final demo preparation
+3. Suggested Technology Stack
+Layer
+Technology
+Purpose
+Frontend
+HTML, CSS, JavaScript, Bootstrap/custom CSS
+User interface and responsive pages
+Backend
+Python + Flask
+APIs, authentication, business logic
+Database
+MySQL
+Persistent application data
+Charts
+Chart.js
+Analytics and dashboard visualizations
+4. Suggested Database Tables
+Table
+Purpose
+users
+Login and user information
+grievances
+Main complaint records
+categories
+Grievance categories
+departments
+Panchayat departments
+officers
+Officials responsible for grievances
+grievance_updates
+Status history and remarks
+attachments
+Uploaded evidence
+notifications
+Citizen/admin notifications
+feedback
+Citizen feedback and ratings
+announcements
+Panchayat notices
+5. Initial API Plan
+POST /api/register — Register user
+POST /api/login — Authenticate user
+POST /api/grievances — Create grievance
+GET /api/grievances — List grievances according to role
+GET /api/grievances/:id — View grievance details
+PUT /api/grievances/:id/status — Update grievance status
+PUT /api/grievances/:id/assign — Assign department/officer
+GET /api/notifications — Retrieve notifications
+POST /api/feedback — Submit feedback
+GET /api/analytics — Retrieve dashboard statistics
+6. End-to-End Grievance Workflow
+Citizen submits grievance → System generates Grievance ID → Panchayat verifies → Department/officer is assigned → Officer works on issue → Status is updated → Citizen receives notification → Grievance is resolved → Citizen provides feedback → Grievance is closed.
+7. Recommended Development Phases
+Phase 1 — Foundation: UI/UX design, project structure, database schema, authentication
+Phase 2 — Core Citizen System: Citizen dashboard, grievance submission, My Grievances, tracking
+Phase 3 — Panchayat System: Admin dashboard, grievance management, assignment, status management
+Phase 4 — Additional Features: Notifications, feedback, announcements, profiles
+Phase 5 — Intelligence & Presentation: Analytics, reports, security hardening, testing, deployment
+8. Minimum Viable Prototype (MVP)
+The first working prototype should focus on these eight modules:
+Authentication
+Citizen Dashboard
+Grievance Submission
+My Grievances
+Grievance Tracking
+Admin Dashboard
+Grievance Management
+Database Integration
+After the MVP works end-to-end, add notifications, feedback, analytics, announcements, security enhancements, and deployment.
+9. Suggested Team Division for 3 Members
+Member
+Primary Responsibility
+Modules
+Member 1 — Frontend/UI
+Citizen-facing interface and responsive design
+Authentication UI, Citizen Dashboard, Submission, My Grievances, Tracking, Profile
+Member 2 — Backend/Admin
+Flask backend, APIs, admin workflows
+Authentication logic, Admin Dashboard, Grievance Management, Department/Officer Management
+Member 3 — Database/Analytics
+MySQL, reporting, testing support
+Database, Notifications, Feedback, Analytics, Reports, Testing
+Shared
+Integration and final project work
+Bug fixing, documentation, PPT, deployment, final presentation
+10. Final Development Checklist
+Design all major screens before coding.
+Create and test the MySQL schema.
+Implement authentication and role-based access.
+Build the citizen grievance workflow first.
+Build the admin workflow second.
+Connect frontend, Flask APIs, and MySQL.
+Add notifications, feedback, and analytics.
+Test every major user journey.
+Make the interface responsive for mobile devices.
+Prepare sample grievance data for the final demonstration.
+Deploy the application or prepare a reliable local demo.
+Capture screenshots for CSP documentation and PPT.

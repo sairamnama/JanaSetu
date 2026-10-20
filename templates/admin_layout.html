@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Panchayat Admin Console | GramSeva{% endblock %}
+
+{% block navbar %}
+<!-- ==========================================
+     ADMIN / OFFICIALS NAVIGATION LAYOUT
+     Permitted Navigation: Home, Solve Grievances, Workers
+     ========================================== -->
+<nav class="main-navbar admin-navbar" style="border-bottom: 3px solid #1E40AF; background: #FFFFFF;">
+  <div class="navbar-container">
+    <a href="{{ url_for('admin_portal') }}" class="brand-wrapper">
+      <img src="{{ url_for('static', filename='img/crest.svg') }}" alt="GramSeva Seal" class="brand-crest">
+      <div class="brand-text-col">
+        <div class="brand-title">
+          GramSeva <span class="badge" style="background:#1E40AF; color:#FFFFFF; font-size:0.65rem; padding:2px 7px; border-radius:4px; vertical-align:middle; letter-spacing:0.5px;">PANCHAYAT ADMIN</span>
+          <span class="telugu-sub">పంచాయతీ పాలన</span>
+        </div>
+        <div class="brand-subtext">Gram Panchayat Secretariat • Executive Administration</div>
+      </div>
+    </a>
+
+    <ul class="nav-links">
+      <li>
+        <a href="{{ url_for('admin_portal') }}" class="nav-link {% if request.endpoint in ('admin_portal', 'pages.admin_portal') %}active{% endif %}">
+          🏛️ Home
+        </a>
+      </li>
+      <li>
+        <a href="{{ url_for('admin_solve') }}" class="nav-link {% if request.endpoint in ('admin_solve', 'pages.admin_solve') %}active{% endif %}">
+          ⚙️ Solve Grievances
+        </a>
+      </li>
+      <li>
+        <a href="{{ url_for('admin_workers') }}" class="nav-link {% if request.endpoint in ('admin_workers', 'pages.admin_workers') %}active{% endif %}">
+          👷 Workers
+        </a>
+      </li>
+    </ul>
+
+    <div class="nav-actions" id="navbar-user-area">
+      <!-- Injected via checkAuth -->
+    </div>
+  </div>
+</nav>
+{% endblock %}
+
+{% block footer_quick_links %}
+<ul style="list-style:none; font-size:0.85rem; color:#CBD5E1; display:flex; flex-direction:column; gap:0.4rem;">
+  <li><a href="{{ url_for('admin_portal') }}" style="color:#CBD5E1;">Administrative Dashboard</a></li>
+  <li><a href="{{ url_for('admin_solve') }}" style="color:#CBD5E1;">Grievance Dispatch & Verification</a></li>
+  <li><a href="{{ url_for('admin_workers') }}" style="color:#CBD5E1;">Field Staff & Technicians Roster</a></li>
+  <li><a href="{{ url_for('analytics_page') }}" style="color:#FDE68A;">Civic Performance Analytics</a></li>
+</ul>
+{% endblock %}

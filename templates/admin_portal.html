@@ -1,0 +1,645 @@
+{% extends "admin_layout.html" %}
+
+{% block title %}Admin Home | GramSeva Panchayat Console{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <!-- Header -->
+  <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:1.75rem; flex-wrap:wrap; gap:1rem;">
+    <div>
+      <div style="display:inline-flex; align-items:center; gap:0.4rem; color:var(--panchayat-gold-dark); font-weight:700; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.04em;">
+        🏛️ Gram Panchayat Administrative Console
+      </div>
+      <h1 style="font-size:1.85rem; color:var(--civic-dark); margin-top:0.25rem;">
+        Panchayat Governance & Grievance Oversight
+      </h1>
+      <p style="font-size:0.9rem; color:var(--text-muted);">
+        Oversee village complaints, assign field departments, monitor remediation SLAs, and publish civic notices.
+      </p>
+    </div>
+
+    <div style="display:flex; gap:0.75rem; align-items:center; flex-wrap:wrap;">
+      <a href="{{ url_for('admin_solve') }}" class="btn btn-primary btn-sm">
+        ⚙️ Solve Grievances
+      </a>
+      <a href="{{ url_for('admin_workers') }}" class="btn btn-outline-primary btn-sm">
+        👷 Workers
+      </a>
+      <button onclick="exportGrievancesCSV()" class="btn btn-outline btn-sm">
+        📊 Export CSV
+      </button>
+    </div>
+  </div>
+
+  <!-- Operational KPI Stats -->
+  <div class="stats-grid">
+    <div class="stat-card stat-blue">
+      <div class="stat-icon-wrap">📋</div>
+      <div class="stat-data">
+        <div class="stat-value" id="admin-stat-total">0</div>
+        <div class="stat-label">Total Grievances</div>
+      </div>
+    </div>
+    <div class="stat-card stat-amber">
+      <div class="stat-icon-wrap">🔍</div>
+      <div class="stat-data">
+        <div class="stat-value" id="admin-stat-pending">0</div>
+        <div class="stat-label">Pending Verification</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon-wrap">🛠️</div>
+      <div class="stat-data">
+        <div class="stat-value" id="admin-stat-progress">0</div>
+        <div class="stat-label">In Remediation</div>
+      </div>
+    </div>
+    <div class="stat-card stat-green">
+      <div class="stat-icon-wrap">✅</div>
+      <div class="stat-data">
+        <div class="stat-value" id="admin-stat-resolved">0</div>
+        <div class="stat-label">Resolved & Closed</div>
+      </div>
+    </div>
+    <div class="stat-card" style="border-left: 4px solid var(--panchayat-gold); cursor:pointer;" onclick="scrollToAwaitingVerification()" title="Filter Awaiting Verification">
+      <div class="stat-icon-wrap" style="background:#FEF3C7; color:#D97706;">🔎</div>
+      <div class="stat-data">
+        <div class="stat-value" id="admin-stat-awaiting-verification">0</div>
+        <div class="stat-label">Awaiting Verification</div>
+      </div>
+    </div>
+    <div class="stat-card stat-red">
+      <div class="stat-icon-wrap">🚨</div>
+      <div class="stat-data">
+        <div class="stat-value" id="admin-stat-alerts">0</div>
+        <div class="stat-label">High Priority Alerts</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 10: Dedicated Officer Awaiting Verification Section -->
+  <div class="card" id="officer-awaiting-verification-section" style="margin-bottom:2rem; border-top: 4px solid var(--panchayat-gold); background: #FAFDFB;">
+    <div class="card-header" style="flex-wrap:wrap; gap:1rem; border-bottom:1.5px solid #E2E8F0; padding-bottom:0.75rem;">
+      <div>
+        <div style="font-size:0.8rem; font-weight:700; color:#D97706; text-transform:uppercase; letter-spacing:0.04em;">
+          🔍 DOUBLE VERIFICATION AUDIT STAGE
+        </div>
+        <h2 class="card-title" style="font-size:1.4rem; color:#0A3622; margin-top:0.2rem;">
+          Awaiting Verification
+        </h2>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-top:0.2rem;">
+          Field workers have submitted physical work completion proofs. Review original complaint, worker proof, and worker remarks before approving for citizen verification or requesting rework.
+        </p>
+      </div>
+      <div>
+        <span id="badge-awaiting-count" class="badge" style="background:#FEF3C7; color:#92400E; font-size:0.85rem; padding:4px 10px; border-radius:12px; font-weight:700;">
+          0 Grievances
+        </span>
+      </div>
+    </div>
+
+    <!-- Grievances Awaiting Verification List -->
+    <div id="awaiting-verification-container" style="padding:1.25rem 0;">
+      <div style="text-align:center; padding:2rem; color:#64748B;">
+        Loading grievances awaiting officer verification...
+      </div>
+    </div>
+  </div>
+
+  <!-- Grievance Management Section -->
+  <div class="card" style="margin-bottom:2rem;">
+    <div class="card-header" style="flex-wrap:wrap; gap:1rem;">
+      <div>
+        <h2 class="card-title">⚙️ Grievance Verification & Dispatch Board</h2>
+        <p style="font-size:0.82rem; color:var(--text-muted); margin-top:0.2rem;">
+          Assign responsible departments, allocate field officers, and log official progress remarks.
+        </p>
+      </div>
+
+      <!-- Multi-Filter Toolbar -->
+      <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+        <input type="text" id="admin-search-input" class="form-control" style="width:180px;" placeholder="Search ID / Citizen..." oninput="renderAdminGrievancesTable()">
+
+        <select id="admin-filter-status" class="form-control" style="width:160px;" onchange="renderAdminGrievancesTable()">
+          <option value="ALL">All Statuses</option>
+          <option value="SUBMITTED">Submitted</option>
+          <option value="UNDER_REVIEW">Under Review</option>
+          <option value="ACCEPTED">Accepted</option>
+          <option value="ASSIGNED">Assigned</option>
+          <option value="IN_PROGRESS">In Progress</option>
+          <option value="WORK_COMPLETED">Work Completed</option>
+          <option value="OFFICER_VERIFICATION">Officer Verification</option>
+          <option value="CITIZEN_VERIFICATION">Citizen Verification</option>
+          <option value="VERIFIED">Verified</option>
+          <option value="RESOLVED">Resolved</option>
+          <option value="CLOSED">Closed</option>
+          <option value="REWORK_REQUIRED">Rework Required</option>
+          <option value="REOPENED">Reopened</option>
+          <option value="ESCALATED">Escalated</option>
+          <option value="REJECTED">Rejected</option>
+        </select>
+
+        <select id="admin-filter-category" class="form-control" style="width:140px;" onchange="renderAdminGrievancesTable()">
+          <option value="ALL">All Categories</option>
+        </select>
+
+        <select id="admin-filter-priority" class="form-control" style="width:120px;" onchange="renderAdminGrievancesTable()">
+          <option value="ALL">All Priority</option>
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
+        </select>
+
+        <select id="admin-filter-ward" class="form-control" style="width:110px;" onchange="renderAdminGrievancesTable()">
+          <option value="ALL">All Wards</option>
+          <option value="1">Ward 1</option>
+          <option value="2">Ward 2</option>
+          <option value="3">Ward 3</option>
+          <option value="4">Ward 4</option>
+          <option value="5">Ward 5</option>
+          <option value="7">Ward 7</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Grievances Data Table -->
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Tracking ID</th>
+            <th>Subject / Landmark</th>
+            <th>Citizen Details</th>
+            <th>Assigned To</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="admin-grievances-tbody">
+          <tr>
+            <td colspan="8" style="text-align:center; padding:2rem;">Loading administrative grievance queue...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Lower Split Section: Notice Publisher & Officer Roster -->
+  <div style="display:grid; grid-template-columns: 1fr 1.2fr; gap:2rem;">
+
+    <!-- Notice Board Manager -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title">📢 Publish Panchayat Notice</h2>
+      </div>
+
+      <form onsubmit="handleAnnouncementSubmit(event)">
+        <div class="form-group">
+          <label class="form-label">Notice Title <span class="required">*</span></label>
+          <input type="text" name="title" class="form-control" required placeholder="e.g. Canal Water Supply Schedule">
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label">Category</label>
+            <select name="category" class="form-control">
+              <option value="Water Supply">Water Supply</option>
+              <option value="Electricity">Electricity</option>
+              <option value="Sanitation">Sanitation</option>
+              <option value="Health">Health</option>
+              <option value="Gram Sabha">Gram Sabha</option>
+              <option value="General Admin">General Admin</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="display:flex; align-items:center; margin-top:1.5rem;">
+            <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; font-weight:600; color:#DC2626; cursor:pointer;">
+              <input type="checkbox" name="is_emergency" value="1"> 🚨 Urgent / Emergency Notice
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Announcement Content <span class="required">*</span></label>
+          <textarea name="content" class="form-control" required placeholder="Detail the notice timings, locations, or precautions..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-sm" style="width:100%;">
+          Broadcast Announcement
+        </button>
+      </form>
+
+      <div style="margin-top:1.5rem;">
+        <h4 style="font-size:0.9rem; color:#475569; margin-bottom:0.75rem;">Active Broadcast Notices</h4>
+        <div id="admin-announcements-list">Loading notices...</div>
+      </div>
+    </div>
+
+    <!-- Officer Workload Roster -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">👷 Panchayat Field Officers & Workload</h2>
+          <p style="font-size:0.82rem; color:var(--text-muted); margin-top:0.2rem;">
+            Roster of departmental officers and active ticket counts.
+          </p>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Officer Name</th>
+              <th>Department</th>
+              <th>Designation</th>
+              <th>Contact</th>
+              <th>Workload</th>
+            </tr>
+          </thead>
+          <tbody id="officer-roster-tbody">
+            <tr><td colspan="5" style="text-align:center; padding:1.5rem;">Loading officers...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ==========================================
+     MODAL: ASSIGN DEPARTMENT & OFFICER
+     ========================================== -->
+<div id="modal-assign-grievance" class="modal-backdrop">
+  <div class="modal-box" style="max-width:520px;">
+    <div class="modal-header">
+      <div>
+        <div style="font-size:0.78rem; color:#64748B; font-weight:600;">ASSIGN CIVIC COMPLAINT</div>
+        <h3 id="assign-modal-tracking-id" style="font-size:1.2rem; color:var(--civic-dark); font-family:monospace;"></h3>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal('modal-assign-grievance')">&times;</button>
+    </div>
+
+    <form onsubmit="handleAssignSubmit(event)">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Responsible Department <span class="required">*</span></label>
+          <select id="assign-department-select" class="form-control" required onchange="handleDepartmentSelectChange()">
+            <!-- Populated via JS -->
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Designated Field Officer</label>
+          <select id="assign-officer-select" class="form-control">
+            <option value="">-- First Select Department --</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Assigned Field Worker</label>
+          <select id="assign-worker-select" class="form-control">
+            <option value="">-- First Select Department --</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">Administrative Assignment Instructions / Remarks</label>
+          <textarea id="assign-remarks" class="form-control" placeholder="e.g. Inspect site immediately and submit photo verification within 24 hours."></textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" onclick="closeModal('modal-assign-grievance')" class="btn btn-outline btn-sm">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-sm">Confirm Assignment</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ==========================================
+     MODAL: STATUS UPDATE & REMARKS
+     ========================================== -->
+<div id="modal-status-update" class="modal-backdrop">
+  <div class="modal-box" style="max-width:520px;">
+    <div class="modal-header">
+      <div>
+        <div style="font-size:0.78rem; color:#64748B; font-weight:600;">OFFICIAL STATUS UPDATE</div>
+        <h3 id="status-modal-tracking-id" style="font-size:1.2rem; color:var(--civic-dark); font-family:monospace;"></h3>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal('modal-status-update')">&times;</button>
+    </div>
+
+    <form onsubmit="handleStatusUpdateSubmit(event)">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">New Grievance Status <span class="required">*</span></label>
+          <select id="status-update-select" class="form-control" required onchange="handleStatusSelectChange()">
+            <option value="UNDER_REVIEW">UNDER_REVIEW (Verified by Secretary)</option>
+            <option value="ACCEPTED">ACCEPTED (Accepted for Redressal)</option>
+            <option value="ASSIGNED">ASSIGNED (Routed to Department)</option>
+            <option value="IN_PROGRESS">IN_PROGRESS (Remediation Underway)</option>
+            <option value="WORK_COMPLETED">WORK_COMPLETED (Field Work Done)</option>
+            <option value="OFFICER_VERIFICATION">OFFICER_VERIFICATION (Officer Review)</option>
+            <option value="CITIZEN_VERIFICATION">CITIZEN_VERIFICATION (Citizen Check)</option>
+            <option value="VERIFIED">VERIFIED (Citizen Confirmed)</option>
+            <option value="RESOLVED">RESOLVED (Grievance Remediated)</option>
+            <option value="CLOSED">CLOSED (Final Closure)</option>
+            <option value="REWORK_REQUIRED">REWORK_REQUIRED (Send Back to Worker)</option>
+            <option value="REOPENED">REOPENED (Issue Persists)</option>
+            <option value="ESCALATED">ESCALATED (Elevated to Higher Authority)</option>
+            <option value="REJECTED">REJECTED (Invalid / Duplicate / Out of Jurisdiction)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Official Remarks <span class="required">*</span></label>
+          <textarea id="status-remarks" class="form-control" required placeholder="Mandatory remarks explaining the status change (visible to citizen)..."></textarea>
+        </div>
+
+        <div class="form-group" id="status-resnotes-group" style="display:none; margin-bottom:0;">
+          <label class="form-label" style="color:#15803D;">Resolution Summary & Action Taken</label>
+          <textarea id="status-resolution-notes" class="form-control" placeholder="Describe the physical work completed (e.g. pipe replaced, pothole filled, fogging conducted)..."></textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" onclick="closeModal('modal-status-update')" class="btn btn-outline btn-sm">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-sm">Update Status & Notify Citizen</button>
+      </div>
+    </form>
+  </div>
+<!-- ==========================================
+     MODAL: OFFICER RESOLUTION VERIFICATION
+     ========================================== -->
+<div id="modal-officer-verify" class="modal-backdrop">
+  <div class="modal-box" style="max-width:760px; max-height:90vh; display:flex; flex-direction:column;">
+    <div class="modal-header">
+      <div>
+        <div style="font-size:0.78rem; color:#64748B; font-weight:700; text-transform:uppercase;">Panchayat Officer Review</div>
+        <h3 style="font-size:1.2rem; color:var(--civic-dark); margin:0;">
+          Verify Resolution Proof: <span id="officer-verify-tracking-id" style="font-family:monospace; color:#1E40AF;"></span>
+        </h3>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal('modal-officer-verify')">&times;</button>
+    </div>
+
+    <div class="modal-body" style="overflow-y:auto; padding:1.25rem;">
+      <div style="background:#EFF6FF; border:1px solid #BFDBFE; border-radius:8px; padding:0.75rem 1rem; margin-bottom:1rem; font-size:0.82rem; color:#1E40AF; line-height:1.5;">
+        ℹ️ <strong>Officer Role:</strong> Independently review the worker's evidence against the original complaint. Approving here authorizes <strong>Citizen Verification</strong> — it does <strong>NOT</strong> mark the grievance as resolved.
+      </div>
+
+      <!-- Comparative Side-by-Side Review Grid -->
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.25rem;">
+        
+        <!-- Left: Original Citizen Complaint -->
+        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:1rem;">
+          <h4 style="font-size:0.9rem; color:#334155; margin-bottom:0.75rem; border-bottom:1px solid #E2E8F0; padding-bottom:0.4rem; font-weight:700;">
+            📋 Original Complaint
+          </h4>
+          <div style="font-size:0.82rem; margin-bottom:0.4rem;">
+            <span style="color:#64748B;">Category:</span>
+            <strong id="ov-category" style="color:var(--civic-primary);"></strong>
+          </div>
+          <div style="font-size:0.82rem; margin-bottom:0.4rem;">
+            <span style="color:#64748B;">Title:</span>
+            <div id="ov-title" style="font-weight:700; color:#1E293B;"></div>
+          </div>
+          <div style="font-size:0.82rem; margin-bottom:0.5rem;">
+            <span style="color:#64748B;">Location:</span>
+            <div id="ov-location" style="font-weight:600; color:#334155;"></div>
+          </div>
+          <div style="font-size:0.82rem; margin-bottom:0.75rem;">
+            <span style="color:#64748B;">Description:</span>
+            <div id="ov-desc" style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:6px; padding:0.5rem; margin-top:0.25rem; color:#475569; font-style:italic;"></div>
+          </div>
+          <div>
+            <div style="font-size:0.8rem; font-weight:600; color:#64748B; margin-bottom:0.3rem;">Citizen Attached Evidence:</div>
+            <div id="ov-citizen-evidence"></div>
+          </div>
+        </div>
+
+        <!-- Right: Worker Remediation Completion Report -->
+        <div style="background:#F0FDF4; border:1px solid #BBF7D0; border-radius:8px; padding:1rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #BBF7D0; padding-bottom:0.4rem; margin-bottom:0.75rem;">
+            <h4 style="font-size:0.9rem; color:#166534; margin:0; font-weight:700;">
+              🛠️ Worker Completion
+            </h4>
+            <span id="ov-proof-version" style="background:#DCFCE7; color:#15803D; font-size:0.72rem; font-weight:700; padding:2px 6px; border-radius:4px;"></span>
+          </div>
+          <div style="font-size:0.82rem; margin-bottom:0.4rem;">
+            <span style="color:#64748B;">Remediated By:</span>
+            <strong id="ov-worker" style="color:#15803D;"></strong>
+          </div>
+          <div style="font-size:0.82rem; margin-bottom:0.4rem;">
+            <span style="color:#64748B;">Completion Time:</span>
+            <span id="ov-timestamp" style="font-weight:600; color:#334155;"></span>
+          </div>
+          <div style="font-size:0.82rem; margin-bottom:0.5rem;">
+            <span style="color:#64748B;">Completion Description:</span>
+            <div id="ov-completion-desc" style="background:#FFFFFF; border:1px solid #BBF7D0; border-radius:6px; padding:0.5rem; margin-top:0.25rem; color:#14532D; font-weight:500;"></div>
+          </div>
+          <div style="font-size:0.82rem; margin-bottom:0.75rem;">
+            <span style="color:#64748B;">Resolution Remarks:</span>
+            <div id="ov-remarks" style="background:#FFFFFF; border:1px solid #BBF7D0; border-radius:6px; padding:0.5rem; margin-top:0.25rem; color:#475569;"></div>
+          </div>
+          <div>
+            <div style="font-size:0.8rem; font-weight:600; color:#166534; margin-bottom:0.3rem;">Uploaded Resolution Proof:</div>
+            <div id="ov-worker-proof"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Officer Assessment Input -->
+      <div class="form-group" style="margin-bottom:0;">
+        <label class="form-label" style="font-weight:700;">
+          Officer Verification Remarks <span style="color:#DC2626;">* (Mandatory for Rework Request)</span>
+        </label>
+        <textarea id="officer-verify-remarks" class="form-control" rows="3"
+          placeholder="Document your verification findings. If requesting rework, detail exactly what must be fixed..."></textarea>
+      </div>
+    </div>
+
+    <div class="modal-footer" style="display:flex; justify-content:space-between; align-items:center;">
+      <button type="button" onclick="closeModal('modal-officer-verify')" class="btn btn-outline btn-sm">Cancel</button>
+      <div style="display:flex; gap:0.5rem;">
+        <button type="button" onclick="submitOfficerVerification('REWORK_REQUESTED')" class="btn btn-warning btn-sm" style="background:#F59E0B; color:#fff; border-color:#D97706;">
+          🔁 Request Rework
+        </button>
+        <button type="button" onclick="submitOfficerVerification('APPROVED')" class="btn btn-success btn-sm" style="background:#16A34A; color:#fff; border-color:#15803D;">
+          ✅ Approve for Citizen Verification
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================
+     MODAL: PHONE / IVR CITIZEN VERIFICATION (STEP 9)
+     Clearly labeled: Development / Mock Verification
+     ========================================== -->
+<div id="modal-phone-verification" class="modal-backdrop">
+  <div class="modal-box" style="max-width:620px;">
+    <div class="modal-header">
+      <div>
+        <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.25rem;">
+          <span style="font-size:0.75rem; color:#64748B; font-weight:700; text-transform:uppercase;">Phone Verification Service</span>
+          <span class="badge" style="background:#FEF3C7; color:#92400E; border:1px solid #F59E0B; font-weight:700; padding:2px 8px; border-radius:12px; font-size:0.72rem;">
+            Development / Mock Verification
+          </span>
+        </div>
+        <h3 style="font-size:1.15rem; color:var(--civic-dark); margin:0;">
+          Simulate Outbound Call: <span id="pv-modal-tracking-id" style="font-family:monospace; color:#0284C7;"></span>
+        </h3>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal('modal-phone-verification')">&times;</button>
+    </div>
+
+    <form onsubmit="handlePhoneVerificationSubmit(event)">
+      <div class="modal-body" style="padding:1.25rem;">
+        <!-- Mock Mode Notice -->
+        <div style="background:#F0FDF4; border:1px solid #BBF7D0; border-radius:8px; padding:0.75rem 1rem; margin-bottom:1rem; font-size:0.8rem; color:#166534; line-height:1.45;">
+          ℹ️ <strong>Development / Mock Verification:</strong> This interface simulates outbound automated telephony without external carrier charges. No actual phone call will be placed.
+        </div>
+
+        <!-- Citizen and Masked Phone Info -->
+        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:0.75rem 1rem; margin-bottom:1rem; display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; font-size:0.82rem;">
+          <div>
+            <span style="color:#64748B;">Complainant:</span><br>
+            <strong id="pv-modal-citizen-name" style="color:#1E293B;"></strong>
+          </div>
+          <div>
+            <span style="color:#64748B;">Phone Reference (Masked):</span><br>
+            <strong id="pv-modal-phone-ref" style="font-family:monospace; color:#0369A1;"></strong>
+          </div>
+        </div>
+
+        <!-- Simulation Step Progression -->
+        <div style="background:#F1F5F9; border-radius:8px; padding:0.6rem 0.75rem; margin-bottom:1rem;">
+          <div style="font-size:0.72rem; font-weight:700; color:#64748B; text-transform:uppercase; margin-bottom:0.35rem;">Simulation Sequence</div>
+          <div style="display:flex; align-items:center; gap:0.5rem; font-size:0.78rem;">
+            <div id="pv-step-1" style="background:#DBEAFE; color:#1D4ED8; padding:3px 8px; border-radius:4px; font-weight:600;">1. Call Initiated</div>
+            <span style="color:#94A3B8;">➔</span>
+            <div id="pv-step-2" style="background:#DBEAFE; color:#1D4ED8; padding:3px 8px; border-radius:4px; font-weight:600;">2. Call Outcome</div>
+            <span style="color:#94A3B8;">➔</span>
+            <div id="pv-step-3" style="background:#DBEAFE; color:#1D4ED8; padding:3px 8px; border-radius:4px; font-weight:600;">3. Citizen Response</div>
+          </div>
+        </div>
+
+        <!-- Call Outcome Select -->
+        <div class="form-group">
+          <label class="form-label" style="font-weight:700;">Simulated Call Outcome <span class="required">*</span></label>
+          <select id="pv-call-outcome" class="form-control" required onchange="handleCallOutcomeChange()">
+            <option value="ANSWERED">ANSWERED — Citizen answered the automated call</option>
+            <option value="NO_ANSWER">NO_ANSWER — Phone rang but was not answered</option>
+            <option value="BUSY">BUSY — Line busy / call rejected</option>
+            <option value="INVALID_NUMBER">INVALID_NUMBER — Phone number unreachable / invalid</option>
+            <option value="FAILED">FAILED — Telecom network or connection error</option>
+          </select>
+          <small id="pv-outcome-help" style="color:#64748B; font-size:0.75rem; display:block; margin-top:0.3rem;">
+            Invariant: Non-answered calls (NO_ANSWER, BUSY) are never interpreted as NO and keep grievance in CITIZEN_VERIFICATION.
+          </small>
+        </div>
+
+        <!-- Citizen Response Select (Conditional on ANSWERED) -->
+        <div class="form-group" id="pv-response-group">
+          <label class="form-label" style="font-weight:700;">Citizen Response (IVR Keypad Input) <span class="required">*</span></label>
+          <select id="pv-citizen-response" class="form-control">
+            <option value="YES">YES — Citizen pressed 1 (Problem completely solved)</option>
+            <option value="PARTIALLY">PARTIALLY — Citizen pressed 2 (Problem partially solved)</option>
+            <option value="NO">NO — Citizen pressed 3 (Problem still exists)</option>
+            <option value="UNABLE_TO_VERIFY">UNABLE_TO_VERIFY — Citizen pressed 4 (Cannot verify at this time)</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">Simulation Remarks</label>
+          <textarea id="pv-remarks" class="form-control" rows="2" placeholder="Optional notes for simulation log..."></textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="display:flex; justify-content:space-between; align-items:center;">
+        <button type="button" onclick="closeModal('modal-phone-verification')" class="btn btn-outline btn-sm">Cancel</button>
+        <button type="submit" id="pv-submit-btn" class="btn btn-primary btn-sm" style="background:#0284C7; border-color:#0284C7;">
+          📞 Run Mock Call Simulation
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ==========================================
+     STEP 10: MODAL OFFICER VERIFICATION
+     ========================================== -->
+<div id="modal-officer-verify" class="modal-backdrop">
+  <div class="modal-box" style="max-width:680px;">
+    <div class="modal-header" style="background:#FFFBEB; border-bottom:1px solid #FDE68A;">
+      <div>
+        <div style="font-size:0.75rem; color:#92400E; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;">
+          🔍 OFFICER RESOLUTION PROOF VERIFICATION
+        </div>
+        <h3 id="ov-modal-tracking-id" style="font-size:1.2rem; color:#78350F; font-family:monospace; margin-top:0.2rem;"></h3>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal('modal-officer-verify')">&times;</button>
+    </div>
+
+    <div class="modal-body" style="padding:1.5rem;">
+      <input type="hidden" id="ov-modal-grievance-id" />
+
+      <!-- Section 1: Original Complaint -->
+      <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:1rem; margin-bottom:1rem;">
+        <div style="font-size:0.75rem; font-weight:800; color:#1E40AF; text-transform:uppercase; margin-bottom:0.4rem; display:flex; align-items:center; gap:0.35rem;">
+          <span>📋</span> Original Complaint
+        </div>
+        <div id="ov-original-title" style="font-weight:700; color:#0F172A; font-size:1rem; margin-bottom:0.3rem;"></div>
+        <div id="ov-original-desc" style="font-size:0.88rem; color:#334155; line-height:1.45; margin-bottom:0.5rem;"></div>
+        <div id="ov-original-meta" style="font-size:0.8rem; color:#64748B;"></div>
+        <div id="ov-original-evidence" style="margin-top:0.6rem; display:none;"></div>
+      </div>
+
+      <!-- Section 2: Worker Proof & Remarks -->
+      <div style="background:#F0FDF4; border:1px solid #BBF7D0; border-radius:8px; padding:1rem; margin-bottom:1rem;">
+        <div style="font-size:0.75rem; font-weight:800; color:#15803D; text-transform:uppercase; margin-bottom:0.4rem; display:flex; align-items:center; gap:0.35rem;">
+          <span>🛠️</span> Worker Proof & Remarks
+        </div>
+        <div id="ov-worker-notes" style="font-size:0.9rem; color:#14532D; font-style:italic; background:#FFFFFF; padding:0.65rem 0.85rem; border-radius:6px; border:1px solid #DCFCE7; margin-bottom:0.5rem;"></div>
+        <div id="ov-worker-remarks-block" style="font-size:0.85rem; color:#166534; margin-bottom:0.4rem;"></div>
+        <div id="ov-worker-meta" style="font-size:0.8rem; color:#475569; margin-bottom:0.6rem;"></div>
+        <div id="ov-worker-proof-files"></div>
+      </div>
+
+      <!-- Section 3: Verification Controls -->
+      <div class="form-group" style="margin-bottom:1.25rem;">
+        <label for="ov-modal-remarks" class="form-label" style="font-weight:700; color:#0F172A;">
+          Officer Verification Remarks <span class="required">*</span>
+        </label>
+        <textarea id="ov-modal-remarks" class="form-control" rows="2" placeholder="Document audit observations or specific rework required (mandatory)..."></textarea>
+        <small style="color:#64748B; font-size:0.75rem; margin-top:0.25rem; display:block;">
+          Remarks are recorded in the permanent public audit history and shared with the worker/citizen.
+        </small>
+      </div>
+
+      <!-- Verification Action Buttons -->
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+        <button type="button" onclick="submitOfficerModalVerification('APPROVED')" class="btn touch-btn" style="background:#16A34A; color:#FFFFFF; border:none; text-align:center; justify-content:center;">
+          ✓ Approve for Citizen Verification
+        </button>
+        <button type="button" onclick="submitOfficerModalVerification('REWORK_REQUESTED')" class="btn touch-btn" style="background:#DC2626; color:#FFFFFF; border:none; text-align:center; justify-content:center;">
+          🔁 Request Rework
+        </button>
+      </div>
+    </div>
+
+    <div class="modal-footer" style="background:#F8FAFC;">
+      <button type="button" onclick="closeModal('modal-officer-verify')" class="btn btn-outline btn-sm">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+{% endblock %}

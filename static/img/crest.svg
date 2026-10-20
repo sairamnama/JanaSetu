@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <defs>
+    <linearGradient id="civicGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F5132" />
+      <stop offset="100%" stop-color="#198754" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+  </defs>
+  <!-- Outer Gold Ring -->
+  <circle cx="50" cy="50" r="46" fill="none" stroke="url(#goldGrad)" stroke-width="3.5" stroke-dasharray="3 1.5"/>
+  <!-- Inner Green Disc -->
+  <circle cx="50" cy="50" r="40" fill="url(#civicGrad)" />
+  <!-- Ashoka Chakra 24 rays motif abstract -->
+  <circle cx="50" cy="50" r="14" fill="#FFFFFF" opacity="0.15" />
+  <!-- Civic Banyan Tree & Panchayat Symbol -->
+  <path d="M50 20 C42 20 32 26 32 36 C32 43 37 48 43 51 C42 58 41 68 36 74 C43 73 47 67 48 60 L52 60 C53 67 57 73 64 74 C59 68 58 58 57 51 C63 48 68 43 68 36 C68 26 58 20 50 20 Z" fill="#FFFFFF"/>
+  <path d="M45 42 Q50 35 55 42 Q50 38 45 42 Z" fill="#F59E0B"/>
+  <circle cx="50" cy="32" r="3.5" fill="#F59E0B"/>
+  <!-- Civic Wheat Sheaves -->
+  <path d="M26 62 Q30 72 38 78" stroke="#F59E0B" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M74 62 Q70 72 62 78" stroke="#F59E0B" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+</svg>
