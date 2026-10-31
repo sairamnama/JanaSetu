@@ -1,98 +1,97 @@
 {% extends "citizen_layout.html" %}
 
-{% block title %}Submit Grievance | Rangapuram Panchayat{% endblock %}
+{% block title %}{{ t('nav_citizen_submit', 'Submit Grievance') }} | {{ t('rangapuram_panchayat', 'Rangapuram Panchayat') }}{% endblock %}
 
 {% block content %}
 <div class="container" style="max-width: 760px; padding: 2rem 1.25rem;">
 
   <!-- Page Header -->
   <div style="margin-bottom: 1.75rem;">
-    <div style="display: inline-flex; align-items: center; gap: 0.4rem; color: var(--civic-primary); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em;">
-      📝 Rangapuram Gram Panchayat
+    <div style="display: inline-flex; align-items: center; gap: 0.4rem; color: var(--civic-primary); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em;" data-i18n="rangapuram_panchayat">
+      {{ t('rangapuram_panchayat', 'Rangapuram Gram Panchayat') }}
     </div>
-    <h1 style="font-size: 1.85rem; color: var(--civic-dark); margin-top: 0.25rem; font-weight: 800;">
-      Submit Grievance
+    <h1 style="font-size: 1.85rem; color: var(--civic-dark); margin-top: 0.25rem; font-weight: 800;" data-i18n="submit_title">
+      {{ t('submit_title', 'Submit Grievance') }}
     </h1>
-    <p style="font-size: 0.95rem; color: var(--text-muted); margin-top: 0.25rem;">
-      Fill in the details below to report a civic problem in your ward. Required fields are marked with an asterisk (<span style="color:#DC2626;">*</span>).
+    <p style="font-size: 0.95rem; color: var(--text-muted); margin-top: 0.25rem;" data-i18n="submit_subtitle">
+      {{ t('submit_subtitle', 'Fill in the details below to report a civic problem in your ward. Required fields are marked with an asterisk (*).') }}
     </p>
   </div>
 
   <!-- Error Notification Alert Box -->
   <div id="submit-error-alert" style="display:none; margin-bottom: 1.25rem;">
     <div class="card" style="background:#FEE2E2; border:1px solid #FCA5A5; color:#991B1B; padding:1rem 1.25rem; border-radius:8px; display:flex; align-items:flex-start; gap:0.75rem;">
-      <span style="font-size:1.2rem; line-height:1;">⚠️</span>
       <div id="submit-error-message" style="font-size:0.9rem; font-weight:600;"></div>
     </div>
   </div>
 
   <!-- Success Notification Box with Generated Grievance ID -->
-  <div id="submit-success-card" class="card" style="display:none; background:#F0FDF4; border:2px solid #16A34A; padding:2rem; border-radius:12px; margin-bottom:1.5rem; text-align:center; box-shadow:var(--shadow-md);">
-    <div style="width:64px; height:64px; background:#DCFCE7; color:#15803D; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2rem; margin:0 auto 1rem;">
+  <div id="submit-success-card" class="card" style="display:none; background:#E8F3ED; border:2px solid #176B4D; padding:2rem; border-radius:12px; margin-bottom:1.5rem; text-align:center; box-shadow:var(--shadow-md);">
+    <div style="width:64px; height:64px; background:#E8F3ED; color:#176B4D; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2rem; margin:0 auto 1rem;">
       ✓
     </div>
-    <h2 style="font-size:1.5rem; color:#14532D; font-weight:800; margin-bottom:0.4rem;">
-      Grievance Submitted Successfully!
+    <h2 style="font-size:1.5rem; color:#14532D; font-weight:800; margin-bottom:0.4rem;" data-i18n="msg_grievance_submitted">
+      {{ t('msg_grievance_submitted', 'Grievance Submitted Successfully!') }}
     </h2>
-    <p style="font-size:0.95rem; color:#166534; margin-bottom:1.25rem;">
-      Your complaint has been registered with Rangapuram Gram Panchayat.
+    <p style="font-size:0.95rem; color:#10533C; margin-bottom:1.25rem;" data-i18n="rangapuram_panchayat">
+      {{ t('rangapuram_panchayat', 'Your complaint has been registered with Rangapuram Gram Panchayat.') }}
     </p>
 
     <!-- Prominent Grievance ID Callout -->
-    <div style="background:#FFFFFF; border:2px dashed #16A34A; border-radius:8px; padding:1.25rem; max-width:420px; margin:0 auto 1.5rem;">
-      <div style="font-size:0.75rem; text-transform:uppercase; color:#64748B; font-weight:700; letter-spacing:0.05em; margin-bottom:0.25rem;">
-        Your Grievance ID
+    <div style="background:#FFFFFF; border:2px dashed #176B4D; border-radius:8px; padding:1.25rem; max-width:420px; margin:0 auto 1.5rem;">
+      <div style="font-size:0.75rem; text-transform:uppercase; color:#5D6B63; font-weight:700; letter-spacing:0.05em; margin-bottom:0.25rem;" data-i18n="th_tracking_id">
+        {{ t('th_tracking_id', 'Your Grievance ID') }}
       </div>
       <div id="generated-grievance-id" style="font-size:1.85rem; font-weight:800; font-family:monospace; color:#14532D;">
         GRV-XXXX-XXXXX
       </div>
-      <div style="font-size:0.8rem; color:#64748B; margin-top:0.35rem;">
-        Please save this ID for tracking your complaint.
+      <div style="font-size:0.8rem; color:#5D6B63; margin-top:0.35rem;" data-i18n="hero_track_desc">
+        {{ t('hero_track_desc', 'Please save this ID for tracking your complaint.') }}
       </div>
     </div>
 
     <!-- Next Actions -->
     <div style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap;">
-      <a id="btn-track-new-grievance" href="{{ url_for('citizen_track') }}" class="btn btn-primary" style="padding:0.75rem 1.75rem; font-size:0.95rem; font-weight:700; border-radius:8px;">
-        🔍 Track This Grievance
+      <a id="btn-track-new-grievance" href="{{ url_for('citizen_track') }}" class="btn btn-primary" style="padding:0.75rem 1.75rem; font-size:0.95rem; font-weight:700; border-radius:8px;" data-i18n="nav_citizen_track">
+        {{ t('nav_citizen_track', 'Track This Grievance') }}
       </a>
-      <button type="button" onclick="resetFormForNewSubmission()" class="btn btn-outline" style="padding:0.75rem 1.5rem; font-size:0.95rem; font-weight:600; border-radius:8px; background:#FFFFFF;">
-        📝 Submit Another Grievance
+      <button type="button" onclick="resetFormForNewSubmission()" class="btn btn-outline" style="padding:0.75rem 1.5rem; font-size:0.95rem; font-weight:600; border-radius:8px; background:#FFFFFF;" data-i18n="nav_citizen_submit">
+        {{ t('nav_citizen_submit', 'Submit Another Grievance') }}
       </button>
     </div>
   </div>
 
   <!-- Grievance Submission Form Card -->
-  <div class="card" id="grievance-form-card" style="padding: 2rem; border-top: 5px solid var(--civic-primary); box-shadow: var(--shadow-md);">
+  <div class="card" id="grievance-form-card" style="padding: 2rem; border-top: 5px solid var(--civic-primary); box-shadow: var(--shadow-sm);">
     
     <form id="citizen-grievance-form" onsubmit="handleCitizenFormSubmit(event)" novalidate enctype="multipart/form-data">
       
       <!-- Problem Title -->
       <div class="form-group">
-        <label for="grievance-title" class="form-label">
-          Problem Title <span class="required">*</span>
+        <label for="grievance-title" class="form-label" data-i18n="lbl_subject">
+          {{ t('lbl_subject', 'Problem Title') }} <span class="required">*</span>
         </label>
-        <input type="text" id="grievance-title" name="title" class="form-control" required maxlength="150" placeholder="e.g., Drinking water pipeline leakage near Primary School" style="font-size: 1rem; padding: 0.75rem 1rem;">
-        <div style="font-size:0.78rem; color:var(--text-muted); margin-top:0.25rem;">
-          Give a clear, brief title describing the problem.
+        <input type="text" id="grievance-title" name="title" class="form-control" required maxlength="150" placeholder="{{ t('ph_subject', 'e.g., Drinking water pipeline leakage near Primary School') }}" data-i18n-placeholder="ph_subject" style="font-size: 1rem; padding: 0.75rem 1rem;">
+        <div style="font-size:0.78rem; color:var(--text-muted); margin-top:0.25rem;" data-i18n="ph_subject">
+          {{ t('ph_subject', 'Give a clear, brief title describing the problem.') }}
         </div>
       </div>
 
       <!-- Category -->
       <div class="form-group">
-        <label for="grievance-category" class="form-label">
-          Category <span class="required">*</span>
+        <label for="grievance-category" class="form-label" data-i18n="lbl_category">
+          {{ t('lbl_category', 'Category') }} <span class="required">*</span>
         </label>
         <select id="grievance-category" name="category" class="form-control" required style="font-size: 0.95rem; padding: 0.75rem 1rem;">
-          <option value="">-- Select Problem Category --</option>
-          <option value="Drinking Water & Supply">💧 Drinking Water & Supply</option>
-          <option value="Electricity & Streetlights">⚡ Electricity & Streetlights</option>
-          <option value="Waste Management & Sanitation">🧹 Waste Management & Sanitation</option>
-          <option value="Roads & Drainage Systems">🛣️ Roads & Drainage Systems</option>
-          <option value="Public Health & Vector Control">🏥 Public Health & Vector Control</option>
-          <option value="Anganwadi & School Civic Issues">🏫 Anganwadi & School Civic Issues</option>
-          <option value="Rural Housing & Infrastructure">🏡 Rural Housing & Infrastructure</option>
-          <option value="Other Civic & Community Issues">🏛️ Other Civic & Community Issues</option>
+          <option value="" data-i18n="opt_all_categories">-- {{ t('opt_all_categories', 'Select Problem Category') }} --</option>
+          <option value="Drinking Water & Supply">Drinking Water & Supply</option>
+          <option value="Electricity & Streetlights">Electricity & Streetlights</option>
+          <option value="Waste Management & Sanitation">Waste Management & Sanitation</option>
+          <option value="Roads & Drainage Systems">Roads & Drainage Systems</option>
+          <option value="Public Health & Vector Control">Public Health & Vector Control</option>
+          <option value="Anganwadi & School Civic Issues">Anganwadi & School Civic Issues</option>
+          <option value="Rural Housing & Infrastructure">Rural Housing & Infrastructure</option>
+          <option value="Other Civic & Community Issues">Other Civic & Community Issues</option>
         </select>
       </div>
 
@@ -100,11 +99,11 @@
       <div class="form-grid-2">
         <!-- Ward Number -->
         <div class="form-group">
-          <label for="grievance-ward" class="form-label">
-            Ward Number <span class="required">*</span>
+          <label for="grievance-ward" class="form-label" data-i18n="lbl_ward">
+            {{ t('lbl_ward', 'Ward Number') }} <span class="required">*</span>
           </label>
           <select id="grievance-ward" name="ward_number" class="form-control" required style="font-size: 0.95rem; padding: 0.75rem 1rem;">
-            <option value="">-- Choose Ward --</option>
+            <option value="" data-i18n="opt_all_wards">-- {{ t('opt_all_wards', 'Choose Ward') }} --</option>
             <option value="1">Ward 1</option>
             <option value="2">Ward 2</option>
             <option value="3">Ward 3</option>
@@ -125,33 +124,32 @@
 
         <!-- Location Landmark -->
         <div class="form-group">
-          <label for="grievance-landmark" class="form-label">
-            Location / Landmark <span class="required">*</span>
+          <label for="grievance-landmark" class="form-label" data-i18n="lbl_location">
+            {{ t('lbl_location', 'Location / Landmark') }} <span class="required">*</span>
           </label>
-          <input type="text" id="grievance-landmark" name="location_landmark" class="form-control" required maxlength="150" placeholder="e.g., Near Shiva Temple / Pole #12" style="font-size: 0.95rem; padding: 0.75rem 1rem;">
+          <input type="text" id="grievance-landmark" name="location_landmark" class="form-control" required maxlength="150" placeholder="{{ t('ph_location', 'e.g., Near Shiva Temple / Pole #12') }}" data-i18n-placeholder="ph_location" style="font-size: 0.95rem; padding: 0.75rem 1rem;">
         </div>
       </div>
 
       <!-- Problem Description -->
       <div class="form-group">
-        <label for="grievance-desc" class="form-label">
-          Description <span class="required">*</span>
+        <label for="grievance-desc" class="form-label" data-i18n="lbl_description">
+          {{ t('lbl_description', 'Description') }} <span class="required">*</span>
         </label>
-        <textarea id="grievance-desc" name="description" class="form-control" required rows="4" placeholder="Please describe what is happening, how long it has been a problem, and any hazards..." style="font-size: 0.95rem; padding: 0.75rem 1rem; line-height: 1.5;"></textarea>
+        <textarea id="grievance-desc" name="description" class="form-control" required rows="4" placeholder="{{ t('ph_description', 'Please describe what is happening, how long it has been a problem, and any hazards...') }}" data-i18n-placeholder="ph_description" style="font-size: 0.95rem; padding: 0.75rem 1rem; line-height: 1.5;"></textarea>
       </div>
 
       <!-- Photo Upload (Optional) -->
       <div class="form-group">
-        <label class="form-label">
-          Photo of the Problem (Optional)
+        <label class="form-label" data-i18n="lbl_evidence">
+          {{ t('lbl_evidence', 'Photo of the Problem (Optional)') }}
         </label>
         <div class="file-upload-box" onclick="document.getElementById('evidence_image').click()" style="padding: 1.5rem; border-radius: 8px;">
-          <div class="file-upload-icon" style="font-size: 2rem;">📷</div>
-          <div style="font-weight: 600; color: var(--text-main); font-size: 0.95rem;">
-            Click to upload or take photo
+          <div style="font-weight: 600; color: var(--text-main); font-size: 0.95rem;" data-i18n="evidence_drop_text">
+            {{ t('evidence_drop_text', 'Click to upload or take photo') }}
           </div>
-          <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">
-            JPG, PNG, or WebP (Maximum 5MB)
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;" data-i18n="evidence_note">
+            {{ t('evidence_note', 'JPG, PNG, or WebP (Maximum 5MB)') }}
           </div>
           <input type="file" id="evidence_image" name="evidence_image" accept="image/*,.pdf" style="display:none;" onchange="handleImageSelected(this)">
           <div id="image-preview-area" style="margin-top:0.5rem;"></div>
@@ -163,8 +161,8 @@
         <button type="button" onclick="resetForm()" class="btn btn-outline" style="min-height: 44px; padding: 0.65rem 1.25rem;">
           Clear Form
         </button>
-        <button type="submit" id="btn-submit-form" class="btn btn-primary" style="padding: 0.85rem 2.25rem; font-size: 1.05rem; font-weight: 700; border-radius: 8px; min-height: 48px;">
-          Submit Grievance &rarr;
+        <button type="submit" id="btn-submit-form" class="btn btn-primary" style="padding: 0.85rem 2.25rem; font-size: 1.05rem; font-weight: 700; border-radius: 8px; min-height: 48px;" data-i18n="btn_submit_complaint">
+          {{ t('btn_submit_complaint', 'Submit Grievance →') }}
         </button>
       </div>
 
@@ -184,17 +182,17 @@
         const reader = new FileReader();
         reader.onload = (e) => {
           previewArea.innerHTML = `
-            <div style="display:inline-block; position:relative; margin-top:0.75rem; border-radius:8px; overflow:hidden; border:2px solid #CBD5E1;">
+            <div style="display:inline-block; position:relative; margin-top:0.75rem; border-radius:8px; overflow:hidden; border:2px solid #DCE4DE;">
               <img src="${e.target.result}" style="max-height:140px; display:block; object-fit:cover;" alt="Selected Photo Preview">
               <button type="button" onclick="event.stopPropagation(); removePhoto();" style="position:absolute; top:4px; right:4px; background:#DC2626; color:#fff; border:none; border-radius:50%; width:24px; height:24px; cursor:pointer; font-weight:bold; font-size:12px;">&times;</button>
             </div>
-            <div style="font-size:0.78rem; color:#15803D; font-weight:600; margin-top:4px;">Photo selected: ${escapeHtml(file.name)}</div>
+            <div style="font-size:0.78rem; color:#176B4D; font-weight:600; margin-top:4px;">Photo selected: ${escapeHtml(file.name)}</div>
           `;
         };
         reader.readAsDataURL(file);
       } else {
         previewArea.innerHTML = `
-          <div style="font-size:0.85rem; color:#15803D; font-weight:600; margin-top:0.5rem;">
+          <div style="font-size:0.85rem; color:#176B4D; font-weight:600; margin-top:0.5rem;">
             File selected: ${escapeHtml(file.name)}
             <button type="button" onclick="event.stopPropagation(); removePhoto();" class="btn btn-sm btn-outline" style="margin-left:0.5rem; padding:0.1rem 0.4rem;">Remove</button>
           </div>

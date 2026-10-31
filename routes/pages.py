@@ -139,6 +139,8 @@ def register_pages(app):
     app.add_url_rule('/admin/login', 'admin_login_page', admin_login_page)
     app.add_url_rule('/login/admin', 'admin_login_page_alias', admin_login_page)
     app.add_url_rule('/login', 'login_redirect', lambda: redirect('/citizen/login'))
+    from routes.auth import logout
+    app.add_url_rule('/logout', 'logout_alias', logout, methods=['GET', 'POST'])
 
     # Provide alias support for pages.<endpoint>
     for ep, fn in [

@@ -52,19 +52,19 @@ async function loadCitizenStats() {
     if (alertsEl) {
       if (pendingVerificationGrievances.length > 0) {
         alertsEl.innerHTML = `
-          <div class="card" style="border: 2px solid #16A34A; background: #F0FDF4; margin-bottom: 1.5rem; padding: 1.25rem; border-radius: 10px; box-shadow: 0 2px 6px rgba(22,163,74,0.18);">
+          <div class="card" style="border: 2px solid #176B4D; background: #E8F3ED; margin-bottom: 1.5rem; padding: 1.25rem; border-radius: 10px; box-shadow: 0 2px 6px rgba(22,163,74,0.18);">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
               <div style="flex:1; min-width:260px;">
                 <div style="font-weight:800; color:#14532D; font-size:1.1rem; display:flex; align-items:center; gap:0.5rem;">
-                  <span>🏁</span> Citizen Resolution Verification Required (${pendingVerificationGrievances.length})
+                  Citizen Resolution Verification Required (${pendingVerificationGrievances.length})
                 </div>
-                <div style="font-size:0.95rem; color:#166534; font-weight:600; margin-top:0.35rem; line-height:1.45;">
+                <div style="font-size:0.95rem; color:#10533C; font-weight:600; margin-top:0.35rem; line-height:1.45;">
                   The worker has reported that the work is complete. Please confirm whether your original problem has actually been solved.
                 </div>
               </div>
               <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
                 ${pendingVerificationGrievances.map(item => `
-                  <button onclick="openCitizenVerificationModal(${item.id}, '${item.tracking_id}', '${escapeHtml(item.title)}')" class="btn touch-btn" style="background:#16A34A; color:#fff; font-weight:700; border:none; padding:0.65rem 1.2rem;">
+                  <button onclick="openCitizenVerificationModal(${item.id}, '${item.tracking_id}', '${escapeHtml(item.title)}')" class="btn touch-btn" style="background:#176B4D; color:#fff; font-weight:700; border:none; padding:0.65rem 1.2rem;">
                     ✓ Verify ${item.tracking_id}
                   </button>
                 `).join('')}
@@ -103,26 +103,33 @@ async function loadMyGrievances() {
   });
 
   if (filtered.length === 0) {
+    const tNoGrv = typeof window.t === 'function' ? window.t('empty_no_grievances', 'No Grievances Found') : 'No Grievances Found';
+    const tSubmitFirst = typeof window.t === 'function' ? window.t('empty_submit_first', 'Submit your first grievance using the form above.') : 'Submit your first grievance using the form above.';
     tableBody.innerHTML = `
       <tr>
-        <td colspan="7" style="text-align:center; padding:2.5rem; color:#64748B;">
-          <div style="font-size:2rem; margin-bottom:0.5rem;">📂</div>
-          <div style="font-weight:600;">No Grievances Found</div>
-          <p style="font-size:0.85rem; margin-top:0.25rem;">Submit your first grievance using the form above.</p>
+        <td colspan="7" style="text-align:center; padding:2.5rem; color:#5D6B63;">
+                    <div style="font-weight:600;">${tNoGrv}</div>
+          <p style="font-size:0.85rem; margin-top:0.25rem;">${tSubmitFirst}</p>
         </td>
       </tr>
     `;
     return;
   }
 
+  const tViewDetails = typeof window.t === 'function' ? window.t('btn_view_details', 'View Details') : 'View Details';
+  const tConfirmSolved = typeof window.t === 'function' ? window.t('btn_confirm_solved', 'Confirm Solved') : 'Confirm Solved';
+  const tRateService = typeof window.t === 'function' ? window.t('btn_rate_service', 'Rate Service') : 'Rate Service';
+
   tableBody.innerHTML = filtered.map(g => {
     const feedbackAction = (g.status === 'RESOLVED' && !g.star_rating)
-      ? `<button onclick="openFeedbackModal(${g.id}, '${g.tracking_id}')" class="btn btn-sm btn-accent">⭐ Rate Service</button>`
-      : (g.star_rating ? `<span title="Rated ${g.star_rating} Stars" style="color:#F59E0B; font-weight:700;">⭐ ${g.star_rating}/5</span>` : '');
+      ? `<button onclick="openFeedbackModal(${g.id}, '${g.tracking_id}')" class="btn btn-sm btn-accent">${tRateService}</button>`
+      : (g.star_rating ? `<span title="Rated ${g.star_rating} Stars" style="color:#D97706; font-weight:700;">★ ${g.star_rating}/5</span>` : '');
 
     const verifyAction = (g.status === 'CITIZEN_VERIFICATION')
-      ? `<button onclick="openCitizenVerificationModal(${g.id}, '${g.tracking_id}', '${escapeHtml(g.title)}')" class="btn btn-sm" style="background:#16A34A; color:#fff; font-weight:700; border:none; padding:0.35rem 0.75rem;">✓ Confirm Solved</button>`
+      ? `<button onclick="openCitizenVerificationModal(${g.id}, '${g.tracking_id}', '${escapeHtml(g.title)}')" class="btn btn-sm" style="background:#176B4D; color:#fff; font-weight:700; border:none; padding:0.35rem 0.75rem;">✓ ${tConfirmSolved}</button>`
       : '';
+
+    const catLabel = typeof getCategoryLabel === 'function' ? getCategoryLabel(g.category) : g.category;
 
     return `
       <tr>
@@ -134,14 +141,14 @@ async function loadMyGrievances() {
           <div style="font-size:0.75rem; color:var(--text-muted);">${escapeHtml(g.location_landmark)} (Ward ${g.ward_number})</div>
         </td>
         <td>
-          <span class="category-pill">${getCategoryIcon(g.category)} ${g.category.split(' ')[0]}</span>
+          <span class="category-pill">${getCategoryIcon(g.category)} ${escapeHtml(catLabel)}</span>
         </td>
         <td>${getPriorityBadge(g.priority)}</td>
         <td>${getStatusBadge(g.status)}</td>
-        <td style="font-size:0.8rem; color:#64748B;">${g.created_at.split(' ')[0]}</td>
+        <td style="font-size:0.8rem; color:#5D6B63;">${g.created_at.split(' ')[0]}</td>
         <td>
           <div style="display:flex; gap:0.4rem; align-items:center;">
-            <button onclick="openGrievanceDetail('${g.tracking_id}')" class="btn btn-sm btn-outline-primary">View Details</button>
+            <button onclick="openGrievanceDetail('${g.tracking_id}')" class="btn btn-sm btn-outline-primary">${tViewDetails}</button>
             ${verifyAction}
             ${feedbackAction}
           </div>
@@ -207,7 +214,7 @@ function setupImagePreview() {
         const reader = new FileReader();
         reader.onload = (re) => {
           previewArea.innerHTML = `
-            <div style="margin-top:0.75rem; display:inline-block; position:relative; border-radius:8px; overflow:hidden; border:1px solid #CBD5E1;">
+            <div style="margin-top:0.75rem; display:inline-block; position:relative; border-radius:8px; overflow:hidden; border:1px solid #DCE4DE;">
               <img src="${re.target.result}" style="max-height:120px; display:block; object-fit:cover;" />
               <div style="background:rgba(0,0,0,0.6); color:#fff; font-size:0.7rem; padding:2px 6px; text-align:center;">Selected Photo</div>
             </div>
@@ -322,14 +329,14 @@ async function openCitizenVerificationModal(grievanceId, trackingId, title) {
         if (g.citizen_verifications && g.citizen_verifications.length > 0) {
           historyBox.style.display = 'block';
           historyList.innerHTML = g.citizen_verifications.map(v => `
-            <div style="padding:0.6rem 0.8rem; border-bottom:1px solid #F1F5F9; font-size:0.8rem; display:flex; justify-content:space-between; align-items:center;">
+            <div style="padding:0.6rem 0.8rem; border-bottom:1px solid #E8F3ED; font-size:0.8rem; display:flex; justify-content:space-between; align-items:center;">
               <div>
-                <span style="font-weight:700; color:#1E293B;">Attempt #${v.attempt_number || 1}</span>
-                <span style="background:#E2E8F0; padding:2px 6px; border-radius:4px; font-size:0.75rem; margin-left:4px; font-weight:600;">${v.response}</span>
-                <span style="color:#64748B; margin-left:4px;">(${v.verification_status || v.method || 'PORTAL'})</span>
-                ${v.remarks ? `<div style="color:#475569; font-style:italic; margin-top:2px;">"${escapeHtml(v.remarks)}"</div>` : ''}
+                <span style="font-weight:700; color:#202B26;">Attempt #${v.attempt_number || 1}</span>
+                <span style="background:#DCE4DE; padding:2px 6px; border-radius:4px; font-size:0.75rem; margin-left:4px; font-weight:600;">${v.response}</span>
+                <span style="color:#5D6B63; margin-left:4px;">(${v.verification_status || v.method || 'PORTAL'})</span>
+                ${v.remarks ? `<div style="color:#5D6B63; font-style:italic; margin-top:2px;">"${escapeHtml(v.remarks)}"</div>` : ''}
               </div>
-              <div style="color:#94A3B8; font-size:0.75rem; white-space:nowrap;">${v.response_timestamp || v.created_at}</div>
+              <div style="color:#5D6B63; font-size:0.75rem; white-space:nowrap;">${v.response_timestamp || v.created_at}</div>
             </div>
           `).join('');
         } else {

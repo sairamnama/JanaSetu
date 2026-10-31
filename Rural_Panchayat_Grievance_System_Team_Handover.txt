@@ -1,0 +1,596 @@
+RURAL PANCHAYAT GRIEVANCE MANAGEMENT SYSTEM
+COMPLETE TEAM HANDOVER DOCUMENT
+Version 1.0 | Prepared: 20 October 2026
+
+======================================================================
+1. PURPOSE OF THIS DOCUMENT
+======================================================================
+
+This document explains the project in plain language for teammates and
+friends who have never worked on it. It describes the problem, user roles,
+intended workflow, development tools, known deployment issues, planned
+features, testing requirements, and next steps.
+
+IMPORTANT: This handover is based on project discussions and development
+notes, not a live inspection of the current repository. It distinguishes
+between confirmed tools, features discussed or attempted, and requirements
+that still need verification. Do not claim a feature is complete until it
+has been checked in the code and tested.
+
+======================================================================
+2. PROJECT OVERVIEW
+======================================================================
+
+Project title:
+Web-Based Rural Panchayat Grievance Management System
+
+Purpose:
+Help rural citizens report public-service problems, track progress, and
+confirm whether those problems have actually been fixed. Panchayat admins
+review complaints and assign suitable local workers. Workers update progress
+and submit evidence. The admin and original citizen verify the result before
+the grievance is closed.
+
+Examples of grievances:
+- Damaged roads
+- Water-supply problems
+- Drainage and sewage issues
+- Garbage collection and sanitation
+- Broken streetlights
+- Electricity-related local issues
+- Other local public-service problems supported by the Panchayat
+
+The website should be easy for people with limited technical knowledge.
+The Citizen and Worker portals are intended to support both English and
+Telugu, with a simple, mobile-friendly interface.
+
+The main problem being addressed:
+In a manual complaint process, citizens may not receive a tracking number,
+may not know who is responsible, and may have to visit the Panchayat office
+repeatedly. A complaint may also be marked fixed without checking with the
+citizen. This system aims to make each step traceable.
+
+======================================================================
+3. IDE, TECHNOLOGIES, AND DEPLOYMENT
+======================================================================
+
+Confirmed development environment:
+- Antigravity IDE. It is an agentic coding IDE used to inspect, create, and
+  modify project files through focused instructions.
+
+Technologies mentioned in the development history:
+- Python and Flask: a Flask application and deployment configuration were
+  discussed. A requirements.txt file was reported to contain Flask and
+  Werkzeug.
+- Gunicorn: needed as a production WSGI server for a Flask app on Render.
+- Netlify: deployment was attempted/discussed; issues were reported.
+- Render: deployment was attempted/discussed for a Python/Flask application.
+- MongoDB Community Server 9.0.2: installed on the developer's Windows
+  machine. A mongod version check worked, but mongosh could not connect to
+  127.0.0.1:27017 and no MongoDB Windows service was found at that time.
+- Express and Mongoose were discussed in a separate folder named
+  fsd/expresspra. Do not assume they belong to this project without checking.
+- HTML, CSS, JavaScript, React, Bootstrap, MySQL, and Chart.js have appeared
+  in earlier planning or discussions, but the actual current frontend
+  framework and production database have not been verified here.
+
+CRITICAL TECH-STACK NOTE:
+Do not tell a reviewer that the project uses React, MongoDB, MySQL, or
+Express in production until the current project files prove it. The team
+must inspect the repository and document the actual stack.
+
+Inspect these files/areas:
+- Root folder and README
+- package.json and lock files, if present
+- requirements.txt and Python entry-point files, if present
+- Database connection code and models/schemas
+- Authentication and route files
+- Deployment configuration
+- .env.example, if present (never print or share real secrets)
+
+Fill in the real details after inspection:
+Frontend framework and entry point: __________________________
+Backend framework and entry point: ___________________________
+Database and connection method: ______________________________
+Authentication method: ______________________________________
+File/image storage: __________________________________________
+Deployment provider and live URL: ____________________________
+External services: __________________________________________
+Local run/test commands: ____________________________________
+
+Deployment issues previously reported:
+- Render start command `py app.py` failed because `py` was not found in the
+  deployment environment.
+- `gunicorn app:app` failed because Gunicorn was not installed at that time.
+- requirements.txt was reported as containing Flask and Werkzeug only.
+- The project directory was reported as not being a Git repository during
+  one deployment attempt.
+
+These are historical issues; re-check the current code and deployment logs.
+Do not expose passwords, API keys, database URLs, or tokens.
+
+======================================================================
+4. THE THREE PORTALS
+======================================================================
+
+A. CITIZEN PORTAL
+Purpose: Citizens submit public-service complaints and track their own cases.
+
+Navigation:
+1. Home
+2. Submit Grievance
+3. Track Grievance
+
+Home:
+- Simple welcome message and explanation.
+- Clear buttons to submit or track a grievance.
+
+Submit Grievance:
+Planned fields include title, description, category, village/ward or location,
+landmark, and a photo/attachment if supported by the existing application.
+The system validates required fields, saves the grievance, generates a
+unique Grievance ID, and displays a confirmation.
+
+Track Grievance:
+- Show only the logged-in citizen's private grievances.
+- Display Grievance ID, title, date, category, location, status, and progress.
+- Explain status labels in plain language.
+- Show verification outcomes and requests for feedback when relevant.
+- Never expose another citizen's private information.
+
+Language:
+The login page should offer English and Telugu. Selecting Telugu should
+translate the entire Citizen Portal, including navigation, forms, buttons,
+validation errors, status labels, confirmations, and messages. Preserve the
+selected language across navigation and refresh.
+
+B. WORKER PORTAL
+Purpose: Workers see assigned jobs, accept or reject them, report progress,
+and submit evidence.
+
+Navigation:
+1. Home
+2. Work
+3. Work Proof & Report
+
+Planned worker registration/profile fields:
+- Full name
+- Unique Worker ID
+- Mobile number
+- Work type/skill (Electrician, Plumber, Mechanic, Mason, Sanitation Worker,
+  Water Supply Worker, or Other)
+- Experience in years
+- Authentication information required by the secure login design
+
+Worker Home/Profile should show actual saved values: name, Worker ID, mobile,
+work type, experience, active/inactive status, Loyalty Points, rating if
+implemented, and relevant work history.
+
+Work:
+- Show only assignments belonging to the logged-in worker.
+- Show grievance details, location, category, assignment date, and status.
+- Provide Accept and Reject actions.
+- Require a reason for rejection.
+- Accepted work should appear as an active task.
+- Rejected work should be recorded and reported to the admin for reassignment.
+
+Work Proof & Report:
+- Update work progress.
+- Submit a completion description and time.
+- Upload photo evidence if supported.
+- Report inability to complete work and explain the reason or resources/help
+  required.
+- Store reports against the correct grievance and assignment.
+
+The Worker login page should offer English and Telugu, and the selected
+language should apply throughout the Worker Portal.
+
+C. PANCHAYAT / ADMIN PORTAL
+Purpose: Authorized administrators manage grievances and workers.
+
+Navigation:
+1. Home
+2. Solve Grievances
+3. Workers
+
+Admin Home:
+Show real database-backed counts for submitted, pending, assigned, in
+progress, awaiting verification, resolved, and overdue grievances where
+those states exist. Do not use hard-coded or fake statistics.
+
+Solve Grievances:
+- Review grievance details and history.
+- Assign the grievance to an eligible worker.
+- Monitor acceptance, rejection, and progress.
+- Review worker completion evidence.
+- Record citizen verification.
+- Request rework, reopen, reassign, or escalate where rules permit.
+
+Workers:
+- View registered workers.
+- Activate/deactivate workers, if authorized and implemented.
+- View skills, experience, workload, points, and rating where available.
+- View Loyalty Points history.
+- Make manual points adjustments only with authorization and a mandatory
+  reason.
+
+Admin security:
+Only authorized administrators can access admin functions. Typing “Admin”
+or selecting an Admin role must never grant access. Admin registration must
+not be publicly available unless a controlled authorization process exists.
+
+======================================================================
+5. COMPLETE GRIEVANCE WORKFLOW
+======================================================================
+
+Step 1 — Citizen submits a grievance.
+The citizen logs in, enters the problem details, chooses a category and
+location, adds an attachment if supported, and submits the form.
+
+Step 2 — System saves it.
+The backend validates and saves the data, creates a unique Grievance ID,
+sets an initial status such as SUBMITTED, and shows a confirmation.
+
+Step 3 — Admin reviews it.
+The grievance appears in the admin portal. The admin checks the details and
+decides which skill or department is needed.
+
+Step 4 — Admin assigns a suitable worker.
+The system should help identify workers whose skill matches, whose account
+is active/approved, whose points meet the configurable minimum (example:
+60), and whose workload allows another job. Loyalty Points must not be the
+only eligibility factor.
+
+Step 5 — Worker accepts or rejects.
+The worker sees the assignment. Acceptance moves it forward. Rejection
+requires a reason, informs the admin, and releases the task for reassignment.
+A default -5 Loyalty Points penalty has been specified for rejection; it
+must be configurable and recorded exactly once per valid rejection.
+
+Step 6 — Worker performs the work.
+The worker updates progress. If unable to finish, the worker reports why and
+what help or resources are required.
+
+Step 7 — Worker submits a completion report.
+The worker describes the work and provides evidence, such as photographs
+where supported. Uploading proof must not automatically close the grievance.
+
+Step 8 — Admin checks the evidence.
+The admin reviews the report and proof. If the proof is insufficient, the
+admin may request more information or rework.
+
+Step 9 — Original citizen verifies the result.
+The planned options are:
+- YES: the citizen confirms the problem is fixed.
+- PARTIALLY: some work was done but the problem remains partly unresolved.
+- NO: the citizen says the problem is not fixed.
+
+The project includes a “double grievance”/double-verification idea because
+worker-submitted proof may not be enough. The admin should review evidence
+and contact the original citizen for confirmation. Record the result, time,
+and method.
+
+Step 10 — System decides the outcome.
+- YES, after required admin review: mark verified/resolved and close.
+- PARTIALLY: send back for more work or review.
+- NO: reopen or request rework.
+- No response: do not treat silence as YES or NO automatically. Keep pending,
+  retry verification, or escalate according to a defined policy.
+
+Step 11 — Preserve history.
+Citizens see the latest status, workers see their own assignment history,
+and admins can inspect the full case history. Record who performed each
+important action and when.
+
+======================================================================
+6. LOYALTY POINTS
+======================================================================
+
+Loyalty Points represent worker reliability/performance and are separate
+from a public star rating.
+
+Requirements:
+- Store the current balance in the database.
+- Record every change in a transaction history.
+- A transaction should contain Worker ID, previous balance, change amount,
+  new balance, reason, timestamp, and authorized actor/source.
+- Make initial points and rules configurable.
+- Admins can view balances and history.
+- Manual adjustments require admin authorization and a reason.
+- Workers cannot change their own points.
+- Prevent repeated requests from deducting points more than once.
+- Use safe database updates to avoid corrupting balances during concurrent
+  operations.
+
+Scoring events discussed include rejected assignments (-5 by default),
+verified work quality, citizen satisfaction, and reliability. Do not add
+automatic score changes without a documented rule. The minimum eligibility
+threshold (example 60) must be configurable, not copied as a hard-coded
+condition in many files.
+
+======================================================================
+7. STATUSES AND HISTORY
+======================================================================
+
+The team must use one consistent status model across the database, backend,
+API, and UI. A possible detailed lifecycle is:
+
+SUBMITTED -> UNDER_REVIEW -> APPROVED -> ASSIGNED -> IN_PROGRESS ->
+WORK_COMPLETED -> OFFICER_VERIFICATION -> CITIZEN_VERIFICATION ->
+VERIFIED -> RESOLVED -> CLOSED
+
+Alternative outcomes may include REJECTED, REWORK_REQUIRED, REOPENED,
+ESCALATED, and CANCELLED where approved by the project rules.
+
+This is a proposed lifecycle, not proof that every status exists in code.
+Define which role can make each transition. The backend must reject invalid
+transitions. Preserve history when cases are reopened or reassigned.
+Translate status labels into English and Telugu.
+
+======================================================================
+8. AUTHENTICATION, SECURITY, AND PRIVACY
+======================================================================
+
+Roles:
+- Citizen
+- Worker
+- Panchayat/Admin
+
+Requirements:
+- Use secure authentication.
+- If passwords are used, store password hashes, never plain-text passwords.
+- Validate inputs on both frontend and backend.
+- Enforce permissions on the backend, not just by hiding UI controls.
+- Citizens can access only their own private grievances.
+- Workers can access only their own profile and assignments.
+- Only authorized admins can assign work, manage workers, review proof,
+  verify outcomes, or adjust points.
+- Validate uploaded files and restrict access to private evidence.
+- Keep secrets out of source control.
+- Avoid exposing private details in public tracking.
+- Log important actions without logging passwords or secret tokens.
+
+The actual authentication method must be checked in the current code before
+it is described as complete.
+
+======================================================================
+9. NOTIFICATIONS, PHONE VERIFICATION, AND REPORTS
+======================================================================
+
+Possible notification events:
+- Grievance submitted
+- Grievance assigned
+- Worker accepted/rejected
+- Work reported complete
+- Admin requested rework
+- Citizen verification requested
+- Grievance reopened, escalated, resolved, or closed
+
+The delivery channel must be verified. An in-app notice, simulated phone call,
+and real SMS/phone call are not the same thing. Do not claim real calls or
+SMS work unless an external provider is configured and tested. Real phone
+services require credentials, consent/privacy handling, error handling, and
+testing.
+
+Admin analytics may include total, pending, assigned, in-progress, awaiting
+verification, resolved, reopened, escalated, overdue grievances, average
+resolution time, worker workload, and verified performance. All values must
+come from actual records. Show empty states rather than fake numbers.
+
+======================================================================
+10. DEVELOPMENT WORK DISCUSSED SO FAR
+======================================================================
+
+The project has been developed iteratively using Antigravity IDE. Work areas
+discussed or attempted include:
+- Separating Citizen, Worker, and Panchayat/Admin portals.
+- Simplifying Citizen Home, Submit Grievance, and Track Grievance.
+- Separate role-specific login experiences.
+- English/Telugu language controls for Citizen and Worker portals.
+- Citizen registration and worker registration/profile fields.
+- Admin worker management and active/inactive status.
+- Database-backed Loyalty Points and transaction history.
+- Worker eligibility and grievance assignment.
+- Worker accept/reject behaviour and the default -5 rejection penalty.
+- Worker progress reporting and completion evidence.
+- Admin proof review and citizen YES/PARTIALLY/NO confirmation.
+- Rework/reopening, notifications, security, and end-to-end testing.
+- Deployment troubleshooting for a Flask application.
+
+Recent step-by-step Antigravity prompts covered:
+STEP 1 — Separate the three portals and navigation.
+STEP 2 — Simplify the Citizen Portal UI.
+STEP 3 — Separate the login experiences.
+STEP 4 — Registration/login flow and validation.
+STEP 5 — Worker profile and Admin worker management.
+STEP 6 — Loyalty Points balance and transaction history.
+STEP 7 — Grievance assignment and worker accept/reject.
+
+These prompts describe the intended work sequence, not verified completion.
+Check each step in the actual code and test it before proceeding.
+
+======================================================================
+11. FUTURE FEATURES / REQUIREMENTS TO IMPLEMENT
+======================================================================
+
+The following areas remain part of the planned development unless already
+implemented and tested in the current code:
+
+1. Worker progress updates, completion report, photo proof, and an
+   inability-to-complete report.
+2. Admin review/approval/rejection of submitted evidence.
+3. Citizen verification with YES / PARTIALLY / NO responses.
+4. Rework, reopening, reassignment, and escalation rules.
+5. Notifications and complete status/action history.
+6. Citizen feedback and worker rating, if approved.
+7. Full English/Telugu translation audit across all portal pages.
+8. Backend authorization and security audit.
+9. Verify all data is database-backed and remove fake/demo values.
+10. End-to-end testing across Citizen, Worker, and Admin portals.
+11. Fix deployment configuration, dependencies, environment variables,
+    Git repository setup, and production database connectivity.
+12. Final README, installation instructions, demo preparation, and bug fixes.
+
+Before implementing a feature, inspect the existing code to avoid duplicating
+work. Complete one step, test it, and only then move to the next step.
+
+======================================================================
+12. DATABASE / DATA-MODEL CHECKLIST
+======================================================================
+
+Inspect the existing database before creating new models. Conceptual data
+groups may include:
+- Citizens/users
+- Workers
+- Admin users/roles
+- Grievances
+- Assignments
+- Work reports and completion evidence
+- Loyalty Points transactions
+- Citizen verification records
+- Notifications
+- Feedback/ratings
+- Status history/audit log
+
+These are conceptual entities; they may already be combined or represented
+differently. Do not create duplicate models without inspecting the schema.
+
+Important relationships:
+- A grievance belongs to the citizen who submitted it.
+- An assignment links a grievance to a worker and preserves assignment history.
+- Work reports relate to the correct assignment and grievance.
+- Verification records relate to the grievance and identify the outcome.
+- Points transactions belong to a worker.
+- Administrative actions identify the authorized actor.
+
+======================================================================
+13. TESTING CHECKLIST
+======================================================================
+
+Citizen:
+- Registration/login works and duplicate identifiers are rejected.
+- Valid grievances are saved and receive a unique ID.
+- Invalid forms show useful errors.
+- A citizen can track their own grievance after refresh or login.
+- A citizen cannot access another citizen's private data.
+- English and Telugu work throughout the portal.
+
+Worker:
+- Worker registration validates unique Worker ID and mobile.
+- Profile displays real database values.
+- Inactive/unapproved workers cannot receive assignments if approval is
+  required.
+- A worker sees only their own assignments.
+- Accept/reject updates status correctly.
+- Rejection requires a reason and deducts points once only.
+- Progress and proof reports persist.
+- Worker cannot modify points or another worker's data.
+- English and Telugu work throughout the portal.
+
+Admin:
+- Unauthorized users cannot access admin functions.
+- Admin can review and assign a grievance.
+- Ineligible workers cannot be assigned.
+- Duplicate active assignments are prevented.
+- Worker activation/deactivation works if implemented.
+- Points history and manual adjustment auditing work.
+- Proof review and citizen verification outcomes persist.
+- Rework/reopening preserves the full history.
+
+End-to-end:
+- Submit -> review -> assign -> accept -> work -> proof -> admin review ->
+  citizen verification -> close/rework.
+- Reject -> record reason -> deduct points once -> notify admin -> reassign.
+- PARTIALLY/NO returns the case for further work.
+- No response does not close the case automatically.
+- Dashboard values match the database.
+- API permissions cannot be bypassed by direct requests.
+- Application runs locally and on the chosen deployment platform.
+
+======================================================================
+14. TEAM DEVELOPMENT RULES
+======================================================================
+
+For every Antigravity task:
+1. Inspect the existing code first.
+2. State the exact feature and limit the scope.
+3. Reuse existing components, models, and APIs.
+4. Do not rebuild unrelated pages.
+5. Require backend validation and authorization.
+6. Require database persistence and no fake data.
+7. Ask for changed files, schema/config changes, and test results.
+8. Run the app and test the acceptance criteria.
+9. Fix issues before moving to the next step.
+
+Git and backup:
+- Confirm the project is a Git repository and check `git status`.
+- Commit or back up working code before risky changes.
+- Use clear commit messages.
+- Never commit `.env`, credentials, private user data, or sensitive database
+  dumps.
+- Maintain a README and an `.env.example` with variable names only.
+- Coordinate changes to avoid overwriting teammates' work.
+
+======================================================================
+15. WHAT A NEW TEAMMATE SHOULD DO FIRST
+======================================================================
+
+1. Open the existing project folder in Antigravity IDE.
+2. Read the README and workflow notes.
+3. Inspect the root folder and identify frontend/backend entry points.
+4. Check package.json, requirements.txt, and lock files if present.
+5. Identify the actual database and test the connection.
+6. Inspect authentication and backend role checks.
+7. Run the project using the real documented command.
+8. Test each portal with authorized test accounts.
+9. Submit one test grievance and follow it through the workflow.
+10. Verify whether assignments, points, reports, and verification records
+    persist in the database.
+11. Label each feature:
+    DONE AND TESTED / PARTIALLY IMPLEMENTED / UI ONLY / NOT IMPLEMENTED /
+    BLOCKED.
+12. Fix gaps without rewriting working code, then test again.
+
+Never put real passwords or private user data into screenshots or team notes.
+
+======================================================================
+16. ONE-MINUTE PROJECT EXPLANATION
+======================================================================
+
+"We are building a website for rural Panchayat grievance management. A
+citizen can report a local problem such as a damaged road, water issue, or
+broken streetlight and receive a Grievance ID to track it. The Panchayat
+admin reviews the complaint and assigns an eligible local worker. The worker
+accepts the task, reports progress, and submits proof when the work is done.
+The admin checks the evidence and asks the original citizen whether the
+problem was actually fixed. If the citizen says it is only partly fixed or
+not fixed, the grievance can return for more work instead of being closed
+incorrectly. The system has three portals: Citizen, Worker, and Admin.
+Citizen and Worker portals are intended to support English and Telugu. We
+are building and testing the project step by step in Antigravity IDE. We
+must verify the actual code, database, security, and deployment before
+claiming every planned feature is complete."
+
+======================================================================
+17. FINAL DEFINITION OF SUCCESS
+======================================================================
+
+A successful project is not only a good-looking website. It must provide a
+complete, secure, reliable, and traceable grievance process.
+
+The final demonstration should prove that:
+- A citizen can submit and track a real grievance.
+- The admin can review it and assign an eligible worker.
+- The worker can accept/reject, report progress, and submit evidence.
+- Important actions are stored in the database with history.
+- The admin reviews evidence and the original citizen verifies the result.
+- Rejection, rework, reopening, and reassignment preserve history.
+- Loyalty Points and feedback follow documented rules.
+- English/Telugu works throughout the required portals.
+- Backend permissions protect other people's records.
+- Notifications and analytics use real data and describe their delivery
+  method honestly.
+- The project runs locally and in its chosen deployment environment.
+- The team can clearly state which features are done, pending, or blocked.
+
+END OF DOCUMENT

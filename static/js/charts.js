@@ -51,7 +51,7 @@ function renderKPICards(summary) {
   if (elRating) {
     elRating.textContent = noData(summary.avg_rating)
       ? 'No data available'
-      : `⭐ ${summary.avg_rating} / 5.0`;
+      : `${summary.avg_rating} / 5.0`;
   }
 }
 
@@ -60,23 +60,23 @@ function renderStatusBreakdown(s) {
   if (!el) return;
 
   const items = [
-    { label: 'Pending', value: s.submitted, color: '#64748B' },
-    { label: 'Under Review', value: s.under_review, color: '#0284C7' },
-    { label: 'In Progress', value: s.in_progress, color: '#D97706' },
-    { label: 'Work Completed', value: s.work_completed, color: '#059669' },
-    { label: 'Officer Verification', value: s.officer_verification, color: '#7C3AED' },
-    { label: 'Citizen Verification', value: s.citizen_verification, color: '#2563EB' },
-    { label: 'Rework Required', value: s.rework, color: '#DC2626' },
-    { label: 'Reopened', value: s.reopened, color: '#EA580C' },
-    { label: 'Escalated', value: s.escalated, color: '#BE123C' },
-    { label: 'Resolved', value: s.resolved, color: '#15803D' },
-    { label: 'Rejected', value: s.rejected, color: '#78716C' },
+    { label: window.t('status_submitted', 'Submitted'), value: s.submitted, color: '#5D6B63' },
+    { label: window.t('status_under_review', 'Under Review'), value: s.under_review, color: '#176B68' },
+    { label: window.t('status_in_progress', 'In Progress'), value: s.in_progress, color: '#D97706' },
+    { label: window.t('status_work_completed', 'Work Completed'), value: s.work_completed, color: '#059669' },
+    { label: window.t('status_officer_verification', 'Officer Verification'), value: s.officer_verification, color: '#7C3AED' },
+    { label: window.t('status_citizen_verification', 'Citizen Verification'), value: s.citizen_verification, color: '#176B68' },
+    { label: window.t('status_rework_required', 'Rework Required'), value: s.rework, color: '#DC2626' },
+    { label: window.t('status_reopened', 'Reopened'), value: s.reopened, color: '#EA580C' },
+    { label: window.t('status_escalated', 'Escalated'), value: s.escalated, color: '#BE123C' },
+    { label: window.t('status_resolved', 'Resolved'), value: s.resolved, color: '#176B4D' },
+    { label: window.t('status_rejected', 'Rejected'), value: s.rejected, color: '#78716C' },
   ];
 
   el.innerHTML = items.map(i => `
-    <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-left:4px solid ${i.color}; border-radius:6px; padding:0.6rem 0.8rem;">
+    <div style="background:#F8F7F2; border:1px solid #DCE4DE; border-left:4px solid ${i.color}; border-radius:6px; padding:0.6rem 0.8rem;">
       <div style="font-size:1.4rem; font-weight:800; color:${i.color};">${i.value}</div>
-      <div style="font-size:0.75rem; font-weight:600; color:#475569;">${i.label}</div>
+      <div style="font-size:0.75rem; font-weight:600; color:#5D6B63;">${i.label}</div>
     </div>
   `).join('');
 }
@@ -89,20 +89,20 @@ function renderVerificationMetrics(v) {
   };
   set('vm-workers-completed', v.workers_marked_completed);
   set('vm-citizens-confirmed', v.citizens_confirmed_resolved);
-  set('vm-failure-rate', noData(v.verification_failure_rate) ? 'No data available' : v.verification_failure_rate + '%');
-  set('vm-rework-rate', noData(v.rework_rate) ? 'No data available' : v.rework_rate + '%');
+  set('vm-failure-rate', noData(v.verification_failure_rate) ? '—' : v.verification_failure_rate + '%');
+  set('vm-rework-rate', noData(v.rework_rate) ? '—' : v.rework_rate + '%');
 }
 
 function renderCategoryChart(categories) {
   const ctx = document.getElementById('categoryDoughnutChart');
   if (!ctx) return;
 
-  const labels = categories.map(c => c.category);
+  const labels = categories.map(c => (window.getCategoryLabel ? window.getCategoryLabel(c.category) : c.category));
   const counts = categories.map(c => c.count);
 
   const brandColors = [
-    '#0F5132', '#10B981', '#0284C7', '#6366F1',
-    '#F59E0B', '#EA580C', '#8B5CF6', '#64748B'
+    '#176B4D', '#10B981', '#176B68', '#6366F1',
+    '#F59E0B', '#EA580C', '#8B5CF6', '#5D6B63'
   ];
 
   if (categoryChart) categoryChart.destroy();
@@ -140,7 +140,7 @@ function renderWardChart(wards) {
   const ctx = document.getElementById('wardBarChart');
   if (!ctx) return;
 
-  const labels = wards.map(w => `Ward ${w.ward_number}`);
+  const labels = wards.map(w => (window.currentLang === 'te' ? `వార్డు ${w.ward_number}` : `Ward ${w.ward_number}`));
   const totalCounts = wards.map(w => w.count);
   const resolvedCounts = wards.map(w => w.resolved_count || 0);
 
@@ -152,13 +152,13 @@ function renderWardChart(wards) {
       labels: labels,
       datasets: [
         {
-          label: 'Total Complaints',
+          label: window.t('kpi_total_tickets', 'Total Complaints'),
           data: totalCounts,
-          backgroundColor: '#0F5132',
+          backgroundColor: '#176B4D',
           borderRadius: 6
         },
         {
-          label: 'Resolved',
+          label: window.t('th_resolved', 'Resolved'),
           data: resolvedCounts,
           backgroundColor: '#10B981',
           borderRadius: 6
@@ -190,17 +190,27 @@ function renderStatusChart(summary) {
 
   if (statusChart) statusChart.destroy();
 
+  const isTe = (window.currentLang === 'te');
+  const labels = isTe ? [
+    'పరిశీలనలో ఉన్నవి',
+    'పరిష్కార ప్రక్రియలో ఉన్నవి',
+    'పని పూర్తయింది',
+    'ధృవీకరణలో ఉన్నవి',
+    'రీ-వర్క్ / పునఃప్రారంభం / ఎస్కలేషన్',
+    'పరిష్కరించి మూసివేయబడినవి'
+  ] : [
+    'Pending Review',
+    'In Remediation',
+    'Work Completed',
+    'Under Verification',
+    'Rework / Reopened / Escalated',
+    'Resolved & Closed'
+  ];
+
   statusChart = new Chart(ctx, {
     type: 'pie',
     data: {
-      labels: [
-        'Pending Review',
-        'In Remediation',
-        'Work Completed',
-        'Under Verification',
-        'Rework / Reopened / Escalated',
-        'Resolved & Closed'
-      ],
+      labels: labels,
       datasets: [{
         data: [
           summary.submitted + summary.under_review,
@@ -242,16 +252,20 @@ function renderDeptPerformanceTable(departments) {
         <td style="font-weight:700; color:var(--text-main);">${d.name} (${d.code})</td>
         <td style="text-align:center; font-weight:600;">${total}</td>
         <td style="text-align:center; color:#D97706; font-weight:700;">${d.active_tickets || 0}</td>
-        <td style="text-align:center; color:#15803D; font-weight:700;">${resolved}</td>
+        <td style="text-align:center; color:#176B4D; font-weight:700;">${resolved}</td>
         <td>
           <div style="display:flex; align-items:center; gap:0.5rem;">
-            <div style="flex:1; background:#E2E8F0; height:8px; border-radius:4px; overflow:hidden;">
+            <div style="flex:1; background:#DCE4DE; height:8px; border-radius:4px; overflow:hidden;">
               <div style="width:${rate}%; background:#10B981; height:100%;"></div>
             </div>
-            <span style="font-size:0.75rem; font-weight:700; color:#334155; width:36px;">${rate}%</span>
+            <span style="font-size:0.75rem; font-weight:700; color:#5D6B63; width:36px;">${rate}%</span>
           </div>
         </td>
       </tr>
     `;
   }).join('');
 }
+
+window.addEventListener('languageChanged', () => {
+  loadAnalyticsDashboard();
+});

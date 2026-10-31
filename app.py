@@ -29,6 +29,43 @@ def create_app() -> Flask:
     # Register all modular blueprints
     register_routes(app)
 
+    # Multilingual Localization Engine
+    from core.translations import TRANSLATIONS, t as t_func, SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE
+    from flask import request, session, jsonify
+
+    @app.before_request
+    def detect_and_sync_language():
+        # Prefer session language if set, else read persistent cookie, fallback to default 'en'
+        cookie_lang = request.cookies.get('gramseva_lang')
+        if 'lang' not in session:
+            session['lang'] = cookie_lang if cookie_lang in SUPPORTED_LANGUAGES else DEFAULT_LANGUAGE
+        elif cookie_lang in SUPPORTED_LANGUAGES and cookie_lang != session['lang']:
+            session['lang'] = cookie_lang
+
+    @app.context_processor
+    def inject_localization():
+        lang = session.get('lang') or request.cookies.get('gramseva_lang') or DEFAULT_LANGUAGE
+        if lang not in SUPPORTED_LANGUAGES:
+            lang = DEFAULT_LANGUAGE
+        def jinja_t(key, default=None):
+            return t_func(key, lang=lang, default=default)
+        return {
+            'current_lang': lang,
+            't': jinja_t,
+            'SUPPORTED_LANGUAGES': SUPPORTED_LANGUAGES
+        }
+
+    @app.route('/api/set-language', methods=['POST'])
+    def set_language_api():
+        data = request.get_json(silent=True) or request.form or {}
+        lang = (data.get('lang') or '').strip().lower()
+        if not lang or lang not in SUPPORTED_LANGUAGES:
+            return jsonify({'success': False, 'error': f'Unsupported language. Supported languages: {list(SUPPORTED_LANGUAGES)}'}), 400
+        session['lang'] = lang
+        resp = jsonify({'success': True, 'lang': lang, 'message': f'Language updated to {lang}'})
+        resp.set_cookie('gramseva_lang', lang, max_age=31536000, samesite='Lax', path='/')
+        return resp
+
     # Status route shortcut mapping directly to status state machine
     @app.route('/status', methods=['POST', 'PUT'])
     def root_status_route():

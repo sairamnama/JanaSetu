@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Public Grievance Tracker | GramSeva{% endblock %}
+{% block title %}{{ t('nav_track') }} | {{ t('portal_title') }}{% endblock %}
 
 {% block content %}
 <div class="container" style="max-width:960px;">
@@ -8,34 +8,35 @@
   <!-- Page Header -->
   <div style="text-align:center; margin-bottom:2rem;">
     <div style="display:inline-flex; align-items:center; gap:0.4rem; color:var(--civic-primary); font-weight:700; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.04em;">
-      🔍 Public Citizen Tracking Portal
+      <span data-i18n="quick_track_title">{{ t('quick_track_title', 'Public Citizen Tracking Portal') }}</span>
     </div>
-    <h1 style="font-size:2rem; color:var(--civic-dark); margin-top:0.25rem;">
-      Track Civic Grievance Status
+    <h1 style="font-size:2rem; color:var(--civic-dark); margin-top:0.25rem;" data-i18n="track_hero_title">
+      {{ t('track_hero_title', 'Track Civic Grievance Status') }}
     </h1>
-    <p style="font-size:0.95rem; color:var(--text-muted); max-width:600px; margin:0.25rem auto 0;">
-      No login required. Enter your unique Grievance Tracking ID to view the full lifecycle and remediation timeline.
+    <p style="font-size:0.95rem; color:var(--text-muted); max-width:600px; margin:0.25rem auto 0;" data-i18n="track_hero_desc">
+      {{ t('track_hero_desc', 'No login required. Enter your unique Grievance Tracking ID to view the full lifecycle and remediation timeline.') }}
     </p>
   </div>
 
   <!-- Search Card -->
-  <div class="card" style="margin-bottom:2rem; box-shadow:var(--shadow-md);">
+  <div class="card" style="margin-bottom:2rem; box-shadow:var(--shadow-sm);">
     <form onsubmit="handleSearchTrack(event)" style="display:flex; gap:0.75rem; flex-wrap:wrap;">
       <input type="text" id="track-search-input" class="form-control" 
              value="{{ initial_tracking_id }}"
-             placeholder="Enter Tracking ID (e.g. GRV-2026-00101)" 
+             placeholder="{{ t('quick_track_placeholder') }}" 
+             data-i18n-placeholder="quick_track_placeholder"
              style="flex:1; min-width:240px; font-family:monospace; font-size:1rem; font-weight:700; text-transform:uppercase;">
-      <button type="submit" class="btn btn-primary" style="padding:0.75rem 1.75rem;">
-        Track Status
+      <button type="submit" class="btn btn-primary" style="padding:0.75rem 1.75rem;" data-i18n="btn_track">
+        {{ t('btn_track') }}
       </button>
     </form>
 
     <!-- Quick sample links for convenient testing -->
     <div style="display:flex; align-items:center; gap:0.5rem; margin-top:1rem; font-size:0.82rem; color:var(--text-muted); flex-wrap:wrap;">
-      <span>Try Sample IDs:</span>
+      <span data-i18n="try_sample_ids">{{ t('try_sample_ids', 'Try Sample IDs:') }}</span>
       <button onclick="setTrackId('GRV-2026-00101')" class="btn btn-outline btn-sm" style="padding:0.2rem 0.6rem; font-family:monospace;">GRV-2026-00101 (Water, In Progress)</button>
       <button onclick="setTrackId('GRV-2026-00102')" class="btn btn-outline btn-sm" style="padding:0.2rem 0.6rem; font-family:monospace;">GRV-2026-00102 (Power, Assigned)</button>
-      <button onclick="setTrackId('GRV-2026-00104')" class="btn btn-outline btn-sm" style="padding:0.2rem 0.6rem; font-family:monospace;">GRV-2026-00104 (Road, Resolved ⭐)</button>
+      <button onclick="setTrackId('GRV-2026-00104')" class="btn btn-outline btn-sm" style="padding:0.2rem 0.6rem; font-family:monospace;">GRV-2026-00104 (Road, Resolved)</button>
     </div>
   </div>
 
@@ -46,7 +47,7 @@
     <div class="card" style="margin-bottom:1.5rem; border-top:4px solid var(--civic-primary);">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
         <div>
-          <span style="font-size:0.75rem; color:#64748B; font-weight:600;">GRIEVANCE TRACKING NUMBER</span>
+          <span style="font-size:0.75rem; color:#5D6B63; font-weight:600;" data-i18n="track_num_label">{{ t('track_num_label', 'GRIEVANCE TRACKING NUMBER') }}</span>
           <div id="t-tracking-id" style="font-size:1.5rem; font-weight:800; font-family:monospace; color:var(--civic-dark);"></div>
         </div>
         <div style="display:flex; gap:0.5rem; align-items:center;">
@@ -65,23 +66,23 @@
 
       <div style="display:flex; gap:0.5rem; margin-bottom:1rem; flex-wrap:wrap;">
         <span id="t-category"></span>
-        <span class="category-pill" id="t-date" style="background:#F1F5F9; color:#475569;"></span>
+        <span class="category-pill" id="t-date" style="background:#E8F3ED; color:#5D6B63;"></span>
       </div>
 
-      <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:0.85rem 1rem; font-size:0.85rem; color:#64748B;">
-        🛡️ <strong>Public Transparency Portal:</strong> Sensitive citizen personal data and internal Panchayat notes are protected and omitted from public tracking.
+      <div style="background:#F8F7F2; border:1px solid #DCE4DE; border-radius:8px; padding:0.85rem 1rem; font-size:0.85rem; color:#5D6B63;">
+        <strong data-i18n="track_transparency_title">{{ t('track_transparency_title', 'Public Transparency Portal:') }}</strong> <span data-i18n="track_transparency_desc">{{ t('track_transparency_desc', 'Sensitive citizen personal data and internal Panchayat notes are protected and omitted from public tracking.') }}</span>
       </div>
     </div>
 
     <!-- Audit Timeline History -->
     <div class="card" style="margin-bottom:2rem;">
       <div class="card-header">
-        <h3 class="card-title">📜 Official Lifecycle Audit Trail</h3>
+        <h3 class="card-title" data-i18n="track_audit_trail">{{ t('track_audit_trail', 'Official Lifecycle Audit Trail') }}</h3>
       </div>
       <div id="t-history-list"></div>
       
       <div style="margin-top:1.5rem; text-align:right;">
-        <button onclick="window.print()" class="btn btn-outline btn-sm">🖨️ Print Grievance Receipt</button>
+        <button onclick="window.print()" class="btn btn-outline btn-sm" data-i18n="track_print_receipt">{{ t('track_print_receipt', 'Print Grievance Receipt') }}</button>
       </div>
     </div>
 
@@ -89,16 +90,17 @@
 
   <!-- Not Found Message -->
   <div id="track-not-found" class="card" style="display:none; text-align:center; padding:3rem 1.5rem;">
-    <div style="font-size:3rem; margin-bottom:0.75rem;">⚠️</div>
-    <h3 style="font-size:1.2rem; color:var(--civic-dark); margin-bottom:0.4rem;">Grievance Not Found</h3>
-    <p style="font-size:0.9rem; color:var(--text-muted); max-width:480px; margin:0 auto;">
-      We could not find any registered grievance with that tracking ID. Please verify the ID on your receipt or submit a new grievance.
+        <h3 style="font-size:1.2rem; color:var(--civic-dark); margin-bottom:0.4rem;" data-i18n="track_not_found_title">{{ t('track_not_found_title', 'Grievance Not Found') }}</h3>
+    <p style="font-size:0.9rem; color:var(--text-muted); max-width:480px; margin:0 auto;" data-i18n="track_not_found_desc">
+      {{ t('track_not_found_desc', 'We could not find any registered grievance with that tracking ID. Please verify the ID on your receipt or submit a new grievance.') }}
     </p>
   </div>
 
 </div>
 
 <script>
+  window.lastFetchedGrievance = null;
+
   function setTrackId(id) {
     document.getElementById('track-search-input').value = id;
     fetchAndDisplayTracking(id);
@@ -108,7 +110,7 @@
     e.preventDefault();
     const id = document.getElementById('track-search-input').value.trim();
     if (!id) {
-      showToast('Please enter a Grievance Tracking ID', 'warning');
+      showToast(window.t('msg_missing_fields', 'Please enter a Grievance Tracking ID'), 'warning');
       return;
     }
     fetchAndDisplayTracking(id);
@@ -132,13 +134,14 @@
       resultBox.style.display = 'block';
 
       const g = data.grievance;
+      window.lastFetchedGrievance = g;
 
       // Populate safe public info
       document.getElementById('t-tracking-id').textContent = g.tracking_id;
       document.getElementById('t-title').textContent = g.title;
       document.getElementById('t-status').innerHTML = getStatusBadge(g.status);
-      document.getElementById('t-category').innerHTML = `<span class="category-pill">${getCategoryIcon(g.category)} ${escapeHtml(g.category)}</span>`;
-      document.getElementById('t-date').textContent = `Submission Date: ${g.created_at}`;
+      document.getElementById('t-category').innerHTML = `<span class="category-pill">${getCategoryIcon(g.category)} ${getCategoryLabel ? getCategoryLabel(g.category) : escapeHtml(g.category)}</span>`;
+      document.getElementById('t-date').textContent = `${window.t('th_date', 'Date')}: ${g.created_at}`;
 
       // Stepper
       renderTrackStepper(g.status);
@@ -147,17 +150,17 @@
       const histBox = document.getElementById('t-history-list');
       if (g.timeline && g.timeline.length > 0) {
         histBox.innerHTML = g.timeline.map(item => `
-          <div style="padding:0.75rem 0; border-bottom:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center;">
+          <div style="padding:0.75rem 0; border-bottom:1px solid #DCE4DE; display:flex; justify-content:space-between; align-items:center;">
             <div>
-              <div style="font-weight:600; font-size:0.85rem; color:#1E293B;">
+              <div style="font-weight:600; font-size:0.85rem; color:#202B26;">
                 ${getStatusBadge(item.status || item.to_status)}
               </div>
             </div>
-            <div style="font-size:0.8rem; color:#64748B;">${escapeHtml(item.created_at)}</div>
+            <div style="font-size:0.8rem; color:#5D6B63;">${escapeHtml(item.created_at)}</div>
           </div>
         `).join('');
       } else {
-        histBox.innerHTML = '<div style="color:#64748B; padding:0.5rem 0;">Timeline initialized.</div>';
+        histBox.innerHTML = `<div style="color:#5D6B63; padding:0.5rem 0;">${window.t('no_grievances_desc', 'Timeline initialized.')}</div>`;
       }
 
     } catch (err) {
@@ -166,14 +169,15 @@
   }
 
   function renderTrackStepper(currentStatus) {
+    const isTe = (window.currentLang === 'te');
     const stages = [
-      { num: 1, label: 'Complaint Submitted', sub: 'నమోదైంది', icon: '📝' },
-      { num: 2, label: 'Assigned', sub: 'కేటాయింపు', icon: '👤' },
-      { num: 3, label: 'Work in Progress', sub: 'పనిలో ఉంది', icon: '⚙️' },
-      { num: 4, label: 'Work Completed', sub: 'పని పూర్తయింది', icon: '📦' },
-      { num: 5, label: 'Officer Verified', sub: 'అధికారి తనిఖీ', icon: '🔍' },
-      { num: 6, label: 'Citizen Verification', sub: 'పౌరుల ధృవీకరణ', icon: '🙋' },
-      { num: 7, label: 'Resolved', sub: 'పరిష్కారం', icon: '✅' }
+      { num: 1, label: isTe ? 'నమోదైంది' : 'Complaint Submitted' },
+      { num: 2, label: isTe ? 'కేటాయింపు' : 'Assigned' },
+      { num: 3, label: isTe ? 'పని జరుగుతోంది' : 'Work in Progress' },
+      { num: 4, label: isTe ? 'పని పూర్తయింది' : 'Work Completed' },
+      { num: 5, label: isTe ? 'అధికారి తనిఖీ' : 'Officer Verified' },
+      { num: 6, label: isTe ? 'పౌరుల ధృవీకరణ' : 'Citizen Verification' },
+      { num: 7, label: isTe ? 'పరిష్కారం' : 'Resolved' }
     ];
 
     const statusToStage = {
@@ -190,7 +194,7 @@
     if (currentStatus === 'REJECTED') {
       box.innerHTML = `
         <div style="background:#FEE2E2; border:1px solid #FCA5A5; color:#991B1B; padding:1rem; border-radius:8px; text-align:center; font-weight:700;">
-          ⚠️ This complaint was rejected after administrative verification.
+          ${window.t('track_rejected_notice', 'This complaint was rejected after administrative verification.')}
         </div>
       `;
       return;
@@ -199,21 +203,21 @@
     const activeStageObj = stages.find(s => s.num === currentStage) || stages[0];
     let stageModifierNote = '';
     if (currentStatus === 'REWORK_REQUIRED') {
-      stageModifierNote = '<span style="background:#FEF3C7; color:#92400E; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:700; margin-left:6px;">🔁 Rework in Progress</span>';
+      stageModifierNote = `<span style="background:#FEF3C7; color:#92400E; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:700; margin-left:6px;">${window.t('track_rework_note', 'Rework in Progress')}</span>`;
     } else if (currentStatus === 'REOPENED') {
-      stageModifierNote = '<span style="background:#FCE7F3; color:#BE185D; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:700; margin-left:6px;">⚠️ Reopened by Citizen</span>';
+      stageModifierNote = `<span style="background:#FCE7F3; color:#BE185D; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:700; margin-left:6px;">${window.t('track_reopened_note', 'Reopened by Citizen')}</span>`;
     } else if (currentStatus === 'ESCALATED') {
-      stageModifierNote = '<span style="background:#FEE2E2; color:#B91C1C; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:700; margin-left:6px;">🚨 Administratively Escalated</span>';
+      stageModifierNote = `<span style="background:#FEE2E2; color:#B91C1C; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:700; margin-left:6px;">${window.t('track_escalated_note', 'Administratively Escalated')}</span>`;
     }
 
     let html = `
       <div class="double-verif-card" style="box-shadow:none; border:none; padding:0; margin:0;" role="region" aria-label="Double Verification Tracking Stepper">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem; border-bottom:1px solid #E2E8F0; padding-bottom:0.5rem; flex-wrap:wrap; gap:0.5rem;">
-          <div style="font-weight:700; font-size:0.85rem; color:#0A3622; display:flex; align-items:center; gap:0.35rem;">
-            <span>🔄</span> <strong>Double Verification Grievance Lifecycle</strong>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem; border-bottom:1px solid #DCE4DE; padding-bottom:0.5rem; flex-wrap:wrap; gap:0.5rem;">
+          <div style="font-weight:700; font-size:0.85rem; color:#10533C;">
+            <strong>${window.t('track_double_verif_title', 'Double Verification Grievance Lifecycle')}</strong>
           </div>
-          <div style="font-size:0.8rem; color:#64748B;">
-            Current State: <strong style="color:#0369A1;">${activeStageObj.label}</strong> ${stageModifierNote}
+          <div style="font-size:0.8rem; color:#5D6B63;">
+            ${window.t('track_current_state', 'Current State:')} <strong style="color:#176B68;">${activeStageObj.label}</strong> ${stageModifierNote}
           </div>
         </div>
         <div class="double-verif-stepper">
@@ -227,8 +231,8 @@
                         (currentStatus === 'REOPENED' && st.num === 6) ||
                         (currentStatus === 'ESCALATED' && st.num === 4);
 
-      const circleContent = isCompleted ? '✓' : (isActive ? st.icon : st.num);
-      const badgeText = isActive ? (isWarning ? 'Active (Issue)' : 'Current State') : (isCompleted ? 'Done' : '');
+      const circleContent = isCompleted ? '✓' : st.num;
+      const badgeText = isActive ? (isWarning ? window.t('track_stage_issue', 'Active (Issue)') : window.t('track_stage_current', 'Current State')) : (isCompleted ? window.t('track_stage_done', 'Done') : '');
 
       html += `
         <div class="dv-step ${stateClass} ${isWarning ? 'warning' : ''}" aria-current="${isActive ? 'step' : 'false'}">
@@ -239,7 +243,7 @@
       `;
 
       if (idx < stages.length - 1) {
-        html += `<div class="dv-arrow" aria-hidden="true">➔</div>`;
+        html += `<div class="dv-arrow" aria-hidden="true">→</div>`;
       }
     });
 
@@ -256,6 +260,12 @@
     const initId = document.getElementById('track-search-input').value.trim();
     if (initId) {
       fetchAndDisplayTracking(initId);
+    }
+  });
+
+  window.addEventListener('languageChanged', () => {
+    if (window.lastFetchedGrievance) {
+      fetchAndDisplayTracking(window.lastFetchedGrievance.tracking_id);
     }
   });
 </script>

@@ -10,22 +10,15 @@
       <img src="{{ url_for('static', filename='img/crest.svg') }}" alt="GramSeva Seal" class="brand-crest">
       <div class="brand-text-col">
         <div class="brand-title">
-          GramSeva <span class="badge" style="background:#16A34A; color:#FFFFFF; font-size:0.65rem; padding:2px 7px; border-radius:4px; vertical-align:middle;">CITIZEN</span>
+          GramSeva <span class="badge" style="background:#176B4D; color:#FFFFFF; font-size:0.65rem; padding:2px 7px; border-radius:4px; vertical-align:middle;">CITIZEN</span>
         </div>
         <div class="brand-subtext" id="header-subtext">Rangapuram Gram Panchayat • Citizen Services</div>
       </div>
     </a>
 
-    <!-- Top Links & Language Selector -->
+    <!-- Top Links -->
     <div style="display:flex; align-items:center; gap:1rem;">
-      <!-- Language Selector -->
-      <div style="display:flex; align-items:center; gap:0.25rem; background:#F1F5F9; padding:3px 6px; border-radius:6px; border:1px solid #CBD5E1;">
-        <span style="font-size:0.75rem; font-weight:700; color:#475569; margin-right:4px;">🌐</span>
-        <button type="button" onclick="setLoginLanguage('en')" id="lang-btn-en" class="lang-switch-btn active" style="font-size:0.8rem; padding:2px 8px; font-weight:700; color:#0F172A;">English</button>
-        <button type="button" onclick="setLoginLanguage('te')" id="lang-btn-te" class="lang-switch-btn" style="font-size:0.8rem; padding:2px 8px; font-weight:700; color:#0F172A;">తెలుగు</button>
-      </div>
-
-      <a href="{{ url_for('index') }}" class="btn btn-outline btn-sm">🏠 <span id="nav-home-text">Home</span></a>
+      <a href="{{ url_for('index') }}" class="btn btn-outline btn-sm"><span id="nav-home-text" data-i18n="nav_home">{{ t('nav_home') }}</span></a>
     </div>
   </div>
 </nav>
@@ -35,15 +28,15 @@
 <div class="container" style="max-width: 580px; padding: 2.5rem 1rem;">
 
   <!-- Portal Navigation Tabs (Separated Logins) -->
-  <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 2px solid #E2E8F0; padding-bottom: 0.5rem;">
+  <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 2px solid #DCE4DE; padding-bottom: 0.5rem;">
     <a href="{{ url_for('citizen_login_page') }}" class="btn btn-sm btn-primary" style="flex: 1; text-align: center; border-radius: 6px; font-weight: 700;">
-      👤 <span id="tab-citizen">Citizen Portal</span>
+      <span id="tab-citizen">Citizen Portal</span>
     </a>
     <a href="{{ url_for('worker_login_page') }}" class="btn btn-sm btn-outline" style="flex: 1; text-align: center; border-radius: 6px;">
-      🔧 <span id="tab-worker">Worker Login</span>
+      <span id="tab-worker">Worker Login</span>
     </a>
     <a href="{{ url_for('admin_login_page') }}" class="btn btn-sm btn-outline" style="flex: 1; text-align: center; border-radius: 6px;">
-      🏛️ <span id="tab-admin">Admin Login</span>
+      <span id="tab-admin">Admin Login</span>
     </a>
   </div>
 
@@ -51,22 +44,19 @@
   <div class="card" style="padding: 2.25rem 2rem; border-top: 5px solid var(--civic-primary); box-shadow: var(--shadow-md); border-radius: 12px;">
     
     <!-- Option Selector: Register vs Login -->
-    <div style="display:flex; background:#F1F5F9; padding:4px; border-radius:8px; margin-bottom:1.5rem; border:1px solid #E2E8F0;">
+    <div style="display:flex; background:#E8F3ED; padding:4px; border-radius:8px; margin-bottom:1.5rem; border:1px solid #DCE4DE;">
       <button type="button" id="tab-btn-login" onclick="switchAuthTab('login')"
-              style="flex:1; padding:0.65rem 0.5rem; font-size:0.92rem; font-weight:700; border-radius:6px; border:none; cursor:pointer; background:#FFFFFF; color:#0F172A; box-shadow:0 1px 3px rgba(0,0,0,0.1);">
-        🔑 <span id="toggle-opt-login">Already registered? Login</span>
+              style="flex:1; padding:0.65rem 0.5rem; font-size:0.92rem; font-weight:700; border-radius:6px; border:none; cursor:pointer; background:#FFFFFF; color:#202B26; box-shadow:0 1px 3px rgba(0,0,0,0.1);">
+        <span id="toggle-opt-login">Already registered? Login</span>
       </button>
       <button type="button" id="tab-btn-register" onclick="switchAuthTab('register')"
-              style="flex:1; padding:0.65rem 0.5rem; font-size:0.92rem; font-weight:700; border-radius:6px; border:none; cursor:pointer; background:transparent; color:#64748B;">
-        ✍️ <span id="toggle-opt-register">New user? Register</span>
+              style="flex:1; padding:0.65rem 0.5rem; font-size:0.92rem; font-weight:700; border-radius:6px; border:none; cursor:pointer; background:transparent; color:#5D6B63;">
+        <span id="toggle-opt-register">New user? Register</span>
       </button>
     </div>
 
     <!-- Header Section -->
     <div style="text-align: center; margin-bottom: 1.5rem;">
-      <div id="icon-badge" style="width: 52px; height: 52px; background: #DCFCE7; color: #15803D; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin: 0 auto 0.75rem;">
-        👤
-      </div>
       <h1 id="page-title" style="font-size: 1.6rem; color: var(--civic-dark); font-weight: 800; margin-bottom: 0.35rem;">
         Citizen Login
       </h1>
@@ -78,7 +68,7 @@
     <!-- Error / Success Alert Box -->
     <div id="auth-alert" style="display: none; margin-bottom: 1.25rem;">
       <div id="auth-alert-inner" style="background: #FEE2E2; border: 1px solid #FCA5A5; color: #991B1B; padding: 0.85rem 1rem; border-radius: 8px; font-size: 0.88rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
-        <span id="auth-alert-icon">⚠️</span>
+        <span id="auth-alert-icon" class="badge-dot" style="background:#DC2626;" aria-hidden="true"></span>
         <span id="auth-alert-text">Invalid login credentials.</span>
       </div>
     </div>
@@ -119,7 +109,7 @@
         <input type="password" id="citizen-password" name="password" class="form-control" required
                placeholder="Enter password"
                style="padding: 0.75rem 1rem; font-size: 0.95rem;">
-        <div style="font-size: 0.78rem; color: #166534; margin-top: 0.25rem;" id="hint-password">
+        <div style="font-size: 0.78rem; color: #10533C; margin-top: 0.25rem;" id="hint-password">
           Default demo password: <code>citizen123</code>
         </div>
       </div>
@@ -238,10 +228,10 @@
     </form>
 
     <!-- Alternative Links: Switch to Worker or Admin -->
-    <div style="margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid #E2E8F0; text-align: center; font-size: 0.88rem; color: var(--text-muted);">
+    <div style="margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid #DCE4DE; text-align: center; font-size: 0.88rem; color: var(--text-muted);">
       <div style="margin-bottom: 0.5rem;">
         <span id="txt-are-worker">Are you a field technician?</span>
-        <a href="{{ url_for('worker_login_page') }}" style="font-weight: 700; color: #2563EB; margin-left: 4px;" id="lnk-worker-login">Worker Portal &rarr;</a>
+        <a href="{{ url_for('worker_login_page') }}" style="font-weight: 700; color: #176B68; margin-left: 4px;" id="lnk-worker-login">Worker Portal &rarr;</a>
       </div>
       <div>
         <span id="txt-are-admin">Panchayat Secretary or Official?</span>
@@ -374,14 +364,12 @@
     const formRegister = document.getElementById('citizen-register-form');
     const pageTitle = document.getElementById('page-title');
     const pageSubtitle = document.getElementById('page-subtitle');
-    const iconBadge = document.getElementById('icon-badge');
-
     if (tab === 'register') {
       btnRegister.style.background = '#FFFFFF';
-      btnRegister.style.color = '#0F172A';
+      btnRegister.style.color = '#202B26';
       btnRegister.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
       btnLogin.style.background = 'transparent';
-      btnLogin.style.color = '#64748B';
+      btnLogin.style.color = '#5D6B63';
       btnLogin.style.boxShadow = 'none';
 
       formLogin.style.display = 'none';
@@ -389,13 +377,12 @@
 
       pageTitle.textContent = d.reg_title;
       pageSubtitle.textContent = d.reg_subtitle;
-      iconBadge.textContent = '✍️';
     } else {
       btnLogin.style.background = '#FFFFFF';
-      btnLogin.style.color = '#0F172A';
+      btnLogin.style.color = '#202B26';
       btnLogin.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
       btnRegister.style.background = 'transparent';
-      btnRegister.style.color = '#64748B';
+      btnRegister.style.color = '#5D6B63';
       btnRegister.style.boxShadow = 'none';
 
       formRegister.style.display = 'none';
@@ -403,7 +390,6 @@
 
       pageTitle.textContent = d.login_title;
       pageSubtitle.textContent = d.login_subtitle;
-      iconBadge.textContent = '👤';
     }
   }
 
@@ -411,9 +397,10 @@
     activeLang = lang;
     localStorage.setItem('gramseva_lang', lang);
 
-    // Update active button
-    document.getElementById('lang-btn-en').classList.toggle('active', lang === 'en');
-    document.getElementById('lang-btn-te').classList.toggle('active', lang === 'te');
+    const btnEn = document.getElementById('lang-btn-en');
+    if (btnEn) btnEn.classList.toggle('active', lang === 'en');
+    const btnTe = document.getElementById('lang-btn-te');
+    if (btnTe) btnTe.classList.toggle('active', lang === 'te');
 
     const d = CITIZEN_I18N[lang] || CITIZEN_I18N.en;
 
@@ -479,15 +466,15 @@
     
     alertText.textContent = msg;
     if (isSuccess) {
-      alertInner.style.background = '#DCFCE7';
-      alertInner.style.border = '1px solid #86EFAC';
-      alertInner.style.color = '#15803D';
-      alertIcon.textContent = '✓';
+      alertInner.style.background = '#E8F3ED';
+      alertInner.style.border = '1px solid #DCE4DE';
+      alertInner.style.color = '#176B4D';
+      alertIcon.className = 'badge-dot'; alertIcon.style.background = '#176B4D'; alertIcon.textContent = '';
     } else {
       alertInner.style.background = '#FEE2E2';
       alertInner.style.border = '1px solid #FCA5A5';
       alertInner.style.color = '#991B1B';
-      alertIcon.textContent = '⚠️';
+      alertIcon.className = 'badge-dot'; alertIcon.style.background = '#DC2626'; alertIcon.textContent = '';
     }
     alertBox.style.display = 'block';
   }
@@ -623,7 +610,15 @@
       currentTab = 'register';
     }
     switchAuthTab(currentTab);
+
+    activeLang = window.currentLang || localStorage.getItem('gramseva_lang') || '{{ current_lang }}' || 'en';
     setLoginLanguage(activeLang);
+
+    document.addEventListener('languageChanged', (e) => {
+      if (e.detail && e.detail.lang) {
+        setLoginLanguage(e.detail.lang);
+      }
+    });
   });
 </script>
 {% endblock %}

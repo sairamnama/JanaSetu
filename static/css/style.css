@@ -1,3 +1,8 @@
+*:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
 /* ==========================================================================
    GRAMSEVA (గ్రామసేవ) - CIVIC PANCHAYAT DESIGN SYSTEM
    Adheres to BRAND_GUIDELINES.md & SYSTEM_RULES.md
@@ -6,76 +11,84 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Noto+Sans+Telugu:wght@400;600;700&display=swap');
 
 :root {
-  /* Brand Civic Palette */
-  --civic-dark: #0A3622;
-  --civic-primary: #0F5132;
-  --civic-primary-hover: #083c24;
-  --civic-accent: #198754;
-  --civic-subtle: #E8F5E9;
-  --civic-border: #C8E6C9;
+  /* Font Stacks */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-telugu: 'Noto Sans Telugu', 'Gautami', 'Nirmala UI', sans-serif;
+
+  /* Brand Civic Palette - Professional Trustworthy Green Palette */
+  --civic-primary: #176B4D;
+  --civic-primary-hover: #10533C;
+  --civic-dark: #10533C;
+  --civic-accent: #176B68;
+  --civic-subtle: #E8F3ED;
+  --civic-border: #DCE4DE;
+  /* Compatibility token: --civic-primary: #0D5C3A; */
 
   /* Saffron & Solar Gold */
   --saffron-primary: #EA580C;
   --saffron-light: #FFEDD5;
-  --panchayat-gold: #F59E0B;
-  --panchayat-gold-dark: #D97706;
+  --panchayat-gold: #D97706;
+  --panchayat-gold-dark: #B45309;
 
   /* Surface & Background */
-  --bg-page: #F8FAFC;
+  --bg-page: #F8F7F2;
   --bg-surface: #FFFFFF;
-  --bg-surface-alt: #F1F5F9;
-  --border-subtle: #E2E8F0;
-  --border-strong: #CBD5E1;
-  --border-focus: #10B981;
+  --bg-surface-alt: #E8F3ED;
+  --border-subtle: #DCE4DE;
+  --border-strong: #B8C7BE;
+  --border-focus: #176B68;
 
-  /* Typography */
-  --text-main: #0F172A;
-  --text-muted: #475569;
-  --text-subtle: #94A3B8;
+  /* Typography Colors - High WCAG Contrast */
+  --text-main: #202B26;
+  --text-muted: #5D6B63;
+  --text-subtle: #5D6B63;
   --text-inverse: #FFFFFF;
+  --link-color: #176B68;
+  --link-hover: #10533C;
 
   /* Status Tokens */
-  --status-submitted: #0284C7;
-  --status-submitted-bg: #E0F2FE;
-  --status-review: #4F46E5;
-  --status-review-bg: #EEF2FF;
-  --status-assigned: #7C3AED;
-  --status-assigned-bg: #F3E8FF;
-  --status-progress: #D97706;
+  --status-submitted: #176B68;
+  --status-submitted-bg: #E8F3ED;
+  --status-review: #176B4D;
+  --status-review-bg: #E8F3ED;
+  --status-assigned: #176B4D;
+  --status-assigned-bg: #E8F3ED;
+  --status-progress: #B45309;
   --status-progress-bg: #FEF3C7;
-  --status-resolved: #15803D;
-  --status-resolved-bg: #DCFCE7;
-  --status-closed: #334155;
-  --status-closed-bg: #F1F5F9;
-  --status-rejected: #DC2626;
+  --status-resolved: #176B4D;
+  --status-resolved-bg: #E8F3ED;
+  --status-closed: #5D6B63;
+  --status-closed-bg: #E8F3ED;
+  --status-rejected: #B91C1C;
   --status-rejected-bg: #FEE2E2;
 
   /* Priority Tokens */
-  --priority-high: #DC2626;
+  --priority-high: #B91C1C;
   --priority-high-bg: #FEF2F2;
-  --priority-medium: #D97706;
+  --priority-medium: #B45309;
   --priority-medium-bg: #FFFBEB;
-  --priority-low: #2563EB;
-  --priority-low-bg: #EFF6FF;
+  --priority-low: #176B68;
+  --priority-low-bg: #E8F3ED;
 
   /* Elevation Shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-  --shadow-glow: 0 0 20px rgba(16, 185, 129, 0.25);
+  --shadow-sm: 0 1px 2px 0 rgba(32, 43, 38, 0.05);
+  --shadow-md: 0 3px 6px -1px rgba(32, 43, 38, 0.08), 0 2px 4px -1px rgba(32, 43, 38, 0.04);
+  --shadow-lg: 0 8px 16px -2px rgba(32, 43, 38, 0.08), 0 4px 6px -2px rgba(32, 43, 38, 0.04);
+  --shadow-xl: 0 12px 24px -4px rgba(32, 43, 38, 0.1);
+  --shadow-glow: 0 0 16px rgba(23, 107, 77, 0.15);
 
   /* Radii */
   --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
   --radius-full: 9999px;
 
   /* Transitions */
   --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: all 0.15s ease;
 }
-
 /* Reset & Base */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -84,14 +97,42 @@
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-sans);
   background-color: var(--bg-page);
   color: var(--text-main);
-  line-height: 1.5;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+/* Telugu Typography & Vertical Metric Rules - Prevents Diacritic / Vatthulu Clipping */
+html[lang="te"],
+html[lang="te"] body {
+  font-family: var(--font-telugu), var(--font-sans);
+  line-height: 1.65;
+}
+
+html[lang="te"] h1,
+html[lang="te"] h2,
+html[lang="te"] h3,
+html[lang="te"] h4,
+html[lang="te"] h5,
+html[lang="te"] h6 {
+  font-family: var(--font-telugu), var(--font-heading);
+  line-height: 1.45;
+}
+
+html[lang="te"] .btn {
+  line-height: 1.5;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+html[lang="te"] .badge {
+  line-height: 1.6;
+  padding: 0.3rem 0.75rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -102,20 +143,21 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 a {
-  color: var(--civic-primary);
+  color: var(--link-color);
   text-decoration: none;
   transition: var(--transition);
 }
 
 a:hover {
-  color: var(--civic-accent);
+  color: var(--link-hover);
+  text-decoration: underline;
 }
 
 /* ==========================================================================
    HEADER & CIVIC TOPBAR
    ========================================================================== */
 .civic-topbar {
-  background: linear-gradient(90deg, #0A3622 0%, #0F5132 50%, #15803D 100%);
+  background: #10533C;
   color: #FFFFFF;
   padding: 0.4rem 1.5rem;
   font-size: 0.8rem;
@@ -181,7 +223,7 @@ a:hover {
 
 /* Main Navbar */
 .main-navbar {
-  background: rgba(255, 255, 255, 0.95);
+  background: #FFFFFF;
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-subtle);
   position: sticky;
@@ -288,20 +330,20 @@ a:hover {
   border: 1px solid transparent;
   cursor: pointer;
   transition: var(--transition);
-  min-height: 40px;
+  min-height: 44px;
   line-height: 1;
 }
 
 .btn-primary {
   background: var(--civic-primary);
   color: #FFFFFF;
-  box-shadow: 0 2px 4px rgba(15, 81, 50, 0.2);
+  box-shadow: 0 2px 4px rgba(23, 107, 77, 0.2);
 }
 
 .btn-primary:hover {
   background: var(--civic-primary-hover);
   color: #FFFFFF;
-  box-shadow: 0 4px 8px rgba(15, 81, 50, 0.3);
+  box-shadow: 0 4px 8px rgba(16, 83, 60, 0.25);
   transform: translateY(-1px);
 }
 
@@ -411,7 +453,7 @@ a:hover {
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  padding: 1.25rem;
+  padding: 1.25rem 1.5rem;
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -436,42 +478,28 @@ a:hover {
 .stat-card.stat-green::after { background: var(--status-resolved); }
 .stat-card.stat-red::after { background: var(--priority-high); }
 
-.stat-icon-wrap {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.4rem;
-  background: var(--civic-subtle);
-  color: var(--civic-primary);
-  flex-shrink: 0;
-}
-
-.stat-amber .stat-icon-wrap { background: #FEF3C7; color: #D97706; }
-.stat-blue .stat-icon-wrap { background: #E0F2FE; color: #0284C7; }
-.stat-green .stat-icon-wrap { background: #DCFCE7; color: #15803D; }
-.stat-red .stat-icon-wrap { background: #FEE2E2; color: #DC2626; }
-
 .stat-data {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .stat-value {
-  font-size: 1.75rem;
+  font-size: 1.85rem;
   font-weight: 800;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  color: var(--text-main);
+  font-family: var(--font-heading), var(--font-sans);
+  color: var(--civic-dark);
   line-height: 1.1;
+  letter-spacing: -0.02em;
 }
 
 .stat-label {
   font-size: 0.82rem;
   color: var(--text-muted);
-  font-weight: 500;
-  margin-top: 0.15rem;
+  font-weight: 600;
+  margin-top: 0.35rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 /* ==========================================================================
@@ -690,7 +718,7 @@ a:hover {
   background: #0284C7;
   border-color: #0284C7;
   color: #FFFFFF;
-  box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.25);
+  box-shadow: 0 0 0 4px rgba(23, 107, 104, 0.25);
   transform: scale(1.08);
 }
 
@@ -831,7 +859,7 @@ a:hover {
 .form-control:focus {
   outline: none;
   border-color: var(--civic-primary);
-  box-shadow: 0 0 0 3px rgba(15, 81, 50, 0.15);
+  box-shadow: 0 0 0 3px rgba(23, 107, 104, 0.18);
 }
 
 textarea.form-control {
@@ -892,7 +920,7 @@ textarea.form-control {
 }
 
 .data-table th {
-  background: #F8FAFC;
+  background: #F8F7F2;
   padding: 0.75rem 1rem;
   font-weight: 700;
   color: #475569;
@@ -911,7 +939,7 @@ textarea.form-control {
 }
 
 .data-table tbody tr:hover {
-  background: #F8FAFC;
+  background: #E8F3ED;
 }
 
 .tracking-link {
@@ -1220,5 +1248,200 @@ textarea.form-control {
     transform: rotate(90deg);
     margin: -0.1rem 0;
     align-self: center;
+  }
+}
+
+
+/* ==========================================================================
+   CLEAN STATUS INDICATORS & EMPTY STATES (REPLACES EMOJIS)
+   ========================================================================== */
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.toast-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.toast-indicator-success { background: #16A34A; }
+.toast-indicator-error { background: #DC2626; }
+.toast-indicator-warning { background: #D97706; }
+.toast-indicator-info { background: #0284C7; }
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: var(--text-muted);
+}
+.empty-state h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--civic-dark);
+  margin-bottom: 0.5rem;
+}
+.empty-state p {
+  font-size: 0.92rem;
+  max-width: 480px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   MINIMAL 3D CIVIC HERO MOTION & ACCESSIBLE STYLING
+   ========================================================================== */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .hero-grid {
+    grid-template-columns: 1.25fr 0.75fr;
+    text-align: left;
+  }
+}
+
+.hero-3d-wrap {
+  perspective: 1000px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-3d-plaque {
+  background: #FFFFFF;
+  border: 1px solid rgba(203, 213, 225, 0.9);
+  border-top: 4px solid var(--panchayat-gold);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 1.5rem;
+  width: 100%;
+  max-width: 320px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  transform-style: preserve-3d;
+  transform: rotateY(-8deg) rotateX(4deg);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease;
+  color: var(--text-main);
+  text-align: center;
+}
+
+.hero-3d-plaque:hover {
+  transform: rotateY(0deg) rotateX(0deg) translateZ(8px);
+  box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.2), 0 10px 15px -5px rgba(0, 0, 0, 0.08);
+}
+
+.plaque-crest {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 1rem;
+  transform: translateZ(18px);
+  transition: transform 0.4s ease;
+}
+
+.plaque-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--civic-dark);
+  margin-bottom: 0.25rem;
+  transform: translateZ(12px);
+}
+
+.plaque-sub {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin-bottom: 1rem;
+  transform: translateZ(8px);
+}
+
+.plaque-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--civic-subtle);
+  color: var(--civic-primary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--civic-border);
+  transform: translateZ(10px);
+}
+
+/* Step number indicators (replaces emojis in 4-step process) */
+.step-number-disc {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.1rem;
+  margin: 0 auto 1rem;
+  letter-spacing: -0.02em;
+}
+
+.step-disc-blue { background: #E0F2FE; color: #0369A1; border: 1.5px solid #BAE6FD; }
+.step-disc-indigo { background: #EEF2FF; color: #4338CA; border: 1.5px solid #C7D2FE; }
+.step-disc-amber { background: #FEF3C7; color: #B45309; border: 1.5px solid #FDE68A; }
+.step-disc-green { background: #DCFCE7; color: #15803D; border: 1.5px solid #BBF7D0; }
+
+/* Status role indicator dots */
+.role-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.role-dot-citizen { background: #22C55E; }
+.role-dot-worker { background: #F59E0B; }
+.role-dot-officer { background: #38BDF8; }
+.role-dot-admin { background: #A855F7; }
+
+/* Search input container with clean SVG mark */
+.track-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #FFFFFF;
+  border: 1.5px solid #CBD5E1;
+  border-radius: 10px;
+  padding: 0.4rem 0.4rem 0.4rem 1rem;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.track-input-wrap:focus-within {
+  border-color: var(--civic-primary);
+  box-shadow: 0 0 0 3px rgba(13, 92, 58, 0.12);
+}
+
+/* Reduced Motion Override - Essential Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .hero-3d-plaque,
+  .hero-3d-plaque:hover,
+  .plaque-crest,
+  .plaque-title,
+  .plaque-sub,
+  .plaque-status {
+    transform: none !important;
+    transition: none !important;
   }
 }

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Worker Field Operations | GramSeva{% endblock %}
+{% block title %}{{ t('portal_title') }}{% endblock %}
 
 {% block navbar %}
 <!-- ==========================================
@@ -13,27 +13,27 @@
       <img src="{{ url_for('static', filename='img/crest.svg') }}" alt="GramSeva Seal" class="brand-crest">
       <div class="brand-text-col">
         <div class="brand-title">
-          GramSeva <span class="badge" style="background:#D97706; color:#FFFFFF; font-size:0.65rem; padding:2px 7px; border-radius:4px; vertical-align:middle; letter-spacing:0.5px;">FIELD WORKER</span>
+          GramSeva <span class="badge" style="background:#D97706; color:#FFFFFF; font-size:0.65rem; padding:2px 7px; border-radius:4px; vertical-align:middle; letter-spacing:0.5px;" data-i18n="badge_field_worker">{{ t('badge_field_worker') }}</span>
           <span class="telugu-sub">క్షేత్రస్థాయి సిబ్బంది</span>
         </div>
-        <div class="brand-subtext">Ananthapur Gram Panchayat • Field Operations Console</div>
+        <div class="brand-subtext" data-i18n="field_ops_tag">{{ t('field_ops_tag') }}</div>
       </div>
     </a>
 
     <ul class="nav-links">
       <li>
         <a href="{{ url_for('worker_portal') }}" class="nav-link {% if request.endpoint in ('worker_portal', 'pages.worker_portal') %}active{% endif %}">
-          🏠 Home
+          <span data-i18n="nav_home">{{ t('nav_home') }}</span>
         </a>
       </li>
       <li>
         <a href="{{ url_for('worker_work') }}" class="nav-link {% if request.endpoint in ('worker_work', 'pages.worker_work') %}active{% endif %}">
-          🔧 Work
+          <span data-i18n="nav_worker_work">{{ t('nav_worker_work') }}</span>
         </a>
       </li>
       <li>
         <a href="{{ url_for('worker_proof') }}" class="nav-link {% if request.endpoint in ('worker_proof', 'pages.worker_proof') %}active{% endif %}">
-          📦 Work Proof & Report
+          <span data-i18n="nav_worker_proof">{{ t('nav_worker_proof') }}</span>
         </a>
       </li>
     </ul>
@@ -46,10 +46,10 @@
 {% endblock %}
 
 {% block footer_quick_links %}
-<ul style="list-style:none; font-size:0.85rem; color:#CBD5E1; display:flex; flex-direction:column; gap:0.4rem;">
-  <li><a href="{{ url_for('worker_portal') }}" style="color:#CBD5E1;">Worker Operations Home</a></li>
-  <li><a href="{{ url_for('worker_work') }}" style="color:#CBD5E1;">My Assigned Work Tasks</a></li>
-  <li><a href="{{ url_for('worker_proof') }}" style="color:#CBD5E1;">Submit Work Completion Proof</a></li>
+<ul style="list-style:none; font-size:0.85rem; color:#DCE4DE; display:flex; flex-direction:column; gap:0.4rem;">
+  <li><a href="{{ url_for('worker_portal') }}" style="color:#DCE4DE;" data-i18n="nav_worker_home">{{ t('nav_worker_home') }}</a></li>
+  <li><a href="{{ url_for('worker_work') }}" style="color:#DCE4DE;" data-i18n="nav_worker_work">{{ t('nav_worker_work') }}</a></li>
+  <li><a href="{{ url_for('worker_proof') }}" style="color:#DCE4DE;" data-i18n="nav_worker_proof">{{ t('nav_worker_proof') }}</a></li>
   <li><a href="tel:08554245678" style="color:#FDE68A;">Panchayat Bhavan Desk: 08554-245678</a></li>
 </ul>
 {% endblock %}

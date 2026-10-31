@@ -121,21 +121,27 @@ function renderAdminGrievancesTable() {
   });
 
   if (filtered.length === 0) {
+    const tEmpty = typeof window.t === 'function' ? window.t('empty_no_grievances', 'No matching grievances in records.') : 'No matching grievances in records.';
     tableBody.innerHTML = `
       <tr>
-        <td colspan="8" style="text-align:center; padding:2rem; color:#64748B;">
-          No matching grievances in records.
+        <td colspan="8" style="text-align:center; padding:2rem; color:#5D6B63;">
+          ${tEmpty}
         </td>
       </tr>
     `;
     return;
   }
 
+  const tVerify = typeof window.t === 'function' ? window.t('btn_verify', 'Verify Proof') : 'Verify Proof';
+  const tAssign = typeof window.t === 'function' ? window.t('btn_assign', 'Assign') : 'Assign';
+  const tStatus = typeof window.t === 'function' ? window.t('status_label', 'Status') : 'Status';
+  const tHistory = typeof window.t === 'function' ? window.t('lbl_audit_trail', 'History') : 'History';
+
   tableBody.innerHTML = filtered.map(g => {
     const isUrgent = g.priority === 'High';
     const deptOfficerLabel = g.department_name 
-      ? `<span style="font-weight:600; font-size:0.8rem; color:#0F5132;">${g.department_code || 'DEPT'}</span>: ${g.officer_name || '<em style="color:#94A3B8;">Unassigned</em>'}${g.worker_name ? `<br><span style="font-size:0.75rem; color:#2563EB; font-weight:600;">🔧 ${escapeHtml(g.worker_name)}</span>` : ''}`
-      : `<span style="color:#DC2626; font-size:0.75rem; font-weight:600;">⚠️ Not Assigned</span>`;
+      ? `<span style="font-weight:600; font-size:0.8rem; color:#176B4D;">${g.department_code || 'DEPT'}</span>: ${g.officer_name || '<em style="color:#5D6B63;">Unassigned</em>'}${g.worker_name ? `<br><span style="font-size:0.75rem; color:#176B68; font-weight:600;">Worker: ${escapeHtml(g.worker_name)}</span>` : ''}`
+      : `<span style="color:#DC2626; font-size:0.75rem; font-weight:600;">Not Assigned</span>`;
 
     return `
       <tr style="${isUrgent && g.status !== 'RESOLVED' && g.status !== 'CLOSED' ? 'background: #FEF2F2;' : ''}">
@@ -144,36 +150,36 @@ function renderAdminGrievancesTable() {
         </td>
         <td>
           <div style="font-weight:700; color:var(--text-main);">${escapeHtml(g.title)}</div>
-          <div style="font-size:0.75rem; color:#64748B;">Ward ${g.ward_number} • ${escapeHtml(g.location_landmark)}</div>
+          <div style="font-size:0.75rem; color:#5D6B63;">Ward ${g.ward_number} • ${escapeHtml(g.location_landmark)}</div>
         </td>
         <td>
           <div style="font-weight:600; font-size:0.85rem;">${escapeHtml(g.citizen_name || 'Citizen')}</div>
-          <div style="font-size:0.75rem; color:#64748B;">📞 ${escapeHtml(g.citizen_mobile || 'N/A')}</div>
+          <div style="font-size:0.75rem; color:#5D6B63;">${escapeHtml(g.citizen_mobile || 'N/A')}</div>
         </td>
         <td>${deptOfficerLabel}</td>
         <td>${getPriorityBadge(g.priority)}</td>
         <td>${getStatusBadge(g.status)}</td>
-        <td style="font-size:0.8rem; color:#64748B;">${g.created_at.split(' ')[0]}</td>
+        <td style="font-size:0.8rem; color:#5D6B63;">${g.created_at.split(' ')[0]}</td>
         <td>
           <div style="display:flex; gap:0.35rem; align-items:center; flex-wrap:wrap;">
             ${(g.status === 'WORK_COMPLETED' || g.status === 'OFFICER_VERIFICATION') ? `
               <button onclick="openOfficerVerifyModal(${g.id})" class="btn btn-sm btn-accent" style="font-weight:700; background:#D97706; color:#fff;" title="Review Worker Evidence & Verify">
-                🔎 Verify Proof
+                ${tVerify}
               </button>
             ` : ''}
             ${g.status === 'CITIZEN_VERIFICATION' ? `
-              <button onclick="openPhoneVerificationModal(${g.id}, '${g.tracking_id}', '${escapeHtml(g.citizen_name || 'Citizen')}', '${escapeHtml(g.citizen_mobile || '')}')" class="btn btn-sm" style="font-weight:700; background:#0284C7; color:#fff;" title="Development / Mock Verification: Simulate Outbound Call">
-                📞 Phone Call
+              <button onclick="openPhoneVerificationModal(${g.id}, '${g.tracking_id}', '${escapeHtml(g.citizen_name || 'Citizen')}', '${escapeHtml(g.citizen_mobile || '')}')" class="btn btn-sm" style="font-weight:700; background:#176B68; color:#fff;" title="Development / Mock Verification: Simulate Outbound Call">
+                Phone Call
               </button>
             ` : ''}
             <button onclick="openAssignModal(${g.id}, '${g.tracking_id}', ${g.department_id || 'null'}, ${g.assigned_officer_id || 'null'}, ${g.assigned_worker_id || 'null'})" class="btn btn-sm btn-outline-primary" title="Assign Department, Officer & Worker">
-              Assign
+              ${tAssign}
             </button>
             <button onclick="openStatusUpdateModal(${g.id}, '${g.tracking_id}', '${g.status}')" class="btn btn-sm btn-primary" title="Change Status / Remarks">
-              Status
+              ${tStatus}
             </button>
             <button onclick="openGrievanceDetail('${g.tracking_id}')" class="btn btn-sm btn-outline" title="Full Timeline History">
-              History
+              ${tHistory}
             </button>
           </div>
         </td>
@@ -273,8 +279,8 @@ async function handleDepartmentSelectChange(preselectOfficerId = null, preselect
             const reasonStr = !isEligible ? (w.ineligibility_reasons && w.ineligibility_reasons.length ? w.ineligibility_reasons[0] : `Points ${pts} < ${minPts}`) : '';
 
             return `
-              <option value="${w.id}" ${preselectWorkerId && preselectWorkerId === w.id ? 'selected' : ''} ${!isEligible ? 'disabled style="color:#94A3B8; background:#F8FAFC;"' : ''}>
-                ${isEligible ? '🔧' : '⛔'} ${escapeHtml(w.full_name)} (${escapeHtml(w.skill_trade)}) [⭐ ${pts} pts | ${workload} Active Tasks] ${!isEligible ? `[INELIGIBLE: ${escapeHtml(reasonStr)}]` : ''}
+              <option value="${w.id}" ${preselectWorkerId && preselectWorkerId === w.id ? 'selected' : ''} ${!isEligible ? 'disabled style="color:#5D6B63; background:#F8F7F2;"' : ''}>
+                ${escapeHtml(w.full_name)} (${escapeHtml(w.skill_trade)}) [${pts} pts | ${workload} Active Tasks] ${!isEligible ? `[INELIGIBLE: ${escapeHtml(reasonStr)}]` : ''}
               </option>
             `;
           }).join('');
@@ -287,8 +293,8 @@ async function handleDepartmentSelectChange(preselectOfficerId = null, preselect
           const pts = w.loyalty_points !== undefined ? w.loyalty_points : 100;
           const isEligible = pts >= 60;
           return `
-            <option value="${w.id}" ${preselectWorkerId && preselectWorkerId === w.id ? 'selected' : ''} ${!isEligible ? 'disabled style="color:#94A3B8;"' : ''}>
-              ${isEligible ? '🔧' : '⛔'} ${escapeHtml(w.full_name)} (${escapeHtml(w.skill_trade)}) [⭐ ${pts} pts] ${!isEligible ? '(Ineligible: <60 pts)' : ''}
+            <option value="${w.id}" ${preselectWorkerId && preselectWorkerId === w.id ? 'selected' : ''} ${!isEligible ? 'disabled style="color:#5D6B63;"' : ''}>
+              ${escapeHtml(w.full_name)} (${escapeHtml(w.skill_trade)}) [${pts} pts] ${!isEligible ? '(Ineligible: <60 pts)' : ''}
             </option>
           `;
         }).join('');
@@ -441,23 +447,23 @@ async function loadAnnouncementsManager() {
     if (!data.success) return;
 
     if (data.announcements.length === 0) {
-      listEl.innerHTML = `<div style="color:#64748B; padding:1rem; font-size:0.85rem;">No active announcements.</div>`;
+      listEl.innerHTML = `<div style="color:#5D6B63; padding:1rem; font-size:0.85rem;">No active announcements.</div>`;
       return;
     }
 
     listEl.innerHTML = data.announcements.map(a => `
-      <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:8px; padding:1rem; margin-bottom:0.75rem;">
+      <div style="background:#FFFFFF; border:1px solid #DCE4DE; border-radius:8px; padding:1rem; margin-bottom:0.75rem;">
         <div style="display:flex; justify-content:space-between; align-items:flex-start;">
           <div>
             <div style="font-weight:700; color:var(--text-main); font-size:0.95rem;">
-              ${a.is_emergency ? '🚨 <span style="color:#DC2626;">[EMERGENCY]</span> ' : ''}${escapeHtml(a.title)}
+              ${a.is_emergency ? '<span style="color:#DC2626; font-weight:800;">[EMERGENCY]</span> ' : ''}${escapeHtml(a.title)}
             </div>
-            <div style="font-size:0.75rem; color:#64748B; margin-top:0.2rem;">
+            <div style="font-size:0.75rem; color:#5D6B63; margin-top:0.2rem;">
               Category: ${a.category} • Published on ${a.created_at.split(' ')[0]} by ${a.published_by_name}
             </div>
           </div>
         </div>
-        <p style="font-size:0.85rem; color:#334155; margin-top:0.5rem; line-height:1.4;">${escapeHtml(a.content)}</p>
+        <p style="font-size:0.85rem; color:#5D6B63; margin-top:0.5rem; line-height:1.4;">${escapeHtml(a.content)}</p>
       </div>
     `).join('');
   } catch (e) {
@@ -510,13 +516,13 @@ function renderOfficerRoster() {
     <tr>
       <td>
         <div style="font-weight:700; color:var(--text-main);">${escapeHtml(o.full_name)}</div>
-        <div style="font-size:0.75rem; color:#64748B;">Badge: <code>${o.badge_id}</code></div>
+        <div style="font-size:0.75rem; color:#5D6B63;">Badge: <code>${o.badge_id}</code></div>
       </td>
       <td>
         <span class="category-pill">${o.department_name} (${o.department_code})</span>
       </td>
       <td>${escapeHtml(o.designation)}</td>
-      <td>📞 ${escapeHtml(o.mobile)}</td>
+      <td>${escapeHtml(o.mobile)}</td>
       <td>
         <span class="badge ${o.active_tickets > 2 ? 'badge-priority-high' : (o.active_tickets > 0 ? 'badge-in_progress' : 'badge-resolved')}">
           ${o.active_tickets} Active Cases
@@ -595,11 +601,11 @@ async function openOfficerVerifyModal(grievanceId) {
       if (g.evidence_image) {
         citizenEvBox.innerHTML = `
           <a href="${g.evidence_image}" target="_blank">
-            <img src="${g.evidence_image}" style="max-height:120px; border-radius:6px; border:1px solid #CBD5E1; box-shadow:var(--shadow-sm);" />
+            <img src="${g.evidence_image}" style="max-height:120px; border-radius:6px; border:1px solid #DCE4DE; box-shadow:var(--shadow-sm);" />
           </a>
         `;
       } else {
-        citizenEvBox.innerHTML = `<span style="font-size:0.78rem; color:#94A3B8; font-style:italic;">No photo attached with complaint</span>`;
+        citizenEvBox.innerHTML = `<span style="font-size:0.78rem; color:#5D6B63; font-style:italic;">No photo attached with complaint</span>`;
       }
     }
 
@@ -619,7 +625,7 @@ async function openOfficerVerifyModal(grievanceId) {
         let proofHtml = '';
         const isPdf = latestProof.proof_file && latestProof.proof_file.toLowerCase().endsWith('.pdf');
         if (isPdf) {
-          proofHtml += `<a href="${latestProof.proof_file}" target="_blank" class="btn btn-sm btn-outline-primary" style="display:inline-flex; align-items:center; gap:0.35rem;">📄 View Proof PDF</a>`;
+          proofHtml += `<a href="${latestProof.proof_file}" target="_blank" class="btn btn-sm btn-outline-primary" style="display:inline-flex; align-items:center; gap:0.35rem;">View Proof PDF</a>`;
         } else if (latestProof.proof_file) {
           proofHtml += `<a href="${latestProof.proof_file}" target="_blank"><img src="${latestProof.proof_file}" style="max-height:120px; border-radius:6px; border:1px solid #93C5FD; box-shadow:var(--shadow-sm);" /></a>`;
         }
@@ -628,9 +634,9 @@ async function openOfficerVerifyModal(grievanceId) {
           const isAddPdf = latestProof.additional_evidence.toLowerCase().endsWith('.pdf');
           proofHtml += `<div style="margin-top:0.4rem;">`;
           if (isAddPdf) {
-            proofHtml += `<a href="${latestProof.additional_evidence}" target="_blank" class="btn btn-sm btn-outline" style="font-size:0.75rem;">📎 Supporting Document</a>`;
+            proofHtml += `<a href="${latestProof.additional_evidence}" target="_blank" class="btn btn-sm btn-outline" style="font-size:0.75rem;">Supporting Document</a>`;
           } else {
-            proofHtml += `<a href="${latestProof.additional_evidence}" target="_blank"><img src="${latestProof.additional_evidence}" style="max-height:90px; border-radius:4px; border:1px solid #CBD5E1; margin-top:0.25rem;" /></a>`;
+            proofHtml += `<a href="${latestProof.additional_evidence}" target="_blank"><img src="${latestProof.additional_evidence}" style="max-height:90px; border-radius:4px; border:1px solid #DCE4DE; margin-top:0.25rem;" /></a>`;
           }
           proofHtml += `</div>`;
         }
@@ -643,7 +649,7 @@ async function openOfficerVerifyModal(grievanceId) {
       document.getElementById('ov-timestamp').textContent = 'Pending';
       document.getElementById('ov-completion-desc').textContent = 'No completion report recorded yet.';
       document.getElementById('ov-remarks').textContent = 'N/A';
-      document.getElementById('ov-worker-proof').innerHTML = '<span style="color:#94A3B8; font-size:0.8rem;">No uploaded evidence</span>';
+      document.getElementById('ov-worker-proof').innerHTML = '<span style="color:#5D6B63; font-size:0.8rem;">No uploaded evidence</span>';
     }
 
     // Reset remarks input
@@ -739,27 +745,27 @@ function handleCallOutcomeChange() {
   const step3 = document.getElementById('pv-step-3');
 
   if (step2) {
-    step2.style.background = '#DBEAFE';
-    step2.style.color = '#1D4ED8';
+    step2.style.background = '#E8F3ED';
+    step2.style.color = '#176B4D';
     step2.textContent = `2. ${outcome}`;
   }
 
   if (outcome === 'ANSWERED') {
     if (respGroup) respGroup.style.display = 'block';
     if (step3) {
-      step3.style.background = '#DBEAFE';
-      step3.style.color = '#1D4ED8';
+      step3.style.background = '#E8F3ED';
+      step3.style.color = '#176B4D';
       step3.textContent = '3. Citizen Response';
     }
     if (helpText) {
       helpText.textContent = 'Citizen answered automated call. Citizen response keypad selection applies.';
-      helpText.style.color = '#15803D';
+      helpText.style.color = '#176B4D';
     }
   } else {
     if (respGroup) respGroup.style.display = 'none';
     if (step3) {
-      step3.style.background = '#F1F5F9';
-      step3.style.color = '#94A3B8';
+      step3.style.background = '#E8F3ED';
+      step3.style.color = '#5D6B63';
       step3.textContent = '3. No Response (Skipped)';
     }
     if (helpText) {
@@ -785,7 +791,7 @@ async function handlePhoneVerificationSubmit(event) {
   const submitBtn = document.getElementById('pv-submit-btn');
   if (submitBtn) {
     submitBtn.disabled = true;
-    submitBtn.textContent = '📞 Placing Mock Call...';
+    submitBtn.textContent = 'Placing Mock Call...';
   }
 
   try {
@@ -811,7 +817,7 @@ async function handlePhoneVerificationSubmit(event) {
   } finally {
     if (submitBtn) {
       submitBtn.disabled = false;
-      submitBtn.textContent = '📞 Run Mock Call Simulation';
+      submitBtn.textContent = 'Run Mock Call Simulation';
     }
   }
 }
@@ -830,10 +836,9 @@ async function renderAwaitingVerificationSection(awaitingList) {
 
   if (!awaitingList || awaitingList.length === 0) {
     container.innerHTML = `
-      <div style="text-align:center; padding:2rem 1rem; color:#64748B;">
-        <div style="font-size:2.2rem; margin-bottom:0.4rem;">✅</div>
-        <div style="font-weight:700; color:#1E293B; font-size:1.05rem;">No Grievances Currently Awaiting Officer Verification</div>
-        <p style="font-size:0.85rem; margin-top:0.25rem; color:#64748B; max-width:500px; margin-left:auto; margin-right:auto;">
+      <div style="text-align:center; padding:2rem 1rem; color:#5D6B63;">
+                <div style="font-weight:700; color:#202B26; font-size:1.05rem;">No Grievances Currently Awaiting Officer Verification</div>
+        <p style="font-size:0.85rem; margin-top:0.25rem; color:#5D6B63; max-width:500px; margin-left:auto; margin-right:auto;">
           When field workers complete remediation work and upload proof, grievances will appear here for review and verification approval.
         </p>
       </div>
@@ -861,14 +866,14 @@ async function renderAwaitingVerificationSection(awaitingList) {
     return `
       <div class="officer-verify-card" id="ov-card-${g.id}" style="border: 1.5px solid #FCD34D; background: #FFFFFF; border-radius: 10px; padding: 1.25rem; margin-bottom: 1.25rem; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
         <!-- Card Header -->
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:1rem; border-bottom:1px solid #E2E8F0; padding-bottom:0.6rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:1rem; border-bottom:1px solid #DCE4DE; padding-bottom:0.6rem;">
           <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
             <a href="javascript:void(0)" onclick="openGrievanceDetail('${g.tracking_id}')" class="tracking-link" style="font-size:1.1rem; font-weight:800; font-family:monospace;">${g.tracking_id}</a>
             <span class="category-pill">${getCategoryIcon(g.category)} ${escapeHtml(g.category)}</span>
             ${getPriorityBadge(g.priority)}
             ${getStatusBadge(g.status)}
           </div>
-          <div style="font-size:0.8rem; color:#64748B;">
+          <div style="font-size:0.8rem; color:#5D6B63;">
             Submitted: ${g.created_at ? g.created_at.split(' ')[0] : 'N/A'}
           </div>
         </div>
@@ -876,68 +881,68 @@ async function renderAwaitingVerificationSection(awaitingList) {
         <!-- 2 Column Details: Original Complaint vs Worker Proof & Remarks -->
         <div class="officer-verify-grid">
           <!-- Column 1: Original Complaint -->
-          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:1rem;">
-            <div style="font-size:0.78rem; font-weight:800; color:#1E40AF; text-transform:uppercase; margin-bottom:0.4rem; display:flex; align-items:center; gap:0.35rem;">
-              <span>📋</span> Original Complaint
+          <div style="background:#F8F7F2; border:1px solid #DCE4DE; border-radius:8px; padding:1rem;">
+            <div style="font-size:0.78rem; font-weight:800; color:#176B4D; text-transform:uppercase; margin-bottom:0.4rem; display:flex; align-items:center; gap:0.35rem;">
+              Original Complaint
             </div>
-            <div style="font-weight:700; color:#0F172A; font-size:1rem; margin-bottom:0.35rem;">
+            <div style="font-weight:700; color:#202B26; font-size:1rem; margin-bottom:0.35rem;">
               ${escapeHtml(g.title)}
             </div>
-            <div style="font-size:0.88rem; color:#334155; line-height:1.45; margin-bottom:0.6rem;">
+            <div style="font-size:0.88rem; color:#5D6B63; line-height:1.45; margin-bottom:0.6rem;">
               ${escapeHtml(g.description)}
             </div>
-            <div style="font-size:0.8rem; color:#64748B; border-top:1px dashed #CBD5E1; padding-top:0.5rem;">
-              <div>📍 <strong>Location:</strong> Ward ${g.ward_number} • ${escapeHtml(g.location_landmark)}</div>
-              <div style="margin-top:0.2rem;">👤 <strong>Citizen:</strong> ${escapeHtml(g.citizen_name || 'Citizen')} (📞 ${escapeHtml(g.citizen_mobile || 'N/A')})</div>
+            <div style="font-size:0.8rem; color:#5D6B63; border-top:1px dashed #DCE4DE; padding-top:0.5rem;">
+              <div><strong>Location:</strong> Ward ${g.ward_number} • ${escapeHtml(g.location_landmark)}</div>
+              <div style="margin-top:0.2rem;"><strong>Citizen:</strong> ${escapeHtml(g.citizen_name || 'Citizen')} (${escapeHtml(g.citizen_mobile || 'N/A')})</div>
             </div>
             ${g.evidence_image ? `
-              <div style="margin-top:0.6rem; border-top:1px dashed #CBD5E1; padding-top:0.5rem;">
-                <div style="font-size:0.75rem; font-weight:700; color:#475569; margin-bottom:0.25rem;">📷 Citizen Evidence Photo:</div>
+              <div style="margin-top:0.6rem; border-top:1px dashed #DCE4DE; padding-top:0.5rem;">
+                <div style="font-size:0.75rem; font-weight:700; color:#5D6B63; margin-bottom:0.25rem;">Citizen Evidence Photo:</div>
                 <a href="${g.evidence_image}" target="_blank">
-                  <img src="${g.evidence_image}" alt="Citizen Evidence" style="max-height:100px; border-radius:6px; border:1px solid #CBD5E1;" />
+                  <img src="${g.evidence_image}" alt="Citizen Evidence" style="max-height:100px; border-radius:6px; border:1px solid #DCE4DE;" />
                 </a>
               </div>
             ` : ''}
           </div>
 
           <!-- Column 2: Worker Proof & Worker Remarks -->
-          <div style="background:#F0FDF4; border:1px solid #BBF7D0; border-radius:8px; padding:1rem;">
-            <div style="font-size:0.78rem; font-weight:800; color:#15803D; text-transform:uppercase; margin-bottom:0.4rem; display:flex; align-items:center; gap:0.35rem;">
-              <span>🛠️</span> Worker Proof & Remarks
+          <div style="background:#E8F3ED; border:1px solid #DCE4DE; border-radius:8px; padding:1rem;">
+            <div style="font-size:0.78rem; font-weight:800; color:#176B4D; text-transform:uppercase; margin-bottom:0.4rem; display:flex; align-items:center; gap:0.35rem;">
+              Worker Proof & Remarks
             </div>
             ${latestProof ? `
               <div style="font-size:0.88rem; color:#14532D; margin-bottom:0.5rem;">
                 <strong>Work Completion Description:</strong>
-                <div style="background:#FFFFFF; padding:0.5rem 0.75rem; border-radius:6px; border:1px solid #DCFCE7; margin-top:0.25rem; font-style:italic;">
+                <div style="background:#FFFFFF; padding:0.5rem 0.75rem; border-radius:6px; border:1px solid #E8F3ED; margin-top:0.25rem; font-style:italic;">
                   "${escapeHtml(latestProof.completion_notes || latestProof.description || 'Remediation completed')}"
                 </div>
               </div>
 
               ${latestProof.remarks ? `
-                <div style="font-size:0.84rem; color:#166534; margin-bottom:0.4rem;">
+                <div style="font-size:0.84rem; color:#10533C; margin-bottom:0.4rem;">
                   <strong>Worker Resolution Remarks:</strong> ${escapeHtml(latestProof.remarks)}
                 </div>
               ` : ''}
 
-              <div style="font-size:0.8rem; color:#475569; margin-bottom:0.5rem;">
-                👤 <strong>Worker:</strong> ${escapeHtml(latestProof.worker_name || 'Assigned Worker')} ${latestProof.worker_trade ? `(${escapeHtml(latestProof.worker_trade)})` : ''} • 📅 ${latestProof.created_at}
-                ${latestProof.location_coords ? `<br>📍 <strong>GPS Location:</strong> ${escapeHtml(latestProof.location_coords)}` : ''}
+              <div style="font-size:0.8rem; color:#5D6B63; margin-bottom:0.5rem;">
+                <strong>Worker:</strong> ${escapeHtml(latestProof.worker_name || 'Assigned Worker')} ${latestProof.worker_trade ? `(${escapeHtml(latestProof.worker_trade)})` : ''} • ${latestProof.created_at}
+                ${latestProof.location_coords ? `<br><strong>GPS Location:</strong> ${escapeHtml(latestProof.location_coords)}` : ''}
               </div>
 
-              <div style="margin-top:0.5rem; border-top:1px dashed #86EFAC; padding-top:0.5rem;">
-                <div style="font-size:0.75rem; font-weight:700; color:#15803D; margin-bottom:0.3rem;">Worker Uploaded Proof:</div>
+              <div style="margin-top:0.5rem; border-top:1px dashed #DCE4DE; padding-top:0.5rem;">
+                <div style="font-size:0.75rem; font-weight:700; color:#176B4D; margin-bottom:0.3rem;">Worker Uploaded Proof:</div>
                 ${isPdf ? `
                   <a href="${latestProof.proof_file}" target="_blank" class="btn btn-sm btn-outline-primary" style="display:inline-flex; align-items:center; gap:0.3rem;">
-                    📄 View Proof Document (PDF)
+                    View Proof Document (PDF)
                   </a>
                 ` : `
                   <a href="${latestProof.proof_file}" target="_blank">
-                    <img src="${latestProof.proof_file}" alt="Resolution Proof" style="max-height:120px; border-radius:6px; border:1px solid #CBD5E1;" />
+                    <img src="${latestProof.proof_file}" alt="Resolution Proof" style="max-height:120px; border-radius:6px; border:1px solid #DCE4DE;" />
                   </a>
                 `}
               </div>
             ` : `
-              <div style="color:#64748B; font-style:italic; font-size:0.85rem;">
+              <div style="color:#5D6B63; font-style:italic; font-size:0.85rem;">
                 No formal proof record attached.
               </div>
             `}
@@ -947,7 +952,7 @@ async function renderAwaitingVerificationSection(awaitingList) {
         <!-- Verification Controls -->
         <div style="background:#FFFBEB; border:1px solid #FDE68A; border-radius:8px; padding:1rem; margin-top:0.5rem;">
           <div style="font-weight:700; font-size:0.88rem; color:#92400E; margin-bottom:0.35rem; display:flex; align-items:center; gap:0.4rem;">
-            <span>⚖️</span> Officer Verification Decision Controls
+            Officer Verification Decision Controls
           </div>
           <div class="form-group" style="margin-bottom:0.85rem;">
             <label for="officer-remarks-${g.id}" class="form-label" style="font-size:0.82rem; font-weight:600; color:#78350F;">
@@ -956,11 +961,11 @@ async function renderAwaitingVerificationSection(awaitingList) {
             <textarea id="officer-remarks-${g.id}" class="form-control" rows="2" placeholder="Document audit observations or specific rework required (mandatory)..."></textarea>
           </div>
           <div style="display:flex; gap:0.75rem; flex-wrap:wrap; align-items:center;">
-            <button type="button" onclick="submitOfficerVerification(${g.id}, 'APPROVED')" class="btn touch-btn" style="background:#16A34A; color:#FFFFFF; border:none; padding:0.65rem 1.25rem; font-weight:700; flex:1; min-width:240px; justify-content:center;">
+            <button type="button" onclick="submitOfficerVerification(${g.id}, 'APPROVED')" class="btn touch-btn" style="background:#176B4D; color:#FFFFFF; border:none; padding:0.65rem 1.25rem; font-weight:700; flex:1; min-width:240px; justify-content:center;">
               ✓ Approve for Citizen Verification
             </button>
             <button type="button" onclick="submitOfficerVerification(${g.id}, 'REWORK_REQUESTED')" class="btn touch-btn" style="background:#DC2626; color:#FFFFFF; border:none; padding:0.65rem 1.25rem; font-weight:700; flex:1; min-width:180px; justify-content:center;">
-              🔁 Request Rework
+              Request Rework
             </button>
           </div>
         </div>
@@ -1002,8 +1007,8 @@ async function openOfficerVerifyModal(grievanceId) {
 
       const isPdf = latestProof.proof_file && latestProof.proof_file.toLowerCase().endsWith('.pdf');
       document.getElementById('ov-worker-proof-files').innerHTML = isPdf
-        ? `<a href="${latestProof.proof_file}" target="_blank" class="btn btn-sm btn-outline-primary">📄 View Proof PDF</a>`
-        : `<a href="${latestProof.proof_file}" target="_blank"><img src="${latestProof.proof_file}" style="max-height:140px; border-radius:6px; border:1px solid #CBD5E1;" /></a>`;
+        ? `<a href="${latestProof.proof_file}" target="_blank" class="btn btn-sm btn-outline-primary">View Proof PDF</a>`
+        : `<a href="${latestProof.proof_file}" target="_blank"><img src="${latestProof.proof_file}" style="max-height:140px; border-radius:6px; border:1px solid #DCE4DE;" /></a>`;
     } else {
       document.getElementById('ov-worker-notes').textContent = 'No formal proof record found.';
       document.getElementById('ov-worker-remarks-block').innerHTML = '';

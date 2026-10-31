@@ -299,7 +299,7 @@ def login_citizen():
     """Authenticates citizen via Name, Registered Mobile Number, and Password."""
     data = request.json or request.form
     name = (data.get('name') or data.get('full_name') or '').strip()
-    mobile = (data.get('mobile') or data.get('username') or '').strip()
+    mobile = (data.get('mobile') or data.get('phone') or data.get('username') or '').strip()
     password = data.get('password', '')
 
     if not mobile:
@@ -508,9 +508,13 @@ def login():
 
 @auth_bp.route('/logout', methods=['POST', 'GET'])
 def logout():
-    """Clears the active session."""
+    """Clears the active user session while preserving the selected language preference."""
+    saved_lang = session.get('lang') or request.cookies.get('gramseva_lang', 'en')
     session.clear()
-    return jsonify({'success': True, 'message': 'Logged out successfully.'})
+    session['lang'] = saved_lang
+    resp = jsonify({'success': True, 'logged_in': False, 'message': 'Logged out successfully.'})
+    resp.set_cookie('gramseva_lang', saved_lang, max_age=31536000, samesite='Lax', path='/')
+    return resp
 
 @auth_bp.route('/current-user', methods=['GET'])
 def current_user():

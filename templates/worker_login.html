@@ -17,15 +17,9 @@
     </a>
 
     <!-- Top Links & Language Selector -->
+    <!-- Top Links -->
     <div style="display:flex; align-items:center; gap:1rem;">
-      <!-- Language Selector -->
-      <div style="display:flex; align-items:center; gap:0.25rem; background:#F1F5F9; padding:3px 6px; border-radius:6px; border:1px solid #CBD5E1;">
-        <span style="font-size:0.75rem; font-weight:700; color:#475569; margin-right:4px;">🌐</span>
-        <button type="button" onclick="setWorkerLanguage('en')" id="w-lang-btn-en" class="lang-switch-btn active" style="font-size:0.8rem; padding:2px 8px; font-weight:700; color:#0F172A;">English</button>
-        <button type="button" onclick="setWorkerLanguage('te')" id="w-lang-btn-te" class="lang-switch-btn" style="font-size:0.8rem; padding:2px 8px; font-weight:700; color:#0F172A;">తెలుగు</button>
-      </div>
-
-      <a href="{{ url_for('index') }}" class="btn btn-outline btn-sm">🏠 <span id="w-nav-home-text">Home</span></a>
+      <a href="{{ url_for('index') }}" class="btn btn-outline btn-sm"><span id="w-nav-home-text" data-i18n="nav_home">{{ t('nav_home') }}</span></a>
     </div>
   </div>
 </nav>
@@ -35,15 +29,15 @@
 <div class="container" style="max-width: 600px; padding: 2.5rem 1rem;">
 
   <!-- Portal Navigation Tabs (Separated Logins) -->
-  <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 2px solid #E2E8F0; padding-bottom: 0.5rem;">
+  <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 2px solid #DCE4DE; padding-bottom: 0.5rem;">
     <a href="{{ url_for('citizen_login_page') }}" class="btn btn-sm btn-outline" style="flex: 1; text-align: center; border-radius: 6px;">
-      👤 <span id="w-tab-citizen">Citizen Login</span>
+      <span id="w-tab-citizen">Citizen Login</span>
     </a>
     <a href="{{ url_for('worker_login_page') }}" class="btn btn-sm btn-primary" style="flex: 1; text-align: center; border-radius: 6px; font-weight: 700; background: #D97706; border-color: #D97706;">
-      🔧 <span id="w-tab-worker">Worker Login</span>
+      <span id="w-tab-worker">Worker Login</span>
     </a>
     <a href="{{ url_for('admin_login_page') }}" class="btn btn-sm btn-outline" style="flex: 1; text-align: center; border-radius: 6px;">
-      🏛️ <span id="w-tab-admin">Admin Login</span>
+      <span id="w-tab-admin">Admin Login</span>
     </a>
   </div>
 
@@ -51,10 +45,7 @@
   <div class="card" style="padding: 2.25rem 2rem; border-top: 5px solid #D97706; box-shadow: var(--shadow-md); border-radius: 12px;">
     
     <div style="text-align: center; margin-bottom: 1.75rem;">
-      <div style="width: 52px; height: 52px; background: #FEF3C7; color: #D97706; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin: 0 auto 0.75rem;">
-        🔧
-      </div>
-      <h1 id="w-page-title" style="font-size: 1.6rem; color: var(--civic-dark); font-weight: 800; margin-bottom: 0.35rem;">
+            <h1 id="w-page-title" style="font-size: 1.6rem; color: var(--civic-dark); font-weight: 800; margin-bottom: 0.35rem;">
         Worker Login
       </h1>
       <p id="w-page-subtitle" style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.45; margin: 0;">
@@ -65,14 +56,14 @@
     <!-- Error Alert Box -->
     <div id="w-error-alert" style="display: none; margin-bottom: 1.25rem;">
       <div style="background: #FEE2E2; border: 1px solid #FCA5A5; color: #991B1B; padding: 0.85rem 1rem; border-radius: 8px; font-size: 0.88rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
-        <span>⚠️</span>
+        <span class="badge-dot" style="background:#DC2626;" aria-hidden="true"></span>
         <span id="w-error-text">Worker login credentials invalid.</span>
       </div>
     </div>
 
     <!-- DB Skill Detection Notice -->
-    <div id="w-skill-detected-badge" style="display:none; background:#F0FDF4; border:1px solid #BBF7D0; color:#15803D; padding:0.65rem 0.85rem; border-radius:8px; font-size:0.85rem; font-weight:600; margin-bottom:1.25rem;">
-      ✓ <span id="w-skill-detected-text">Skill identified from database: Plumber</span>
+    <div id="w-skill-detected-badge" style="display:none; background:#E8F3ED; border:1px solid #DCE4DE; color:#176B4D; padding:0.65rem 0.85rem; border-radius:8px; font-size:0.85rem; font-weight:600; margin-bottom:1.25rem;">
+      <span class="badge-dot" style="background:#176B4D;" aria-hidden="true"></span> <span id="w-skill-detected-text">Skill identified from database: Plumber</span>
     </div>
 
     <!-- Worker Login Form -->
@@ -119,16 +110,16 @@
           <label for="worker-skill" class="form-label" style="font-weight: 600; margin:0;">
             <span id="lbl-w-skill">Work Type / Skill</span> <span class="required" style="color:#DC2626;">*</span>
           </label>
-          <span style="font-size:0.75rem; color:#64748B;" id="w-skill-auto-note">Loaded from DB when available</span>
+          <span style="font-size:0.75rem; color:#5D6B63;" id="w-skill-auto-note">Loaded from DB when available</span>
         </div>
         <select id="worker-skill" name="skill" class="form-control" required style="padding: 0.75rem 1rem; font-size: 0.95rem;">
           <option value="">-- Select Work Type / Skill --</option>
-          <option value="Electrician">⚡ Electrician</option>
-          <option value="Plumber">💧 Plumber</option>
-          <option value="Mechanic">⚙️ Mechanic</option>
-          <option value="Mason">🧱 Mason</option>
-          <option value="Sanitation Worker">🧹 Sanitation Worker</option>
-          <option value="Other">🛠️ Other</option>
+          <option value="Electrician">Electrician</option>
+          <option value="Plumber">Plumber</option>
+          <option value="Mechanic">Mechanic</option>
+          <option value="Mason">Mason</option>
+          <option value="Sanitation Worker">Sanitation Worker</option>
+          <option value="Other">Other</option>
         </select>
       </div>
 
@@ -161,10 +152,10 @@
     </form>
 
     <!-- Alternative Links: Switch to Citizen or Admin -->
-    <div style="margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid #E2E8F0; text-align: center; font-size: 0.88rem; color: var(--text-muted);">
+    <div style="margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid #DCE4DE; text-align: center; font-size: 0.88rem; color: var(--text-muted);">
       <div style="margin-bottom: 0.5rem;">
         <span id="txt-w-are-citizen">Are you a village citizen?</span>
-        <a href="{{ url_for('citizen_login_page') }}" style="font-weight: 700; color: #16A34A; margin-left: 4px;" id="lnk-w-citizen-login">Citizen Login &rarr;</a>
+        <a href="{{ url_for('citizen_login_page') }}" style="font-weight: 700; color: #176B4D; margin-left: 4px;" id="lnk-w-citizen-login">Citizen Login &rarr;</a>
       </div>
       <div>
         <span id="txt-w-are-admin">Panchayat Secretary or Official?</span>
@@ -195,12 +186,12 @@
       ph_mobile: "e.g. 9848077889",
       lbl_skill: "Work Type / Skill",
       opt_select_skill: "-- Select Work Type / Skill --",
-      opt_electrician: "⚡ Electrician",
-      opt_plumber: "💧 Plumber",
-      opt_mechanic: "⚙️ Mechanic",
-      opt_mason: "🧱 Mason",
-      opt_sanitation: "🧹 Sanitation Worker",
-      opt_other: "🛠️ Other",
+      opt_electrician: "Electrician",
+      opt_plumber: "Plumber",
+      opt_mechanic: "Mechanic",
+      opt_mason: "Mason",
+      opt_sanitation: "Sanitation Worker",
+      opt_other: "Other",
       auto_note: "Loaded from DB when available",
       lbl_password: "Password",
       ph_password: "Enter worker password",
@@ -237,12 +228,12 @@
       ph_mobile: "ఉదా: 9848077889",
       lbl_skill: "పని రకం / నైపుణ్యం",
       opt_select_skill: "-- పని రకం / నైపుణ్యాన్ని ఎంచుకోండి --",
-      opt_electrician: "⚡ ఎలక్ట్రీషియన్ (Electrician)",
-      opt_plumber: "💧 ప్లంబర్ (Plumber)",
-      opt_mechanic: "⚙️ మెకానిక్ (Mechanic)",
-      opt_mason: "🧱 మేస్త్రీ (Mason)",
-      opt_sanitation: "🧹 పారిశుద్ధ్య కార్మికుడు (Sanitation Worker)",
-      opt_other: "🛠️ ఇతర (Other)",
+      opt_electrician: "ఎలక్ట్రీషియన్ (Electrician)",
+      opt_plumber: "ప్లంబర్ (Plumber)",
+      opt_mechanic: "మెకానిక్ (Mechanic)",
+      opt_mason: "మేస్త్రీ (Mason)",
+      opt_sanitation: "పారిశుద్ధ్య కార్మికుడు (Sanitation Worker)",
+      opt_other: "ఇతర (Other)",
       auto_note: "డేటాబేస్ నుండి లోడ్ చేయబడుతుంది",
       lbl_password: "పాస్‌వర్డ్",
       ph_password: "పాస్‌వర్డ్ నమోదు చేయండి",
@@ -271,8 +262,10 @@
     activeWorkerLang = lang;
     localStorage.setItem('gramseva_lang', lang);
 
-    document.getElementById('w-lang-btn-en').classList.toggle('active', lang === 'en');
-    document.getElementById('w-lang-btn-te').classList.toggle('active', lang === 'te');
+    const btnEn = document.getElementById('w-lang-btn-en');
+    if (btnEn) btnEn.classList.toggle('active', lang === 'en');
+    const btnTe = document.getElementById('w-lang-btn-te');
+    if (btnTe) btnTe.classList.toggle('active', lang === 'te');
 
     const d = WORKER_I18N[lang] || WORKER_I18N.en;
 
@@ -431,7 +424,14 @@
   }
 
   document.addEventListener('DOMContentLoaded', () => {
+    activeWorkerLang = window.currentLang || localStorage.getItem('gramseva_lang') || '{{ current_lang }}' || 'en';
     setWorkerLanguage(activeWorkerLang);
+
+    document.addEventListener('languageChanged', (e) => {
+      if (e.detail && e.detail.lang) {
+        setWorkerLanguage(e.detail.lang);
+      }
+    });
   });
 </script>
 {% endblock %}
