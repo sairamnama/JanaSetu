@@ -4,11 +4,11 @@
 
 {% block content %}
 <!-- Hero Section - Clean Civic Standard with Subtle 3D Plaque -->
-<section style="background: linear-gradient(135deg, #10533C 0%, #176B4D 60%, #176B4D 100%); color:#FFFFFF; padding: 3.5rem 1.5rem 3rem; position:relative;">
+<section style="background: linear-gradient(135deg, #263239 0%, #34424A 60%, #34424A 100%); color:#FFFFFF; padding: 3.5rem 1.5rem 3rem; position:relative;">
   <div class="container" style="padding-top:0; padding-bottom:0; position:relative; z-index:2;">
     <div class="hero-grid">
       <div>
-        <div style="display:inline-flex; align-items:center; gap:0.5rem; background:rgba(255,255,255,0.15); padding:0.35rem 1rem; border-radius:9999px; font-size:0.85rem; font-weight:600; color:#FEF3C7; margin-bottom:1.25rem; border:1px solid rgba(254,243,199,0.3);">
+        <div style="display:inline-flex; align-items:center; gap:0.5rem; background:rgba(241,226,215,0.12); padding:0.35rem 1rem; border-radius:9999px; font-size:0.85rem; font-weight:600; color:#F1E2D7; margin-bottom:1.25rem; border:1px solid rgba(241,226,215,0.25);">
           <span data-i18n="panchayat_name">{{ t('panchayat_name') }}</span>
         </div>
         
@@ -16,7 +16,7 @@
           {{ t('hero_title') }}
         </h1>
 
-        <p style="font-size: 1.05rem; color: #DCE4DE; line-height: 1.6; margin-bottom: 2rem; max-width: 620px;" data-i18n="hero_subtitle">
+        <p style="font-size: 1.05rem; color: #E3D8CF; line-height: 1.6; margin-bottom: 2rem; max-width: 620px;" data-i18n="hero_subtitle">
           {{ t('hero_subtitle') }}
         </p>
 
@@ -47,10 +47,10 @@
         <div class="hero-3d-plaque" aria-hidden="true">
           <img src="{{ url_for('static', filename='img/crest.svg') }}" alt="GramSeva Seal" class="plaque-crest">
           <div class="plaque-title">GramSeva</div>
-          <div class="plaque-sub">{{ t('panchayat_name') }}<br>Digital Grievance Management</div>
+          <div class="plaque-sub">{{ t('panchayat_name') }}<br><span data-i18n="hero_digital_mgmt">{{ t('hero_digital_mgmt', 'Digital Grievance Management') }}</span></div>
           <div class="plaque-status">
             <span class="role-dot role-dot-citizen"></span>
-            <span>Verified Public Service</span>
+            <span data-i18n="verified_public_service">{{ t('verified_public_service', 'Verified Public Service') }}</span>
           </div>
         </div>
       </div>
@@ -104,17 +104,17 @@
   <div id="landing-notices-container">
     <!-- Populated by JavaScript -->
     <div class="announcement-banner">
-      <div class="announcement-badge" style="font-size:0.8rem; font-weight:700; letter-spacing:0.04em;">NOTICE</div>
+      <div class="announcement-badge" style="font-size:0.8rem; font-weight:700; letter-spacing:0.04em;" data-i18n="badge_notice">{{ t('badge_notice', 'NOTICE') }}</div>
       <div>
-        <div class="announcement-title">Scheduled Drinking Water Supply Maintenance</div>
-        <div class="announcement-desc">Drinking water supply will be paused in Wards 3, 4, and 5 on Sunday between 10:00 AM and 3:00 PM due to pipeline overhaul. Residents are requested to store adequate water.</div>
+        <div class="announcement-title" data-i18n="notice_water_title">{{ t('notice_water_title', 'Scheduled Drinking Water Supply Maintenance') }}</div>
+        <div class="announcement-desc" data-i18n="notice_water_desc">{{ t('notice_water_desc', 'Drinking water supply will be paused in Wards 3, 4, and 5 on Sunday between 10:00 AM and 3:00 PM due to pipeline overhaul. Residents are requested to store adequate water.') }}</div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- 4-Step Grievance Redressal Process (Clean Number Discs) -->
-<section style="background:#FFFFFF; border-top:1px solid #DCE4DE; border-bottom:1px solid #DCE4DE; padding:3.5rem 1.5rem;">
+<section style="background:#FFFFFF; border-top:1px solid #E3D8CF; border-bottom:1px solid #E3D8CF; padding:3.5rem 1.5rem;">
   <div class="container" style="padding:0;">
     <div style="text-align:center; max-width:650px; margin:0 auto 2.5rem;">
       <h2 style="font-size:1.6rem; color:var(--civic-dark); margin-bottom:0.5rem;" data-i18n="how_it_works_title">{{ t('how_it_works_title', 'How GramSeva Works for Rural Citizens') }}</h2>
@@ -205,7 +205,7 @@
             <a href="/track/${encodeURIComponent(g.tracking_id)}" class="tracking-link">${g.tracking_id}</a>
           </td>
           <td style="font-weight:600; color:var(--text-main);">${escapeHtml(g.title)}</td>
-          <td style="font-size:0.8rem; color:#5D6B63;">Ward ${g.ward_number}</td>
+          <td style="font-size:0.8rem; color:#5F686D;">Ward ${g.ward_number}</td>
           <td><span class="category-pill">${getCategoryIcon(g.category)} ${escapeHtml(catLabel.split(' ')[0])}</span></td>
           <td>${getPriorityBadge(g.priority)}</td>
           <td>${getStatusBadge(g.status)}</td>

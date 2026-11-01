@@ -171,7 +171,7 @@
         </thead>
         <tbody id="worker-points-history-tbody">
           <tr>
-            <td colspan="5" style="text-align:center; padding:1.75rem; color:#5D6B63;" data-i18n="loading_points_history">{{ t('loading_points_history', 'Loading loyalty points history...') }}</td>
+            <td colspan="5" style="text-align:center; padding:1.75rem; color:#5F686D;" data-i18n="loading_points_history">{{ t('loading_points_history', 'Loading loyalty points history...') }}</td>
           </tr>
         </tbody>
       </table>
@@ -198,7 +198,7 @@
   <div class="modal-box" style="max-width:500px;">
     <div class="modal-header">
       <div>
-        <div style="font-size:0.78rem; color:#176B4D; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;" data-i18n="modal_accept_title">
+        <div style="font-size:0.78rem; color:#34424A; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;" data-i18n="modal_accept_title">
           {{ t('modal_accept_title', 'ACCEPT TASK ASSIGNMENT') }}
         </div>
         <h3 id="worker-accept-tracking-id" style="font-size:1.25rem; color:var(--civic-dark); font-family:monospace; margin-top:2px;"></h3>
@@ -208,9 +208,9 @@
 
     <form onsubmit="handleWorkerAcceptSubmit(event)">
       <div class="modal-body" style="padding:1.25rem;">
-        <div style="background:#E8F3ED; border:1px solid #DCE4DE; border-radius:8px; padding:0.9rem 1rem; margin-bottom:1rem; font-size:0.88rem; color:#10533C; line-height:1.5;">
+        <div style="background:#F1E2D7; border:1px solid #E3D8CF; border-radius:8px; padding:0.9rem 1rem; margin-bottom:1rem; font-size:0.88rem; color:#263239; line-height:1.5;">
           <strong data-i18n="th_worker">Task:</strong> <span id="worker-accept-title" style="font-weight:600;">--</span>
-          <div style="margin-top:0.5rem; font-size:0.82rem; color:#176B4D;" data-i18n="modal_accept_subtitle">
+          <div style="margin-top:0.5rem; font-size:0.82rem; color:#34424A;" data-i18n="modal_accept_subtitle">
             {{ t('modal_accept_subtitle', 'By accepting, you confirm responsibility for on-site remediation. The grievance will advance to ACCEPTED and appear in your active operations queue.') }}
           </div>
         </div>
@@ -221,7 +221,7 @@
 
       <div class="modal-footer" style="padding:0.75rem 1.25rem 1.25rem;">
         <button type="button" onclick="closeModal('modal-worker-accept')" class="btn btn-outline btn-sm" data-i18n="btn_cancel">{{ t('btn_cancel', 'Cancel') }}</button>
-        <button type="submit" id="btn-confirm-accept" class="btn btn-primary btn-sm" style="background:#176B4D; border-color:#176B4D; font-weight:700; padding:0.55rem 1.25rem;">
+        <button type="submit" id="btn-confirm-accept" class="btn btn-primary btn-sm" style="background:#34424A; border-color:#34424A; font-weight:700; padding:0.55rem 1.25rem;">
           <span data-i18n="btn_confirm_accept">{{ t('btn_confirm_accept', 'Confirm & Accept Work') }}</span>
         </button>
       </div>
@@ -255,7 +255,7 @@
 
         <div style="margin-bottom:1rem;">
           <strong style="font-size:0.85rem; color:var(--civic-dark);" data-i18n="th_worker">Task:</strong>
-          <span id="worker-reject-title" style="font-size:0.85rem; color:#5D6B63;">--</span>
+          <span id="worker-reject-title" style="font-size:0.85rem; color:#5F686D;">--</span>
         </div>
 
         <div class="form-group" style="margin-bottom:0;">
@@ -266,7 +266,7 @@
             data-i18n-placeholder="ph_reject_reason"
             placeholder="{{ t('ph_reject_reason', 'State specific operational reason...') }}"
             style="font-size:0.88rem;"></textarea>
-          <div style="font-size:0.75rem; color:#5D6B63; margin-top:3px;" data-i18n="reject_reason_note">
+          <div style="font-size:0.75rem; color:#5F686D; margin-top:3px;" data-i18n="reject_reason_note">
             {{ t('reject_reason_note', 'This justification will be logged permanently in the audit trail and notified to Panchayat administrators.') }}
           </div>
         </div>
@@ -289,7 +289,7 @@
   <div class="modal-box" style="max-width:540px;">
     <div class="modal-header">
       <div>
-        <div style="font-size:0.78rem; color:#5D6B63; font-weight:600;" data-i18n="modal_progress_title">{{ t('modal_progress_title', 'Update Task Progress') }}</div>
+        <div style="font-size:0.78rem; color:#5F686D; font-weight:600;" data-i18n="modal_progress_title">{{ t('modal_progress_title', 'Update Task Progress') }}</div>
         <h3 id="worker-progress-tracking-id" style="font-size:1.2rem; color:var(--civic-dark); font-family:monospace;"></h3>
       </div>
       <button class="modal-close-btn" onclick="closeModal('modal-worker-progress')">&times;</button>
@@ -328,7 +328,7 @@
   <div class="modal-box" style="max-width:560px;">
     <div class="modal-header">
       <div>
-        <div style="font-size:0.78rem; color:#5D6B63; font-weight:600;" data-i18n="modal_complete_title">{{ t('modal_complete_title', 'Submit Completion Proof') }}</div>
+        <div style="font-size:0.78rem; color:#5F686D; font-weight:600;" data-i18n="modal_complete_title">{{ t('modal_complete_title', 'Submit Completion Proof') }}</div>
         <h3 id="worker-complete-tracking-id" style="font-size:1.2rem; color:var(--civic-dark); font-family:monospace;"></h3>
       </div>
       <button class="modal-close-btn" onclick="closeModal('modal-worker-complete')">&times;</button>
@@ -353,7 +353,7 @@
           <label class="form-label" data-i18n="worker_proof_evidence">{{ t('worker_proof_evidence', 'After-Work Photograph / Evidence') }} <span class="required">*</span></label>
           <input type="file" name="proof_file" id="worker-proof-file" class="form-control" required accept="image/png,image/jpg,image/jpeg,image/webp,application/pdf">
           <div id="worker-proof-preview" style="margin-top:0.5rem;"></div>
-          <div style="font-size:0.75rem; color:#5D6B63; margin-top:0.25rem;" data-i18n="worker_proof_hint">{{ t('worker_proof_hint', 'Accepted: JPG, PNG, WEBP, PDF (Max: 5MB). File content verified.') }}</div>
+          <div style="font-size:0.75rem; color:#5F686D; margin-top:0.25rem;" data-i18n="worker_proof_hint">{{ t('worker_proof_hint', 'Accepted: JPG, PNG, WEBP, PDF (Max: 5MB). File content verified.') }}</div>
         </div>
 
         <div class="form-group">
@@ -384,7 +384,7 @@
         <div class="form-group" style="margin-bottom:0;">
           <label class="form-label" data-i18n="worker_additional_evidence">{{ t('worker_additional_evidence', 'Additional Supporting Evidence (Optional)') }}</label>
           <input type="file" name="additional_evidence" id="worker-additional-evidence" class="form-control" accept="image/png,image/jpg,image/jpeg,image/webp,application/pdf">
-          <div style="font-size:0.75rem; color:#5D6B63; margin-top:0.25rem;" data-i18n="worker_additional_evidence_hint">{{ t('worker_additional_evidence_hint', 'Optional receipt, secondary angle photo, or measurement sheet.') }}</div>
+          <div style="font-size:0.75rem; color:#5F686D; margin-top:0.25rem;" data-i18n="worker_additional_evidence_hint">{{ t('worker_additional_evidence_hint', 'Optional receipt, secondary angle photo, or measurement sheet.') }}</div>
         </div>
       </div>
 

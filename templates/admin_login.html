@@ -11,7 +11,7 @@
       <div class="brand-text-col">
         <div class="brand-title">
           GramSeva <span class="badge"
-            style="background:#202B26; color:#FFFFFF; font-size:0.65rem; padding:2px 7px; border-radius:4px; vertical-align:middle;" data-i18n="badge_admin_officials">{{ t('badge_admin_officials', 'ADMIN & OFFICIALS') }}</span>
+            style="background:#252B2E; color:#FFFFFF; font-size:0.65rem; padding:2px 7px; border-radius:4px; vertical-align:middle;" data-i18n="badge_admin_officials">{{ t('badge_admin_officials', 'ADMIN & OFFICIALS') }}</span>
         </div>
         <div class="brand-subtext" data-i18n="panchayat_admin_tag">{{ t('panchayat_admin_tag', 'Panchayat Administration & Departmental Governance') }}</div>
       </div>
@@ -30,7 +30,7 @@
 
   <!-- Portal Navigation Tabs (Separated Logins) -->
   <div
-    style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 2px solid #DCE4DE; padding-bottom: 0.5rem;">
+    style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 2px solid #E3D8CF; padding-bottom: 0.5rem;">
     <a href="{{ url_for('citizen_login_page') }}" class="btn btn-sm btn-outline"
       style="flex: 1; text-align: center; border-radius: 6px;" data-i18n="auth_citizen_login">
       {{ t('auth_citizen_login', 'Citizen Login') }}
@@ -60,10 +60,10 @@
 
     <!-- Security Notice: Restricted Public Registration -->
     <div
-      style="background: #F8F7F2; border: 1px solid #DCE4DE; color: #5D6B63; padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.85rem; margin-bottom: 1.25rem; display: flex; gap: 0.6rem; align-items: flex-start;">
-      <span class="badge-dot" style="background:#202B26;" aria-hidden="true"></span>
+      style="background: #F8F4EF; border: 1px solid #E3D8CF; color: #5F686D; padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.85rem; margin-bottom: 1.25rem; display: flex; gap: 0.6rem; align-items: flex-start;">
+      <span class="badge-dot" style="background:#252B2E;" aria-hidden="true"></span>
       <div>
-        <strong style="color: #202B26; display: block; margin-bottom: 2px;" data-i18n="admin_restricted_title">{{ t('admin_restricted_title', 'Restricted Access & Registration Policy') }}</strong>
+        <strong style="color: #252B2E; display: block; margin-bottom: 2px;" data-i18n="admin_restricted_title">{{ t('admin_restricted_title', 'Restricted Access & Registration Policy') }}</strong>
         <span data-i18n="admin_restricted_desc">{{ t('admin_restricted_desc', 'Public administrator registration is disabled. Administrative and departmental officer accounts are provisioned exclusively by authorized Panchayat authorities.') }}</span>
       </div>
     </div>
@@ -127,7 +127,7 @@
           <option value="admin" data-i18n="opt_role_admin">{{ t('opt_role_admin', 'Panchayat Secretary / Sarpanch (Admin)') }}</option>
           <option value="officer" data-i18n="opt_role_officer">{{ t('opt_role_officer', 'Department Officer (Water, Power, Roads, Sanitation)') }}</option>
         </select>
-        <div style="font-size: 0.78rem; color: #5D6B63; margin-top: 0.25rem;" data-i18n="role_validation_note">
+        <div style="font-size: 0.78rem; color: #5F686D; margin-top: 0.25rem;" data-i18n="role_validation_note">
           {{ t('role_validation_note', 'Role is validated against authorized municipal service records.') }}
         </div>
       </div>
@@ -141,7 +141,7 @@
           placeholder="{{ t('ph_admin_password', 'Enter password') }}"
           data-i18n-placeholder="ph_admin_password"
           style="padding: 0.75rem 1rem; font-size: 0.95rem;">
-        <div style="font-size: 0.78rem; color: #5D6B63; margin-top: 0.25rem;">
+        <div style="font-size: 0.78rem; color: #5F686D; margin-top: 0.25rem;">
           Demo credentials: Secretary: <code>admin</code> / <code>9848011223</code> / pass: <code>admin123</code> |
           Officer: <code>OFF-WAT-01</code> / pass: <code>officer123</code>
         </div>
@@ -158,10 +158,10 @@
 
     <!-- Alternative Links: Switch to Citizen or Worker -->
     <div
-      style="margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid #DCE4DE; text-align: center; font-size: 0.88rem; color: var(--text-muted);">
+      style="margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid #E3D8CF; text-align: center; font-size: 0.88rem; color: var(--text-muted);">
       <div style="margin-bottom: 0.5rem;">
         <a href="{{ url_for('citizen_login_page') }}"
-          style="font-weight: 700; color: #176B4D;" data-i18n="txt_are_you_citizen">{{ t('txt_are_you_citizen', 'Are you a village citizen? Citizen Login →') }}</a>
+          style="font-weight: 700; color: #34424A;" data-i18n="txt_are_you_citizen">{{ t('txt_are_you_citizen', 'Are you a village citizen? Citizen Login →') }}</a>
       </div>
       <div>
         <a href="{{ url_for('worker_login_page') }}" style="font-weight: 700; color: #D97706;" data-i18n="txt_are_you_worker">{{ t('txt_are_you_worker', 'Are you a field technician? Worker Portal →') }}</a>

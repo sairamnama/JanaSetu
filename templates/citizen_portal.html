@@ -11,9 +11,9 @@ Grievance Portal') }}{% endblock %}
 
   <!-- Welcome Hero Card -->
   <div class="card"
-    style="background: linear-gradient(135deg, #E8F3ED 0%, #FFFFFF 100%); border-left: 6px solid var(--civic-primary); padding: 2.25rem 2rem; margin-bottom: 2rem; box-shadow: var(--shadow-md);">
+    style="background: linear-gradient(135deg, #F1E2D7 0%, #FFFFFF 100%); border-left: 6px solid var(--civic-primary); padding: 2.25rem 2rem; margin-bottom: 2rem; box-shadow: var(--shadow-md);">
     <div
-      style="display: inline-flex; align-items: center; gap: 0.4rem; background: #E8F3ED; color: #10533C; font-size: 0.8rem; font-weight: 700; padding: 0.25rem 0.75rem; border-radius: 999px; margin-bottom: 0.85rem; letter-spacing: 0.04em;"
+      style="display: inline-flex; align-items: center; gap: 0.4rem; background: #F1E2D7; color: #263239; font-size: 0.8rem; font-weight: 700; padding: 0.25rem 0.75rem; border-radius: 999px; margin-bottom: 0.85rem; letter-spacing: 0.04em;"
       data-i18n="rangapuram_panchayat">
       {{ t('rangapuram_panchayat', 'RANGAPURAM GRAM PANCHAYAT') }}
     </div>
@@ -23,7 +23,7 @@ Grievance Portal') }}{% endblock %}
       {{ t('citizen_home_title', 'Welcome to Rangapuram Panchayat Grievance Service') }}
     </h1>
 
-    <p style="font-size: 1.05rem; color: #5D6B63; max-width: 780px; line-height: 1.6; margin: 0;"
+    <p style="font-size: 1.05rem; color: #5F686D; max-width: 780px; line-height: 1.6; margin: 0;"
       data-i18n="citizen_portal_desc">
       {{ t('citizen_portal_desc', 'A simple and transparent way for residents of Rangapuram to report village
       issues—such as drinking water supply, broken streetlights, sanitation, drainage, and road repairs. Submit your
@@ -40,7 +40,7 @@ Grievance Portal') }}{% endblock %}
       style="display: flex; flex-direction: column; justify-content: space-between; border-top: 5px solid var(--civic-primary); padding: 2rem 1.75rem;">
       <div>
         <div
-          style="width: 56px; height: 56px; border-radius: 12px; background: #E8F3ED; color: #176B4D; display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem;">
+          style="width: 56px; height: 56px; border-radius: 12px; background: #F1E2D7; color: #34424A; display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem;">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -70,10 +70,10 @@ Grievance Portal') }}{% endblock %}
 
     <!-- Track Grievance Card -->
     <div class="card card-lift"
-      style="display: flex; flex-direction: column; justify-content: space-between; border-top: 5px solid #176B68; padding: 2rem 1.75rem;">
+      style="display: flex; flex-direction: column; justify-content: space-between; border-top: 5px solid #B85C38; padding: 2rem 1.75rem;">
       <div>
         <div
-          style="width: 56px; height: 56px; border-radius: 12px; background: #E8F3ED; color: #176B4D; display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem;">
+          style="width: 56px; height: 56px; border-radius: 12px; background: #F1E2D7; color: #34424A; display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem;">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="11" cy="11" r="8"></circle>
@@ -92,7 +92,7 @@ Grievance Portal') }}{% endblock %}
       </div>
       <div>
         <a href="{{ url_for('citizen_track') }}" class="btn btn-outline-primary"
-          style="width: 100%; padding: 0.85rem 1.5rem; font-size: 1rem; font-weight: 700; border-radius: 8px; border-color: #176B68; color: #176B68;"
+          style="width: 100%; padding: 0.85rem 1.5rem; font-size: 1rem; font-weight: 700; border-radius: 8px; border-color: #B85C38; color: #B85C38;"
           data-i18n="nav_track">
           {{ t('nav_track', 'Track Grievance →') }}
         </a>
@@ -146,9 +146,9 @@ Grievance Portal') }}{% endblock %}
           Verified') }}</div>
       </div>
       <div class="dv-arrow" aria-hidden="true">➔</div>
-      <div class="dv-step" style="border: 1.5px dashed #176B4D; border-radius: 6px; padding: 0.25rem;">
-        <div class="dv-step-circle" style="border-color: #176B4D; color: #176B4D;">6</div>
-        <div class="dv-step-title" style="color: #176B4D; font-weight: 700;" data-i18n="status_citizen_verification">{{
+      <div class="dv-step" style="border: 1.5px dashed #34424A; border-radius: 6px; padding: 0.25rem;">
+        <div class="dv-step-circle" style="border-color: #34424A; color: #34424A;">6</div>
+        <div class="dv-step-title" style="color: #34424A; font-weight: 700;" data-i18n="status_citizen_verification">{{
           t('status_citizen_verification', 'Citizen Verification') }}</div>
       </div>
       <div class="dv-arrow" aria-hidden="true">➔</div>
@@ -161,7 +161,7 @@ Grievance Portal') }}{% endblock %}
 
   <!-- Panchayat Contact & Helpline Footer Note -->
   <div
-    style="display: flex; justify-content: space-between; align-items: center; background: #E8F3ED; border-radius: 8px; padding: 1rem 1.25rem; flex-wrap: wrap; gap: 0.75rem; font-size: 0.88rem; color: #5D6B63;">
+    style="display: flex; justify-content: space-between; align-items: center; background: #F1E2D7; border-radius: 8px; padding: 1rem 1.25rem; flex-wrap: wrap; gap: 0.75rem; font-size: 0.88rem; color: #5F686D;">
     <div>
       <strong data-i18n="footer_office_title">{{ t('footer_office_title', 'Panchayat Office') }}:</strong> 1800-425-7890
       (Toll-Free, 9 AM – 5 PM)
@@ -176,28 +176,28 @@ Grievance Portal') }}{% endblock %}
 <!-- Modal: Citizen Resolution Verification (Double Verification Confirmation) -->
 <div id="modal-citizen-verify" class="modal-backdrop">
   <div class="modal-box" style="max-width: 580px;">
-    <div class="modal-header" style="background: #E8F3ED; border-bottom: 1px solid #DCE4DE;">
+    <div class="modal-header" style="background: #F1E2D7; border-bottom: 1px solid #E3D8CF;">
       <div>
         <div
-          style="font-size: 0.75rem; color: #176B4D; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;"
+          style="font-size: 0.75rem; color: #34424A; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;"
           data-i18n="feedback_modal_title">
           {{ t('feedback_modal_title', 'CITIZEN RESOLUTION CONFIRMATION') }}
         </div>
         <h3 id="verify-modal-tracking-id"
-          style="font-size: 1.2rem; color: #14532D; font-family: monospace; margin-top: 0.2rem;"></h3>
+          style="font-size: 1.2rem; color: #263239; font-family: monospace; margin-top: 0.2rem;"></h3>
       </div>
       <button class="modal-close-btn" onclick="closeModal('modal-citizen-verify')">&times;</button>
     </div>
 
     <div class="modal-body" style="padding: 1.5rem;">
       <div
-        style="text-align: center; padding-bottom: 1.25rem; border-bottom: 1px solid #DCE4DE; margin-bottom: 1.25rem;">
+        style="text-align: center; padding-bottom: 1.25rem; border-bottom: 1px solid #E3D8CF; margin-bottom: 1.25rem;">
         <div class="empty-state-disc" aria-hidden="true"></div>
-        <h3 style="font-size: 1.25rem; font-weight: 800; color: #202B26; margin: 0 0 0.4rem 0;"
+        <h3 style="font-size: 1.25rem; font-weight: 800; color: #252B2E; margin: 0 0 0.4rem 0;"
           data-i18n="feedback_modal_title">
           {{ t('feedback_modal_title', 'Citizen Resolution Verification') }}
         </h3>
-        <p style="font-size: 1rem; color: #10533C; margin: 0; font-weight: 600; line-height: 1.5;"
+        <p style="font-size: 1rem; color: #263239; margin: 0; font-weight: 600; line-height: 1.5;"
           data-i18n="feedback_prompt">
           {{ t('citizen_verif_prompt', 'The worker has reported that the work is complete. Please confirm whether your
           original problem has actually been solved.') }}
@@ -206,19 +206,19 @@ Grievance Portal') }}{% endblock %}
 
       <!-- Grievance Summary -->
       <div
-        style="background: #F8F7F2; border: 1px solid #DCE4DE; border-radius: 8px; padding: 1rem; margin-bottom: 1.25rem;">
-        <div style="font-size: 0.78rem; color: #5D6B63; font-weight: 600; text-transform: uppercase;"
+        style="background: #F8F4EF; border: 1px solid #E3D8CF; border-radius: 8px; padding: 1rem; margin-bottom: 1.25rem;">
+        <div style="font-size: 0.78rem; color: #5F686D; font-weight: 600; text-transform: uppercase;"
           data-i18n="lbl_subject">{{ t('lbl_subject', 'Complaint Subject:') }}
         </div>
-        <div id="verify-modal-title" style="font-weight: 700; color: #202B26; font-size: 0.95rem; margin-top: 0.15rem;">
+        <div id="verify-modal-title" style="font-weight: 700; color: #252B2E; font-size: 0.95rem; margin-top: 0.15rem;">
         </div>
-        <div id="verify-modal-meta" style="font-size: 0.8rem; color: #5D6B63; margin-top: 0.3rem;"></div>
+        <div id="verify-modal-meta" style="font-size: 0.8rem; color: #5F686D; margin-top: 0.3rem;"></div>
       </div>
 
       <!-- Remarks -->
       <div class="form-group" style="margin-bottom: 1.25rem;">
         <label for="citizen-verify-remarks" class="form-label"
-          style="font-weight: 600; font-size: 0.85rem; color: #5D6B63;" data-i18n="lbl_citizen_comments">
+          style="font-weight: 600; font-size: 0.85rem; color: #5F686D;" data-i18n="lbl_citizen_comments">
           {{ t('lbl_citizen_comments', 'Remarks / Additional Comments (Optional)') }}
         </label>
         <textarea id="citizen-verify-remarks" class="form-control" rows="2"
@@ -229,7 +229,7 @@ Grievance Portal') }}{% endblock %}
       <!-- 4 Verification Action Buttons -->
       <div style="display: flex; flex-direction: column; gap: 0.75rem;">
         <button type="button" id="btn-verify-yes" onclick="submitModalCitizenVerification('YES')" class="btn touch-btn"
-          style="background:#176B4D; color:#ffffff; padding:0.85rem 1.25rem; border-radius:8px; font-weight:700; font-size:1rem; display:flex; justify-content:space-between; align-items:center; border:none; cursor:pointer;">
+          style="background:#34424A; color:#ffffff; padding:0.85rem 1.25rem; border-radius:8px; font-weight:700; font-size:1rem; display:flex; justify-content:space-between; align-items:center; border:none; cursor:pointer;">
           <span data-i18n="btn_verify_yes">✓ {{ t('btn_verify_yes', 'Yes, completely solved') }}</span>
           <span
             style="font-size:0.75rem; opacity:0.9; font-weight:500; background:rgba(255,255,255,0.2); padding:2px 8px; border-radius:4px;"
@@ -255,7 +255,7 @@ Grievance Portal') }}{% endblock %}
 
         <button type="button" id="btn-verify-unable" onclick="submitModalCitizenVerification('UNABLE_TO_VERIFY')"
           class="btn touch-btn"
-          style="background:#5D6B63; color:#ffffff; padding:0.85rem 1.25rem; border-radius:8px; font-weight:600; font-size:0.95rem; display:flex; justify-content:space-between; align-items:center; border:none; cursor:pointer;">
+          style="background:#5F686D; color:#ffffff; padding:0.85rem 1.25rem; border-radius:8px; font-weight:600; font-size:0.95rem; display:flex; justify-content:space-between; align-items:center; border:none; cursor:pointer;">
           <span data-i18n="btn_verify_unable">? {{ t('btn_verify_unable', 'Unable to verify') }}</span>
           <span
             style="font-size:0.75rem; opacity:0.9; font-weight:400; background:rgba(255,255,255,0.2); padding:2px 8px; border-radius:4px;">Keep
@@ -264,8 +264,8 @@ Grievance Portal') }}{% endblock %}
       </div>
     </div>
 
-    <div class="modal-footer" style="background: #F8F7F2;">
-      <button type="button" onclick="closeModal('modal-citizen-verify')" class="btn btn-outline btn-sm">Close</button>
+    <div class="modal-footer" style="background: #F8F4EF;">
+      <button type="button" onclick="closeModal('modal-citizen-verify')" class="btn btn-outline btn-sm" data-i18n="btn_close">{{ t('btn_close', 'Close') }}</button>
     </div>
   </div>
 </div>

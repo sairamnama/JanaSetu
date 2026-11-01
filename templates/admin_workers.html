@@ -110,7 +110,7 @@
   <div class="modal-box" style="max-width:760px; max-height:90vh; overflow-y:auto;">
     <div class="modal-header">
       <div>
-        <div style="font-size:0.78rem; color:#5D6B63; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;" data-i18n="modal_points_title">
+        <div style="font-size:0.78rem; color:#5F686D; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;" data-i18n="modal_points_title">
           {{ t('modal_points_title', 'Manual Loyalty Points Adjustment') }}
         </div>
         <h3 id="modal-points-worker-title" style="font-size:1.25rem; color:var(--civic-dark); margin:0.2rem 0 0;"></h3>
@@ -122,10 +122,10 @@
       <!-- Worker Header Summary Card -->
       <div style="background:#FFFDF5; border:1px solid #FDE68A; border-radius:10px; padding:1rem 1.25rem; margin-bottom:1.5rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
         <div>
-          <div style="font-size:0.85rem; color:#5D6B63;">
+          <div style="font-size:0.85rem; color:#5F686D;">
             <span data-i18n="th_worker">{{ t('th_worker', 'Worker') }}</span>: <strong id="modal-points-worker-name" style="color:var(--civic-dark);"></strong> · <span data-i18n="th_badge_id">{{ t('th_badge_id', 'Badge ID') }}</span>: <code id="modal-points-worker-badge"></code>
           </div>
-          <div style="font-size:0.8rem; color:#5D6B63; margin-top:2px;" id="modal-points-worker-dept"></div>
+          <div style="font-size:0.8rem; color:#5F686D; margin-top:2px;" id="modal-points-worker-dept"></div>
         </div>
         <div style="text-align:right;">
           <div style="font-size:0.75rem; color:#78350F; font-weight:600; text-transform:uppercase;" data-i18n="current_balance_label">{{ t('current_balance_label', 'Current Points Balance') }}</div>
@@ -137,7 +137,7 @@
       <div id="modal-points-alert" style="display:none; padding:0.75rem 1rem; border-radius:8px; font-size:0.88rem; font-weight:600; margin-bottom:1.25rem;"></div>
 
       <!-- Points Adjustment Form -->
-      <div style="background:#F8F7F2; border:1px solid #DCE4DE; border-radius:10px; padding:1.25rem; margin-bottom:1.75rem;">
+      <div style="background:#F8F4EF; border:1px solid #E3D8CF; border-radius:10px; padding:1.25rem; margin-bottom:1.75rem;">
         <h4 style="font-size:0.95rem; font-weight:700; color:var(--civic-dark); margin:0 0 0.75rem; display:flex; align-items:center; gap:0.4rem;" data-i18n="modal_points_title">
           {{ t('modal_points_title', 'Manual Loyalty Points Adjustment') }}
         </h4>
@@ -176,10 +176,10 @@
         <h4 style="font-size:0.95rem; font-weight:700; color:var(--civic-dark); margin:0 0 0.75rem; display:flex; align-items:center; gap:0.4rem;" data-i18n="worker_points_ledger_title">
           {{ t('worker_points_ledger_title', 'Worker Points Transaction Audit Trail') }}
         </h4>
-        <div class="table-responsive" style="max-height:280px; overflow-y:auto; border:1px solid #DCE4DE; border-radius:8px;">
+        <div class="table-responsive" style="max-height:280px; overflow-y:auto; border:1px solid #E3D8CF; border-radius:8px;">
           <table class="data-table" style="font-size:0.85rem; margin-bottom:0;">
             <thead>
-              <tr style="background:#F8F7F2;">
+              <tr style="background:#F8F4EF;">
                 <th style="width:145px;" data-i18n="th_datetime">{{ t('th_datetime', 'Date & Time') }}</th>
                 <th data-i18n="th_reason">{{ t('th_reason', 'Reason') }}</th>
                 <th style="width:110px; text-align:center;" data-i18n="th_adjustment">{{ t('th_adjustment', 'Delta') }}</th>
@@ -189,7 +189,7 @@
             </thead>
             <tbody id="modal-points-history-tbody">
               <tr>
-                <td colspan="5" style="text-align:center; padding:1.5rem; color:#5D6B63;" data-i18n="loading_points_history">{{ t('loading_points_history', 'Loading transaction ledger...') }}</td>
+                <td colspan="5" style="text-align:center; padding:1.5rem; color:#5F686D;" data-i18n="loading_points_history">{{ t('loading_points_history', 'Loading transaction ledger...') }}</td>
               </tr>
             </tbody>
           </table>
@@ -210,7 +210,7 @@
   <div class="modal-box" style="max-width:860px; max-height:90vh; overflow-y:auto;">
     <div class="modal-header">
       <div>
-        <div style="font-size:0.78rem; color:#5D6B63; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;" data-i18n="panchayat_admin_tag">
+        <div style="font-size:0.78rem; color:#5F686D; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;" data-i18n="panchayat_admin_tag">
           {{ t('panchayat_admin_tag', 'PANCHAYAT GOVERNANCE AUDIT LEDGER') }}
         </div>
         <h3 style="font-size:1.25rem; color:var(--civic-dark); margin:0.2rem 0 0;" data-i18n="all_tx_modal_title">
@@ -225,10 +225,10 @@
         {{ t('all_tx_modal_sub', 'Comprehensive, immutable log of all worker loyalty points allocations, adjustments, and penalties across all departments.') }}
       </p>
 
-      <div class="table-responsive" style="max-height:450px; overflow-y:auto; border:1px solid #DCE4DE; border-radius:8px;">
+      <div class="table-responsive" style="max-height:450px; overflow-y:auto; border:1px solid #E3D8CF; border-radius:8px;">
         <table class="data-table" style="font-size:0.85rem; margin-bottom:0;">
           <thead>
-            <tr style="background:#F8F7F2;">
+            <tr style="background:#F8F4EF;">
               <th style="width:145px;" data-i18n="th_datetime">{{ t('th_datetime', 'Date & Time') }}</th>
               <th data-i18n="th_worker">{{ t('th_worker', 'Worker') }}</th>
               <th data-i18n="th_reason">{{ t('th_reason', 'Reason') }}</th>
@@ -239,7 +239,7 @@
           </thead>
           <tbody id="all-transactions-tbody">
             <tr>
-              <td colspan="6" style="text-align:center; padding:1.5rem; color:#5D6B63;" data-i18n="loading_points_history">{{ t('loading_points_history', 'Loading full audit trail...') }}</td>
+              <td colspan="6" style="text-align:center; padding:1.5rem; color:#5F686D;" data-i18n="loading_points_history">{{ t('loading_points_history', 'Loading full audit trail...') }}</td>
             </tr>
           </tbody>
         </table>
@@ -276,7 +276,7 @@
 
     if (workers.length === 0) {
       const msg = typeof window.t === 'function' ? window.t('no_tasks_found', 'No skilled workers registered.') : 'No skilled workers registered.';
-      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:2rem; color:#5D6B63;">${msg}</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:2rem; color:#5F686D;">${msg}</td></tr>`;
       return;
     }
 
@@ -289,13 +289,13 @@
       <tr>
         <td>
           <div style="font-weight:700; color:var(--text-main);">${escapeHtml(w.full_name)}</div>
-          <div style="font-size:0.75rem; color:#5D6B63;">Staff ID: <code>#WRK-${w.id}</code></div>
+          <div style="font-size:0.75rem; color:#5F686D;">Staff ID: <code>#WRK-${w.id}</code></div>
         </td>
         <td>
           <span class="category-pill">${escapeHtml(w.department_name)}</span>
         </td>
         <td>
-          <span class="badge" style="background:#E8F3ED; color:#176B4D; border:1px solid #DCE4DE;">
+          <span class="badge" style="background:#F1E2D7; color:#34424A; border:1px solid #E3D8CF;">
             ${escapeHtml(w.skill_trade)}
           </span>
         </td>
@@ -357,7 +357,7 @@
     const tbody = document.getElementById('modal-points-history-tbody');
     if (!tbody) return;
     const msg = typeof window.t === 'function' ? window.t('loading_points_history', 'Loading transaction ledger...') : 'Loading transaction ledger...';
-    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:1.5rem; color:#5D6B63;">${msg}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:1.5rem; color:#5F686D;">${msg}</td></tr>`;
 
     try {
       const res = await fetch(`/api/admin/workers/${workerId}/points`);
@@ -376,29 +376,29 @@
 
       const txs = data.transactions || [];
       if (txs.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:1.5rem; color:#5D6B63;">No points transactions found.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:1.5rem; color:#5F686D;">No points transactions found.</td></tr>';
         return;
       }
 
       tbody.innerHTML = txs.map(tx => {
         const isPositive = tx.points_changed > 0;
         const changeBadge = isPositive 
-          ? `<span class="badge" style="background:#E8F3ED; color:#176B4D; font-weight:700;">+${tx.points_changed}</span>`
+          ? `<span class="badge" style="background:#F1E2D7; color:#34424A; font-weight:700;">+${tx.points_changed}</span>`
           : `<span class="badge" style="background:#FEE2E2; color:#B91C1C; font-weight:700;">${tx.points_changed}</span>`;
         const dateStr = tx.created_at ? tx.created_at.replace('T', ' ').substring(0, 19) : 'N/A';
 
         return `
           <tr>
-            <td style="white-space:nowrap; font-size:0.8rem; color:#5D6B63;">${dateStr}</td>
+            <td style="white-space:nowrap; font-size:0.8rem; color:#5F686D;">${dateStr}</td>
             <td>
               <div style="font-weight:600; color:var(--text-main);">${escapeHtml(tx.reason)}</div>
-              <div style="font-size:0.75rem; color:#5D6B63;">Ref: <code>#TX-${tx.id}</code></div>
+              <div style="font-size:0.75rem; color:#5F686D;">Ref: <code>#TX-${tx.id}</code></div>
             </td>
             <td style="text-align:center;">${changeBadge}</td>
             <td style="text-align:right; font-family:monospace;">
-              <span style="color:#5D6B63;">${tx.previous_balance}</span> &rarr; <strong style="color:var(--civic-dark);">${tx.new_balance}</strong>
+              <span style="color:#5F686D;">${tx.previous_balance}</span> &rarr; <strong style="color:var(--civic-dark);">${tx.new_balance}</strong>
             </td>
-            <td style="font-size:0.8rem; color:#5D6B63;">${escapeHtml(tx.actor_source || 'Admin')}</td>
+            <td style="font-size:0.8rem; color:#5F686D;">${escapeHtml(tx.actor_source || 'Admin')}</td>
           </tr>
         `;
       }).join('');
@@ -472,9 +472,9 @@
     if (!box) return;
     box.style.display = 'block';
     if (isSuccess) {
-      box.style.background = '#E8F3ED';
-      box.style.border = '1px solid #DCE4DE';
-      box.style.color = '#176B4D';
+      box.style.background = '#F1E2D7';
+      box.style.border = '1px solid #E3D8CF';
+      box.style.color = '#34424A';
     } else {
       box.style.background = '#FEE2E2';
       box.style.border = '1px solid #FCA5A5';
@@ -488,7 +488,7 @@
     const tbody = document.getElementById('all-transactions-tbody');
     if (!tbody) return;
     const msg = typeof window.t === 'function' ? window.t('loading_points_history', 'Loading full audit trail...') : 'Loading full audit trail...';
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:1.5rem; color:#5D6B63;">${msg}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:1.5rem; color:#5F686D;">${msg}</td></tr>`;
 
     try {
       const res = await fetch('/api/admin/points-transactions?limit=100');
@@ -500,33 +500,33 @@
 
       const txs = data.transactions || [];
       if (txs.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:1.5rem; color:#5D6B63;">No transactions recorded.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:1.5rem; color:#5F686D;">No transactions recorded.</td></tr>';
         return;
       }
 
       tbody.innerHTML = txs.map(tx => {
         const isPositive = tx.points_changed > 0;
         const changeBadge = isPositive 
-          ? `<span class="badge" style="background:#E8F3ED; color:#176B4D; font-weight:700;">+${tx.points_changed}</span>`
+          ? `<span class="badge" style="background:#F1E2D7; color:#34424A; font-weight:700;">+${tx.points_changed}</span>`
           : `<span class="badge" style="background:#FEE2E2; color:#B91C1C; font-weight:700;">${tx.points_changed}</span>`;
         const dateStr = tx.created_at ? tx.created_at.replace('T', ' ').substring(0, 19) : 'N/A';
 
         return `
           <tr>
-            <td style="white-space:nowrap; font-size:0.8rem; color:#5D6B63;">${dateStr}</td>
+            <td style="white-space:nowrap; font-size:0.8rem; color:#5F686D;">${dateStr}</td>
             <td>
               <div style="font-weight:700; color:var(--text-main);">${escapeHtml(tx.worker_name || 'Worker')}</div>
-              <div style="font-size:0.75rem; color:#5D6B63;"><code>${escapeHtml(tx.worker_badge || '')}</code> · ${escapeHtml(tx.department_name || '')}</div>
+              <div style="font-size:0.75rem; color:#5F686D;"><code>${escapeHtml(tx.worker_badge || '')}</code> · ${escapeHtml(tx.department_name || '')}</div>
             </td>
             <td>
               <div style="font-weight:600; color:var(--text-main);">${escapeHtml(tx.reason)}</div>
-              <div style="font-size:0.75rem; color:#5D6B63;">Ref: <code>#TX-${tx.id}</code></div>
+              <div style="font-size:0.75rem; color:#5F686D;">Ref: <code>#TX-${tx.id}</code></div>
             </td>
             <td style="text-align:center;">${changeBadge}</td>
             <td style="text-align:right; font-family:monospace;">
-              <span style="color:#5D6B63;">${tx.previous_balance}</span> &rarr; <strong style="color:var(--civic-dark);">${tx.new_balance}</strong>
+              <span style="color:#5F686D;">${tx.previous_balance}</span> &rarr; <strong style="color:var(--civic-dark);">${tx.new_balance}</strong>
             </td>
-            <td style="font-size:0.8rem; color:#5D6B63;">${escapeHtml(tx.actor_source || 'Admin')}</td>
+            <td style="font-size:0.8rem; color:#5F686D;">${escapeHtml(tx.actor_source || 'Admin')}</td>
           </tr>
         `;
       }).join('');

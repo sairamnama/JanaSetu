@@ -10,11 +10,7 @@
 const TRANSLATIONS = window.TRANSLATIONS || {};
 let currentLang = window.currentLang || (typeof localStorage !== 'undefined' && localStorage.getItem('gramseva_lang')) || 'en';
 
-function setLanguage(lang) {
-  if (typeof window.setLanguage === 'function') {
-    return window.setLanguage(lang);
-  }
-}
+// Language functions provided centrally by translations.js (window.setLanguage)
 
 // ==========================================
 // 2. TOAST NOTIFICATIONS MANAGER
@@ -114,13 +110,7 @@ function updateNavbarUser(user) {
       </div>
     `;
   } else {
-    userArea.innerHTML = `
-      <div style="display:flex; gap:0.4rem; align-items:center; flex-wrap:wrap;">
-        <a href="/citizen/login" class="btn btn-outline-primary btn-sm">${t('btn_sign_in_citizen', 'Citizen Login')}</a>
-        <a href="/worker/login" class="btn btn-outline btn-sm">${t('btn_sign_in_worker', 'Worker Login')}</a>
-        <a href="/admin/login" class="btn btn-outline btn-sm">${t('btn_sign_in_admin', 'Admin Login')}</a>
-      </div>
-    `;
+    userArea.innerHTML = '';
   }
 }
 
@@ -288,12 +278,12 @@ function renderTimelineStepper(currentStatus) {
 
   let html = `
     <div class="double-verif-card" role="region" aria-label="Double Verification Lifecycle">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem; border-bottom:1px solid #DCE4DE; padding-bottom:0.5rem; flex-wrap:wrap; gap:0.5rem;">
-        <div style="font-weight:700; font-size:0.85rem; color:#10533C;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem; border-bottom:1px solid #E3D8CF; padding-bottom:0.5rem; flex-wrap:wrap; gap:0.5rem;">
+        <div style="font-weight:700; font-size:0.85rem; color:#263239;">
           <strong>Double Verification Grievance Lifecycle</strong>
         </div>
-        <div style="font-size:0.8rem; color:#5D6B63;">
-          Current State: <strong style="color:#176B68;">${activeStageObj.label}</strong> ${stageModifierNote}
+        <div style="font-size:0.8rem; color:#5F686D;">
+          Current State: <strong style="color:#B85C38;">${activeStageObj.label}</strong> ${stageModifierNote}
         </div>
       </div>
       <div class="double-verif-stepper">
@@ -362,8 +352,8 @@ async function openGrievanceDetail(idOrTracking) {
       if (g.department_name) {
         deptOfficerEl.innerHTML = `
           <strong>${escapeHtml(g.department_name)}</strong><br>
-          ${g.officer_name ? `Officer: <span style="color:#176B4D; font-weight:600;">${escapeHtml(g.officer_name)}</span> (${escapeHtml(g.officer_designation || 'Field Official')})` : '<em>Officer unassigned</em>'}
-          ${g.worker_name ? `<br>Worker: <span style="color:#176B4D; font-weight:600;">${escapeHtml(g.worker_name)}</span> (${escapeHtml(g.worker_trade || 'Field Technician')})` : ''}
+          ${g.officer_name ? `Officer: <span style="color:#34424A; font-weight:600;">${escapeHtml(g.officer_name)}</span> (${escapeHtml(g.officer_designation || 'Field Official')})` : '<em>Officer unassigned</em>'}
+          ${g.worker_name ? `<br>Worker: <span style="color:#34424A; font-weight:600;">${escapeHtml(g.worker_name)}</span> (${escapeHtml(g.worker_trade || 'Field Technician')})` : ''}
         `;
       } else {
         deptOfficerEl.innerHTML = `<em>Department not yet assigned</em>`;
@@ -378,7 +368,7 @@ async function openGrievanceDetail(idOrTracking) {
           <div style="margin-top:0.75rem;">
             <div style="font-weight:600; font-size:0.85rem; margin-bottom:0.4rem;">Citizen Evidence Photo:</div>
             <a href="${g.evidence_image}" target="_blank">
-              <img src="${g.evidence_image}" style="max-height:160px; border-radius:8px; border:1px solid #DCE4DE; box-shadow:var(--shadow-sm);" />
+              <img src="${g.evidence_image}" style="max-height:160px; border-radius:8px; border:1px solid #E3D8CF; box-shadow:var(--shadow-sm);" />
             </a>
           </div>
         `;
@@ -395,20 +385,20 @@ async function openGrievanceDetail(idOrTracking) {
         // Prominent Status Banner
         if (g.status === 'WORK_COMPLETED' || g.status === 'OFFICER_VERIFICATION') {
           proofSectionHtml += `
-            <div class="awaiting-verification-banner" style="background:#E8F3ED; border:2px solid #176B68; color:#176B4D; font-weight:800; padding:0.75rem 1rem; border-radius:8px; margin:1rem 0; display:flex; align-items:center; gap:0.6rem; font-size:0.95rem; box-shadow:0 1px 3px rgba(37,99,235,0.15);">
+            <div class="awaiting-verification-banner" style="background:#F1E2D7; border:2px solid #B85C38; color:#34424A; font-weight:800; padding:0.75rem 1rem; border-radius:8px; margin:1rem 0; display:flex; align-items:center; gap:0.6rem; font-size:0.95rem; box-shadow:0 1px 3px rgba(37,99,235,0.15);">
               WORK COMPLETED — AWAITING VERIFICATION
             </div>
           `;
         }
 
         proofSectionHtml += `
-          <div class="card worker-proof-card" style="margin-top:1rem; border:1px solid #DCE4DE; background:#F8F7F2; border-radius:10px; padding:1.1rem;">
-            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #DCE4DE; padding-bottom:0.6rem; margin-bottom:0.85rem;">
+          <div class="card worker-proof-card" style="margin-top:1rem; border:1px solid #E3D8CF; background:#F8F4EF; border-radius:10px; padding:1.1rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #E3D8CF; padding-bottom:0.6rem; margin-bottom:0.85rem;">
               <h4 style="font-size:1rem; color:#1E3A8A; font-weight:700; margin:0; display:flex; align-items:center; gap:0.4rem;">
                 Worker Resolution Proof
               </h4>
               <div style="font-size:0.8rem;">
-                <span style="color:#5D6B63;">Current Status:</span> ${getStatusBadge(g.status)}
+                <span style="color:#5F686D;">Current Status:</span> ${getStatusBadge(g.status)}
               </div>
             </div>
         `;
@@ -418,41 +408,41 @@ async function openGrievanceDetail(idOrTracking) {
           const isAddPdf = proof.additional_evidence && proof.additional_evidence.toLowerCase().endsWith('.pdf');
 
           return `
-            <div style="background:#FFFFFF; border:1px solid #DCE4DE; border-radius:8px; padding:0.9rem; margin-bottom:${idx === g.resolution_proofs.length - 1 ? '0' : '0.75rem'};">
+            <div style="background:#FFFFFF; border:1px solid #E3D8CF; border-radius:8px; padding:0.9rem; margin-bottom:${idx === g.resolution_proofs.length - 1 ? '0' : '0.75rem'};">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
-                <div style="font-weight:700; font-size:0.85rem; color:#176B4D;">
+                <div style="font-weight:700; font-size:0.85rem; color:#34424A;">
                   Proof Attempt #${proof.proof_version || (g.resolution_proofs.length - idx)}
                   ${(proof.proof_version > 1 || idx > 0) ? '<span style="background:#FEF3C7; color:#92400E; padding:2px 6px; border-radius:4px; font-size:0.72rem; margin-left:4px;">Rework Submission</span>' : ''}
                 </div>
-                <div style="font-size:0.78rem; color:#5D6B63;">
+                <div style="font-size:0.78rem; color:#5F686D;">
                   ${proof.created_at}
                 </div>
               </div>
 
-              <div style="font-size:0.85rem; color:#5D6B63; margin-bottom:0.5rem; line-height:1.5;">
-                <strong style="color:#5D6B63;">Description:</strong>
-                <div style="background:#E8F3ED; border-radius:6px; padding:0.6rem; margin-top:0.25rem; font-style:italic;">
+              <div style="font-size:0.85rem; color:#5F686D; margin-bottom:0.5rem; line-height:1.5;">
+                <strong style="color:#5F686D;">Description:</strong>
+                <div style="background:#F1E2D7; border-radius:6px; padding:0.6rem; margin-top:0.25rem; font-style:italic;">
                   "${escapeHtml(proof.completion_notes || proof.description || '')}"
                 </div>
               </div>
 
               ${proof.remarks ? `
-              <div style="font-size:0.83rem; color:#5D6B63; margin-bottom:0.5rem;">
-                <strong style="color:#5D6B63;">Resolution Remarks:</strong> ${escapeHtml(proof.remarks)}
+              <div style="font-size:0.83rem; color:#5F686D; margin-bottom:0.5rem;">
+                <strong style="color:#5F686D;">Resolution Remarks:</strong> ${escapeHtml(proof.remarks)}
               </div>` : ''}
 
               ${proof.location_coords ? `
-              <div style="font-size:0.82rem; color:#5D6B63; margin-bottom:0.5rem;">
+              <div style="font-size:0.82rem; color:#5F686D; margin-bottom:0.5rem;">
                 <strong>Work Location:</strong> ${escapeHtml(proof.location_coords)}
               </div>` : ''}
 
-              <div style="font-size:0.82rem; color:#5D6B63; margin-bottom:0.6rem;">
+              <div style="font-size:0.82rem; color:#5F686D; margin-bottom:0.6rem;">
                 <strong>Uploaded by:</strong> ${escapeHtml(proof.worker_name || 'Assigned Worker')} ${proof.worker_trade ? `(${escapeHtml(proof.worker_trade)})` : ''}
               </div>
 
               <!-- Evidence Photos / Documents -->
               <div style="margin-top:0.6rem;">
-                <div style="font-weight:600; font-size:0.82rem; color:#5D6B63; margin-bottom:0.35rem;">Evidence Attachment:</div>
+                <div style="font-weight:600; font-size:0.82rem; color:#5F686D; margin-bottom:0.35rem;">Evidence Attachment:</div>
                 <div style="display:flex; flex-wrap:wrap; gap:0.75rem; align-items:flex-start;">
                   <div>
                     ${isPdf ? `
@@ -461,20 +451,20 @@ async function openGrievanceDetail(idOrTracking) {
                       </a>
                     ` : `
                       <a href="${proof.proof_file}" target="_blank">
-                        <img src="${proof.proof_file}" style="max-height:160px; max-width:100%; border-radius:6px; border:1px solid #DCE4DE; box-shadow:var(--shadow-sm); display:block;" alt="Resolution Proof" />
+                        <img src="${proof.proof_file}" style="max-height:160px; max-width:100%; border-radius:6px; border:1px solid #E3D8CF; box-shadow:var(--shadow-sm); display:block;" alt="Resolution Proof" />
                       </a>
                     `}
                   </div>
                   ${proof.additional_evidence ? `
                     <div>
-                      <div style="font-size:0.75rem; color:#5D6B63; margin-bottom:0.2rem;">Additional Supporting Evidence:</div>
+                      <div style="font-size:0.75rem; color:#5F686D; margin-bottom:0.2rem;">Additional Supporting Evidence:</div>
                       ${isAddPdf ? `
                         <a href="${proof.additional_evidence}" target="_blank" class="btn btn-sm btn-outline" style="display:inline-flex; align-items:center; gap:0.35rem;">
                           Supporting Document (PDF)
                         </a>
                       ` : `
                         <a href="${proof.additional_evidence}" target="_blank">
-                          <img src="${proof.additional_evidence}" style="max-height:120px; border-radius:6px; border:1px solid #DCE4DE;" alt="Additional Evidence" />
+                          <img src="${proof.additional_evidence}" style="max-height:120px; border-radius:6px; border:1px solid #E3D8CF;" alt="Additional Evidence" />
                         </a>
                       `}
                     </div>
@@ -515,23 +505,23 @@ async function openGrievanceDetail(idOrTracking) {
       if (g.status === 'CITIZEN_VERIFICATION') {
         const isComplainant = currentUser && (currentUser.id === g.citizen_id || currentUser.role === 'citizen');
         cvHtml += `
-          <div class="card citizen-verification-banner" style="margin-top:1rem; border:2px solid #176B4D; background:#E8F3ED; border-radius:10px; padding:1.25rem; box-shadow:0 2px 6px rgba(22,163,74,0.18);">
+          <div class="card citizen-verification-banner" style="margin-top:1rem; border:2px solid #34424A; background:#F1E2D7; border-radius:10px; padding:1.25rem; box-shadow:0 2px 6px rgba(22,163,74,0.18);">
             <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:0.75rem;">
               <div style="flex:1; min-width:260px;">
-                <div style="font-weight:800; color:#14532D; font-size:1.1rem; display:flex; align-items:center; gap:0.4rem; margin-bottom:0.35rem;">
+                <div style="font-weight:800; color:#263239; font-size:1.1rem; display:flex; align-items:center; gap:0.4rem; margin-bottom:0.35rem;">
                   Citizen Resolution Verification Required
                 </div>
-                <div style="font-size:0.95rem; color:#10533C; font-weight:600; line-height:1.45;">
+                <div style="font-size:0.95rem; color:#263239; font-weight:600; line-height:1.45;">
                   The worker has reported that the work is complete. Please confirm whether your original problem has actually been solved.
                 </div>
               </div>
               <div>
                 ${isComplainant ? `
-                  <button onclick="closeModal('modal-grievance-detail'); if(typeof openCitizenVerificationModal==='function') { openCitizenVerificationModal(${g.id}, '${g.tracking_id}', '${escapeHtml(g.title)}'); } else { window.location.href='/citizen'; }" class="btn touch-btn" style="background:#176B4D; color:#fff; font-weight:700; border:none; padding:0.65rem 1.25rem;">
+                  <button onclick="closeModal('modal-grievance-detail'); if(typeof openCitizenVerificationModal==='function') { openCitizenVerificationModal(${g.id}, '${g.tracking_id}', '${escapeHtml(g.title)}'); } else { window.location.href='/citizen'; }" class="btn touch-btn" style="background:#34424A; color:#fff; font-weight:700; border:none; padding:0.65rem 1.25rem;">
                     ✓ Verify Resolution Now
                   </button>
                 ` : `
-                  <span style="font-size:0.85rem; background:#E8F3ED; color:#176B4D; font-weight:700; padding:6px 12px; border-radius:6px; display:inline-block;">
+                  <span style="font-size:0.85rem; background:#F1E2D7; color:#34424A; font-weight:700; padding:6px 12px; border-radius:6px; display:inline-block;">
                     Awaiting Citizen Verification
                   </span>
                 `}
@@ -544,34 +534,34 @@ async function openGrievanceDetail(idOrTracking) {
       // Display Persistent Citizen Verification History (Never overwrite previous attempts)
       if (g.citizen_verifications && g.citizen_verifications.length > 0) {
         cvHtml += `
-          <div class="card" style="margin-top:1rem; border:1px solid #DCE4DE; background:#FAFCFF; border-radius:10px; padding:1rem;">
-            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #DCE4DE; padding-bottom:0.5rem; margin-bottom:0.75rem;">
-              <h4 style="font-size:0.95rem; color:#176B4D; font-weight:700; margin:0; display:flex; align-items:center; gap:0.35rem;">
+          <div class="card" style="margin-top:1rem; border:1px solid #E3D8CF; background:#FAFCFF; border-radius:10px; padding:1rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #E3D8CF; padding-bottom:0.5rem; margin-bottom:0.75rem;">
+              <h4 style="font-size:0.95rem; color:#34424A; font-weight:700; margin:0; display:flex; align-items:center; gap:0.35rem;">
                 Citizen Resolution Verification History (${g.citizen_verifications.length})
               </h4>
             </div>
             <div style="display:flex; flex-direction:column; gap:0.6rem;">
               ${g.citizen_verifications.map(v => {
-                const respColor = v.response === 'YES' ? '#176B4D' : (v.response === 'PARTIALLY' ? '#D97706' : (v.response === 'NO' ? '#DC2626' : '#5D6B63'));
+                const respColor = v.response === 'YES' ? '#34424A' : (v.response === 'PARTIALLY' ? '#D97706' : (v.response === 'NO' ? '#DC2626' : '#5F686D'));
                 return `
-                  <div style="background:#FFFFFF; border:1px solid #DCE4DE; border-radius:8px; padding:0.75rem 0.9rem;">
+                  <div style="background:#FFFFFF; border:1px solid #E3D8CF; border-radius:8px; padding:0.75rem 0.9rem;">
                     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
                       <div style="display:flex; align-items:center; gap:0.5rem;">
-                        <span style="font-weight:700; font-size:0.85rem; color:#202B26;">Attempt #${v.attempt_number || 1}</span>
+                        <span style="font-weight:700; font-size:0.85rem; color:#252B2E;">Attempt #${v.attempt_number || 1}</span>
                         <span style="background:${respColor}; color:#fff; font-size:0.75rem; font-weight:700; padding:2px 7px; border-radius:4px;">
                           ${v.response}
                         </span>
-                        <span style="font-size:0.78rem; color:#5D6B63;">[Method: ${v.method || v.verification_method || 'PORTAL'}]</span>
-                        <span style="font-size:0.75rem; background:#E8F3ED; color:#5D6B63; padding:2px 6px; border-radius:4px; font-weight:600;">
+                        <span style="font-size:0.78rem; color:#5F686D;">[Method: ${v.method || v.verification_method || 'PORTAL'}]</span>
+                        <span style="font-size:0.75rem; background:#F1E2D7; color:#5F686D; padding:2px 6px; border-radius:4px; font-weight:600;">
                           ${v.verification_status || 'RECORDED'}
                         </span>
                       </div>
-                      <div style="font-size:0.75rem; color:#5D6B63;">
+                      <div style="font-size:0.75rem; color:#5F686D;">
                         ${v.response_timestamp || v.created_at}
                       </div>
                     </div>
                     ${v.remarks ? `
-                      <div style="font-size:0.82rem; color:#5D6B63; margin-top:0.35rem; font-style:italic; background:#F8F7F2; padding:0.4rem 0.6rem; border-radius:4px;">
+                      <div style="font-size:0.82rem; color:#5F686D; margin-top:0.35rem; font-style:italic; background:#F8F4EF; padding:0.4rem 0.6rem; border-radius:4px;">
                         "${escapeHtml(v.remarks)}"
                       </div>
                     ` : ''}
@@ -588,7 +578,7 @@ async function openGrievanceDetail(idOrTracking) {
         cvHtml += `
           <div class="card" style="margin-top:1rem; border:1px solid #BAE6FD; background:#F0F9FF; border-radius:10px; padding:1rem;">
             <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #E0F2FE; padding-bottom:0.5rem; margin-bottom:0.75rem;">
-              <h4 style="font-size:0.95rem; color:#176B68; font-weight:700; margin:0; display:flex; align-items:center; gap:0.35rem;">
+              <h4 style="font-size:0.95rem; color:#B85C38; font-weight:700; margin:0; display:flex; align-items:center; gap:0.35rem;">
                 Telephony / IVR Verification Logs (${g.verification_attempts.length})
               </h4>
               <span style="font-size:0.72rem; background:#FEF3C7; color:#92400E; border:1px solid #F59E0B; padding:2px 7px; border-radius:10px; font-weight:700;">
@@ -597,13 +587,13 @@ async function openGrievanceDetail(idOrTracking) {
             </div>
             <div style="display:flex; flex-direction:column; gap:0.6rem;">
               ${g.verification_attempts.map(va => {
-                const outcomeColor = va.call_outcome === 'ANSWERED' ? '#176B4D' : (va.call_outcome === 'NO_ANSWER' || va.call_outcome === 'BUSY' ? '#D97706' : '#DC2626');
+                const outcomeColor = va.call_outcome === 'ANSWERED' ? '#34424A' : (va.call_outcome === 'NO_ANSWER' || va.call_outcome === 'BUSY' ? '#D97706' : '#DC2626');
                 const phoneDisplay = va.phone_number_ref || va.phone_ref || (va.contact_number && va.contact_number.length >= 4 ? '******' + va.contact_number.slice(-4) : '******');
                 return `
-                  <div style="background:#FFFFFF; border:1px solid #DCE4DE; border-radius:8px; padding:0.75rem 0.9rem;">
+                  <div style="background:#FFFFFF; border:1px solid #E3D8CF; border-radius:8px; padding:0.75rem 0.9rem;">
                     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
                       <div style="display:flex; align-items:center; gap:0.5rem;">
-                        <span style="font-weight:700; font-size:0.85rem; color:#202B26;">Attempt #${va.attempt_number || 1}</span>
+                        <span style="font-weight:700; font-size:0.85rem; color:#252B2E;">Attempt #${va.attempt_number || 1}</span>
                         <span style="background:${outcomeColor}; color:#fff; font-size:0.75rem; font-weight:700; padding:2px 7px; border-radius:4px;">
                           ${va.call_outcome}
                         </span>
@@ -612,17 +602,17 @@ async function openGrievanceDetail(idOrTracking) {
                             Response: ${va.citizen_response}
                           </span>
                         ` : ''}
-                        <span style="font-size:0.75rem; color:#176B68; font-family:monospace; background:#E0F2FE; padding:2px 6px; border-radius:4px;">
+                        <span style="font-size:0.75rem; color:#B85C38; font-family:monospace; background:#E0F2FE; padding:2px 6px; border-radius:4px;">
                           ${escapeHtml(phoneDisplay)}
                         </span>
-                        <span style="font-size:0.72rem; color:#5D6B63;">[Ref: ${escapeHtml(va.provider_ref || 'MOCK')}]</span>
+                        <span style="font-size:0.72rem; color:#5F686D;">[Ref: ${escapeHtml(va.provider_ref || 'MOCK')}]</span>
                       </div>
-                      <div style="font-size:0.75rem; color:#5D6B63;">
+                      <div style="font-size:0.75rem; color:#5F686D;">
                         ${va.response_time || va.attempted_at || 'Recently'}
                       </div>
                     </div>
                     ${va.remarks ? `
-                      <div style="font-size:0.82rem; color:#5D6B63; margin-top:0.35rem; font-style:italic; background:#F8F7F2; padding:0.4rem 0.6rem; border-radius:4px;">
+                      <div style="font-size:0.82rem; color:#5F686D; margin-top:0.35rem; font-style:italic; background:#F8F4EF; padding:0.4rem 0.6rem; border-radius:4px;">
                         "${escapeHtml(va.remarks)}"
                       </div>
                     ` : ''}
@@ -684,9 +674,9 @@ async function openGrievanceDetail(idOrTracking) {
       let resHtml = reworkBanner;
       if (g.resolution_notes) {
         resHtml += `
-          <div style="background:#E8F3ED; border:1px solid #DCE4DE; border-radius:8px; padding:0.85rem 1rem; margin-top:1rem;">
-            <div style="font-weight:700; color:#176B4D; font-size:0.88rem;">Official Resolution Notes:</div>
-            <div style="color:#14532D; font-size:0.85rem; margin-top:0.25rem;">${escapeHtml(g.resolution_notes)}</div>
+          <div style="background:#F1E2D7; border:1px solid #E3D8CF; border-radius:8px; padding:0.85rem 1rem; margin-top:1rem;">
+            <div style="font-weight:700; color:#34424A; font-size:0.88rem;">Official Resolution Notes:</div>
+            <div style="color:#263239; font-size:0.85rem; margin-top:0.25rem;">${escapeHtml(g.resolution_notes)}</div>
           </div>
         `;
       }
@@ -696,15 +686,15 @@ async function openGrievanceDetail(idOrTracking) {
     const historyContainer = document.getElementById('detail-history-list');
     if (historyContainer && g.timeline) {
       historyContainer.innerHTML = g.timeline.map(item => `
-        <div style="padding:0.75rem 0; border-bottom:1px solid #DCE4DE; display:flex; justify-content:space-between; align-items:flex-start;">
+        <div style="padding:0.75rem 0; border-bottom:1px solid #E3D8CF; display:flex; justify-content:space-between; align-items:flex-start;">
           <div>
-            <div style="font-weight:600; font-size:0.85rem; color:#202B26;">
+            <div style="font-weight:600; font-size:0.85rem; color:#252B2E;">
               ${getStatusBadge(item.to_status)}
-              <span style="font-size:0.8rem; color:#5D6B63; margin-left:0.5rem;">by ${escapeHtml(item.updated_by_name)} (${escapeHtml(item.updated_by_role)})</span>
+              <span style="font-size:0.8rem; color:#5F686D; margin-left:0.5rem;">by ${escapeHtml(item.updated_by_name)} (${escapeHtml(item.updated_by_role)})</span>
             </div>
-            <div style="font-size:0.82rem; color:#5D6B63; margin-top:0.35rem;">${escapeHtml(item.remarks)}</div>
+            <div style="font-size:0.82rem; color:#5F686D; margin-top:0.35rem;">${escapeHtml(item.remarks)}</div>
           </div>
-          <div style="font-size:0.75rem; color:#5D6B63; white-space:nowrap;">${item.created_at}</div>
+          <div style="font-size:0.75rem; color:#5F686D; white-space:nowrap;">${item.created_at}</div>
         </div>
       `).join('');
     }

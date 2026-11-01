@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Citizen Portal | Login & Registration | Rangapuram Gram Panchayat{% endblock %}
+{% block title %}{{ t('portal_title') }}{% endblock %}
 
 {% block navbar %}
 <!-- Citizen Login Portal Header -->
@@ -10,15 +10,15 @@
       <img src="{{ url_for('static', filename='img/crest.svg') }}" alt="GramSeva Seal" class="brand-crest">
       <div class="brand-text-col">
         <div class="brand-title">
-          GramSeva <span class="badge" style="background:#176B4D; color:#FFFFFF; font-size:0.65rem; padding:2px 7px; border-radius:4px; vertical-align:middle;">CITIZEN</span>
+          GramSeva <span class="badge" style="background:#34424A; color:#FFFFFF; font-size:0.65rem; padding:2px 7px; border-radius:4px; vertical-align:middle;" data-i18n="role_citizen">{{ t('role_citizen', 'Citizen') }}</span>
         </div>
-        <div class="brand-subtext" id="header-subtext">Rangapuram Gram Panchayat • Citizen Services</div>
+        <div class="brand-subtext" data-i18n="rangapuram_panchayat">{{ t('rangapuram_panchayat', 'Rangapuram Gram Panchayat • Citizen Redressal Services') }}</div>
       </div>
     </a>
 
     <!-- Top Links -->
     <div style="display:flex; align-items:center; gap:1rem;">
-      <a href="{{ url_for('index') }}" class="btn btn-outline btn-sm"><span id="nav-home-text" data-i18n="nav_home">{{ t('nav_home') }}</span></a>
+      <a href="{{ url_for('index') }}" class="btn btn-outline btn-sm"><span data-i18n="nav_home">{{ t('nav_home', 'Home') }}</span></a>
     </div>
   </div>
 </nav>
@@ -28,15 +28,15 @@
 <div class="container" style="max-width: 580px; padding: 2.5rem 1rem;">
 
   <!-- Portal Navigation Tabs (Separated Logins) -->
-  <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 2px solid #DCE4DE; padding-bottom: 0.5rem;">
+  <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 2px solid #E3D8CF; padding-bottom: 0.5rem;">
     <a href="{{ url_for('citizen_login_page') }}" class="btn btn-sm btn-primary" style="flex: 1; text-align: center; border-radius: 6px; font-weight: 700;">
-      <span id="tab-citizen">Citizen Portal</span>
+      <span data-i18n="auth_citizen_portal">{{ t('auth_citizen_portal', 'Citizen Portal') }}</span>
     </a>
     <a href="{{ url_for('worker_login_page') }}" class="btn btn-sm btn-outline" style="flex: 1; text-align: center; border-radius: 6px;">
-      <span id="tab-worker">Worker Login</span>
+      <span data-i18n="auth_worker_login">{{ t('auth_worker_login', 'Worker Login') }}</span>
     </a>
     <a href="{{ url_for('admin_login_page') }}" class="btn btn-sm btn-outline" style="flex: 1; text-align: center; border-radius: 6px;">
-      <span id="tab-admin">Admin Login</span>
+      <span data-i18n="auth_admin_login">{{ t('auth_admin_login', 'Admin Login') }}</span>
     </a>
   </div>
 
@@ -44,24 +44,24 @@
   <div class="card" style="padding: 2.25rem 2rem; border-top: 5px solid var(--civic-primary); box-shadow: var(--shadow-md); border-radius: 12px;">
     
     <!-- Option Selector: Register vs Login -->
-    <div style="display:flex; background:#E8F3ED; padding:4px; border-radius:8px; margin-bottom:1.5rem; border:1px solid #DCE4DE;">
+    <div style="display:flex; background:#F1E2D7; padding:4px; border-radius:8px; margin-bottom:1.5rem; border:1px solid #E3D8CF;">
       <button type="button" id="tab-btn-login" onclick="switchAuthTab('login')"
-              style="flex:1; padding:0.65rem 0.5rem; font-size:0.92rem; font-weight:700; border-radius:6px; border:none; cursor:pointer; background:#FFFFFF; color:#202B26; box-shadow:0 1px 3px rgba(0,0,0,0.1);">
-        <span id="toggle-opt-login">Already registered? Login</span>
+              style="flex:1; padding:0.65rem 0.5rem; font-size:0.92rem; font-weight:700; border-radius:6px; border:none; cursor:pointer; background:#FFFFFF; color:#252B2E; box-shadow:0 1px 3px rgba(0,0,0,0.1);">
+        <span data-i18n="auth_toggle_login">{{ t('auth_toggle_login', 'Already registered? Login') }}</span>
       </button>
       <button type="button" id="tab-btn-register" onclick="switchAuthTab('register')"
-              style="flex:1; padding:0.65rem 0.5rem; font-size:0.92rem; font-weight:700; border-radius:6px; border:none; cursor:pointer; background:transparent; color:#5D6B63;">
-        <span id="toggle-opt-register">New user? Register</span>
+              style="flex:1; padding:0.65rem 0.5rem; font-size:0.92rem; font-weight:700; border-radius:6px; border:none; cursor:pointer; background:transparent; color:#5F686D;">
+        <span data-i18n="auth_toggle_register">{{ t('auth_toggle_register', 'New user? Register') }}</span>
       </button>
     </div>
 
     <!-- Header Section -->
     <div style="text-align: center; margin-bottom: 1.5rem;">
-      <h1 id="page-title" style="font-size: 1.6rem; color: var(--civic-dark); font-weight: 800; margin-bottom: 0.35rem;">
-        Citizen Login
+      <h1 id="page-title" style="font-size: 1.6rem; color: var(--civic-dark); font-weight: 800; margin-bottom: 0.35rem;" data-i18n="auth_citizen_login_title">
+        {{ t('auth_citizen_login_title', 'Citizen Login') }}
       </h1>
-      <p id="page-subtitle" style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.45; margin: 0;">
-        Enter your registered details to access citizen grievance services for Rangapuram Panchayat.
+      <p id="page-subtitle" style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.45; margin: 0;" data-i18n="auth_citizen_login_sub">
+        {{ t('auth_citizen_login_sub', 'Enter your registered details to access citizen grievance services for Rangapuram Panchayat.') }}
       </p>
     </div>
 
@@ -69,7 +69,7 @@
     <div id="auth-alert" style="display: none; margin-bottom: 1.25rem;">
       <div id="auth-alert-inner" style="background: #FEE2E2; border: 1px solid #FCA5A5; color: #991B1B; padding: 0.85rem 1rem; border-radius: 8px; font-size: 0.88rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
         <span id="auth-alert-icon" class="badge-dot" style="background:#DC2626;" aria-hidden="true"></span>
-        <span id="auth-alert-text">Invalid login credentials.</span>
+        <span id="auth-alert-text"></span>
       </div>
     </div>
 
@@ -81,52 +81,55 @@
       <!-- Citizen Name -->
       <div class="form-group" style="margin-bottom: 1.25rem;">
         <label for="citizen-name" class="form-label" style="font-weight: 600;">
-          <span id="lbl-name">Full Name</span> <span class="required" style="color:#DC2626;">*</span>
+          <span data-i18n="auth_lbl_name">{{ t('auth_lbl_name', 'Full Name') }}</span> <span class="required" style="color:#DC2626;">*</span>
         </label>
         <input type="text" id="citizen-name" name="name" class="form-control" required
-               placeholder="e.g. Ramesh Naidu"
-               style="padding: 0.75rem 1rem; font-size: 0.95rem;">
+               placeholder="{{ t('auth_ph_name', 'e.g. Ramesh Naidu') }}"
+               data-i18n-placeholder="auth_ph_name"
+               style="font-size: 0.95rem; padding: 0.65rem 0.85rem;" autocomplete="name">
       </div>
 
-      <!-- Registered Mobile Number -->
+      <!-- Mobile Number -->
       <div class="form-group" style="margin-bottom: 1.25rem;">
         <label for="citizen-mobile" class="form-label" style="font-weight: 600;">
-          <span id="lbl-mobile">Registered Mobile Number</span> <span class="required" style="color:#DC2626;">*</span>
+          <span data-i18n="auth_lbl_mobile">{{ t('auth_lbl_mobile', 'Registered Mobile Number') }}</span> <span class="required" style="color:#DC2626;">*</span>
         </label>
-        <input type="tel" id="citizen-mobile" name="mobile" class="form-control" required maxlength="15"
-               placeholder="10-digit mobile number"
-               style="padding: 0.75rem 1rem; font-size: 0.95rem;">
-        <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.25rem;" id="hint-mobile">
-          Must match your registered citizen phone number (e.g., 9876543210).
-        </div>
+        <input type="tel" id="citizen-mobile" name="mobile" class="form-control" required
+               pattern="[0-9]{10}" maxlength="10"
+               placeholder="{{ t('auth_ph_mobile', '10-digit mobile number') }}"
+               data-i18n-placeholder="auth_ph_mobile"
+               style="font-size: 0.95rem; padding: 0.65rem 0.85rem;" autocomplete="tel">
+        <small class="form-text text-muted" style="font-size: 0.78rem; color:#5F686D;" data-i18n="auth_hint_mobile">
+          {{ t('auth_hint_mobile', 'Must match your registered citizen phone number (e.g., 9876543210).') }}
+        </small>
       </div>
 
-      <!-- Password / PIN -->
+      <!-- Password -->
       <div class="form-group" style="margin-bottom: 1.5rem;">
         <label for="citizen-password" class="form-label" style="font-weight: 600;">
-          <span id="lbl-password">Password / PIN</span> <span class="required" style="color:#DC2626;">*</span>
+          <span data-i18n="auth_lbl_password">{{ t('auth_lbl_password', 'Password / PIN') }}</span> <span class="required" style="color:#DC2626;">*</span>
         </label>
         <input type="password" id="citizen-password" name="password" class="form-control" required
-               placeholder="Enter password"
-               style="padding: 0.75rem 1rem; font-size: 0.95rem;">
-        <div style="font-size: 0.78rem; color: #10533C; margin-top: 0.25rem;" id="hint-password">
-          Default demo password: <code>citizen123</code>
-        </div>
+               placeholder="{{ t('auth_ph_password', 'Enter password') }}"
+               data-i18n-placeholder="auth_ph_password"
+               style="font-size: 0.95rem; padding: 0.65rem 0.85rem;" autocomplete="current-password">
+        <small class="form-text text-muted" style="font-size: 0.78rem; color:#5F686D;" data-i18n="auth_hint_password">
+          {{ t('auth_hint_password', 'Default demo password: citizen123') }}
+        </small>
       </div>
 
       <!-- Submit Button -->
-      <button type="submit" id="btn-submit" class="btn btn-primary" style="width: 100%; padding: 0.85rem; font-size: 1.05rem; font-weight: 700; border-radius: 8px;">
-        Sign In as Citizen &rarr;
+      <button type="submit" id="btn-submit" class="btn btn-primary btn-block" style="width: 100%; padding: 0.75rem; font-weight: 700; font-size: 1rem; border-radius: 8px;">
+        <span data-i18n="auth_btn_citizen_login">{{ t('auth_btn_citizen_login', 'Sign In as Citizen →') }}</span>
       </button>
 
-      <!-- Switch to Register Link -->
-      <div style="text-align:center; margin-top:1rem; font-size:0.88rem;">
-        <span id="txt-no-account">New user?</span>
-        <button type="button" onclick="switchAuthTab('register')" style="background:none; border:none; color:var(--civic-primary); font-weight:700; cursor:pointer; text-decoration:underline; padding:0; margin-left:4px;" id="lnk-switch-register">
-          Register new citizen account &rarr;
-        </button>
+      <!-- Registration Switcher Link -->
+      <div style="text-align: center; margin-top: 1.25rem; font-size: 0.88rem; color: #5F686D;">
+        <span data-i18n="auth_txt_new_user">{{ t('auth_txt_new_user', 'New user?') }}</span>
+        <a href="javascript:void(0)" onclick="switchAuthTab('register')" style="color: #34424A; font-weight: 700; text-decoration: none; margin-left: 0.35rem;" data-i18n="auth_lnk_register">
+          {{ t('auth_lnk_register', 'Register new citizen account →') }}
+        </a>
       </div>
-
     </form>
 
     <!-- ============================================== -->
@@ -135,327 +138,166 @@
     <form id="citizen-register-form" onsubmit="handleCitizenRegister(event)" style="display: none;" novalidate>
       
       <!-- Full Name -->
-      <div class="form-group" style="margin-bottom: 1.15rem;">
+      <div class="form-group" style="margin-bottom: 1.25rem;">
         <label for="reg-citizen-name" class="form-label" style="font-weight: 600;">
-          <span id="reg-lbl-name">Full Name</span> <span class="required" style="color:#DC2626;">*</span>
+          <span data-i18n="auth_lbl_name">{{ t('auth_lbl_name', 'Full Name') }}</span> <span class="required" style="color:#DC2626;">*</span>
         </label>
         <input type="text" id="reg-citizen-name" name="full_name" class="form-control" required
-               placeholder="Enter your full legal name"
-               style="padding: 0.75rem 1rem; font-size: 0.95rem;">
+               placeholder="{{ t('auth_reg_ph_name', 'Enter your full legal name') }}"
+               data-i18n-placeholder="auth_reg_ph_name"
+               style="font-size: 0.95rem; padding: 0.65rem 0.85rem;" autocomplete="name">
       </div>
 
       <!-- Mobile Number -->
-      <div class="form-group" style="margin-bottom: 1.15rem;">
+      <div class="form-group" style="margin-bottom: 1.25rem;">
         <label for="reg-citizen-mobile" class="form-label" style="font-weight: 600;">
-          <span id="reg-lbl-mobile">Mobile Number</span> <span class="required" style="color:#DC2626;">*</span>
+          <span data-i18n="auth_reg_lbl_mobile">{{ t('auth_lbl_mobile', 'Mobile Number') }}</span> <span class="required" style="color:#DC2626;">*</span>
         </label>
-        <input type="tel" id="reg-citizen-mobile" name="mobile" class="form-control" required maxlength="10"
-               placeholder="10-digit mobile number (e.g. 9876543210)"
-               style="padding: 0.75rem 1rem; font-size: 0.95rem;">
-        <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.25rem;" id="reg-hint-mobile">
-          This mobile number will be used for official grievance updates and verification.
-        </div>
+        <input type="tel" id="reg-citizen-mobile" name="mobile" class="form-control" required
+               pattern="[0-9]{10}" maxlength="10"
+               placeholder="{{ t('auth_reg_ph_mobile', '10-digit mobile number (e.g. 9876543210)') }}"
+               data-i18n-placeholder="auth_reg_ph_mobile"
+               style="font-size: 0.95rem; padding: 0.65rem 0.85rem;" autocomplete="tel">
+        <small class="form-text text-muted" style="font-size: 0.78rem; color:#5F686D;" data-i18n="auth_reg_hint_mobile">
+          {{ t('auth_reg_hint_mobile', 'This mobile number will be used for official grievance updates and verification.') }}
+        </small>
       </div>
 
-      <!-- Ward and Address in 2 Columns -->
-      <div class="form-grid-2" style="margin-bottom: 1.15rem;">
-        <!-- Ward Number -->
-        <div class="form-group">
-          <label for="reg-citizen-ward" class="form-label" style="font-weight: 600;">
-            <span id="reg-lbl-ward">Ward Number</span> <span class="required" style="color:#DC2626;">*</span>
-          </label>
-          <select id="reg-citizen-ward" name="ward_number" class="form-control" required style="padding: 0.75rem 1rem; font-size: 0.95rem;">
-            <option value="1">Ward 1 - Old Village Centre</option>
-            <option value="2">Ward 2 - School & Health Subcenter</option>
-            <option value="3">Ward 3 - Market & Bus Stand</option>
-            <option value="4" selected>Ward 4 - Temple Street & Water Tank</option>
-            <option value="5">Ward 5 - Harijanawada & Primary School</option>
-            <option value="6">Ward 6 - BC Colony & Community Hall</option>
-            <option value="7">Ward 7 - Weekly Santha & Bypass</option>
-            <option value="8">Ward 8 - East Hamlet (Thanda)</option>
-            <option value="9">Ward 9 - West Agriculture Belt</option>
-            <option value="10">Ward 10 - Rythu Bharosa Kendra Area</option>
-          </select>
-        </div>
-
-        <!-- Address / Landmark -->
-        <div class="form-group">
-          <label for="reg-citizen-address" class="form-label" style="font-weight: 600;">
-            <span id="reg-lbl-address">Address / Street</span> <span class="required" style="color:#DC2626;">*</span>
-          </label>
-          <input type="text" id="reg-citizen-address" name="address" class="form-control" required
-                 placeholder="Door No, Street or Landmark"
-                 style="padding: 0.75rem 1rem; font-size: 0.95rem;">
-        </div>
+      <!-- Ward Selection -->
+      <div class="form-group" style="margin-bottom: 1.25rem;">
+        <label for="reg-citizen-ward" class="form-label" style="font-weight: 600;">
+          <span data-i18n="auth_reg_lbl_ward">{{ t('auth_reg_lbl_ward', 'Ward Number') }}</span> <span class="required" style="color:#DC2626;">*</span>
+        </label>
+        <select id="reg-citizen-ward" name="ward_number" class="form-control" style="font-size: 0.95rem; padding: 0.65rem 0.85rem;">
+          <option value="1" data-i18n="ward_opt_1">{{ t('ward_opt_1') }}</option>
+          <option value="2" data-i18n="ward_opt_2">{{ t('ward_opt_2') }}</option>
+          <option value="3" data-i18n="ward_opt_3">{{ t('ward_opt_3') }}</option>
+          <option value="4" data-i18n="ward_opt_4">{{ t('ward_opt_4') }}</option>
+          <option value="5" data-i18n="ward_opt_5">{{ t('ward_opt_5') }}</option>
+          <option value="6" data-i18n="ward_opt_6">{{ t('ward_opt_6') }}</option>
+          <option value="7" data-i18n="ward_opt_7">{{ t('ward_opt_7') }}</option>
+          <option value="8" data-i18n="ward_opt_8">{{ t('ward_opt_8') }}</option>
+          <option value="9" data-i18n="ward_opt_9">{{ t('ward_opt_9') }}</option>
+          <option value="10" data-i18n="ward_opt_10">{{ t('ward_opt_10') }}</option>
+        </select>
       </div>
 
-      <!-- Password & Confirm Password in 2 Columns -->
-      <div class="form-grid-2" style="margin-bottom: 1.35rem;">
-        <!-- Password -->
+      <!-- Address / Landmark -->
+      <div class="form-group" style="margin-bottom: 1.25rem;">
+        <label for="reg-citizen-address" class="form-label" style="font-weight: 600;">
+          <span data-i18n="auth_reg_lbl_address">{{ t('auth_reg_lbl_address', 'Address / Street') }}</span> <span class="required" style="color:#DC2626;">*</span>
+        </label>
+        <input type="text" id="reg-citizen-address" name="address" class="form-control" required
+               placeholder="{{ t('auth_reg_ph_address', 'Door No, Street or Landmark') }}"
+               data-i18n-placeholder="auth_reg_ph_address"
+               style="font-size: 0.95rem; padding: 0.65rem 0.85rem;" autocomplete="street-address">
+      </div>
+
+      <!-- Password & Confirm Password Row -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
         <div class="form-group">
           <label for="reg-citizen-password" class="form-label" style="font-weight: 600;">
-            <span id="reg-lbl-password">Create Password</span> <span class="required" style="color:#DC2626;">*</span>
+            <span data-i18n="auth_reg_lbl_password">{{ t('auth_reg_lbl_password', 'Create Password') }}</span> <span class="required" style="color:#DC2626;">*</span>
           </label>
-          <input type="password" id="reg-citizen-password" name="password" class="form-control" required
-                 placeholder="Enter password"
-                 style="padding: 0.75rem 1rem; font-size: 0.95rem;">
+          <input type="password" id="reg-citizen-password" name="password" class="form-control" required minlength="4"
+                 placeholder="{{ t('auth_ph_password', 'Enter password') }}"
+                 data-i18n-placeholder="auth_ph_password"
+                 style="font-size: 0.95rem; padding: 0.65rem 0.85rem;" autocomplete="new-password">
         </div>
-
-        <!-- Confirm Password -->
         <div class="form-group">
           <label for="reg-citizen-confirm-password" class="form-label" style="font-weight: 600;">
-            <span id="reg-lbl-confirm-password">Confirm Password</span> <span class="required" style="color:#DC2626;">*</span>
+            <span data-i18n="auth_reg_lbl_confirm_password">{{ t('auth_reg_lbl_confirm_password', 'Confirm Password') }}</span> <span class="required" style="color:#DC2626;">*</span>
           </label>
-          <input type="password" id="reg-citizen-confirm-password" name="confirm_password" class="form-control" required
-                 placeholder="Re-enter password"
-                 style="padding: 0.75rem 1rem; font-size: 0.95rem;">
+          <input type="password" id="reg-citizen-confirm-password" name="confirm_password" class="form-control" required minlength="4"
+                 placeholder="{{ t('auth_reg_ph_confirm_password', 'Re-enter password') }}"
+                 data-i18n-placeholder="auth_reg_ph_confirm_password"
+                 style="font-size: 0.95rem; padding: 0.65rem 0.85rem;" autocomplete="new-password">
         </div>
       </div>
 
-      <!-- Register Submit Button -->
-      <button type="submit" id="btn-reg-submit" class="btn btn-primary" style="width: 100%; padding: 0.85rem; font-size: 1.05rem; font-weight: 700; border-radius: 8px;">
-        Register & Sign In &rarr;
+      <!-- Submit Registration -->
+      <button type="submit" id="btn-reg-submit" class="btn btn-primary btn-block" style="width: 100%; padding: 0.75rem; font-weight: 700; font-size: 1rem; border-radius: 8px;">
+        <span data-i18n="auth_btn_reg_submit">{{ t('auth_btn_reg_submit', 'Register & Sign In →') }}</span>
       </button>
 
       <!-- Switch to Login Link -->
-      <div style="text-align:center; margin-top:1rem; font-size:0.88rem;">
-        <span id="txt-have-account">Already have an account?</span>
-        <button type="button" onclick="switchAuthTab('login')" style="background:none; border:none; color:var(--civic-primary); font-weight:700; cursor:pointer; text-decoration:underline; padding:0; margin-left:4px;" id="lnk-switch-login">
-          Sign In here &rarr;
-        </button>
+      <div style="text-align: center; margin-top: 1.25rem; font-size: 0.88rem; color: #5F686D;">
+        <span data-i18n="auth_txt_have_account">{{ t('auth_txt_have_account', 'Already have an account?') }}</span>
+        <a href="javascript:void(0)" onclick="switchAuthTab('login')" style="color: #34424A; font-weight: 700; text-decoration: none; margin-left: 0.35rem;" data-i18n="auth_lnk_login_here">
+          {{ t('auth_lnk_login_here', 'Sign In here →') }}
+        </a>
       </div>
-
     </form>
 
-    <!-- Alternative Links: Switch to Worker or Admin -->
-    <div style="margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid #DCE4DE; text-align: center; font-size: 0.88rem; color: var(--text-muted);">
-      <div style="margin-bottom: 0.5rem;">
-        <span id="txt-are-worker">Are you a field technician?</span>
-        <a href="{{ url_for('worker_login_page') }}" style="font-weight: 700; color: #176B68; margin-left: 4px;" id="lnk-worker-login">Worker Portal &rarr;</a>
-      </div>
-      <div>
-        <span id="txt-are-admin">Panchayat Secretary or Official?</span>
-        <a href="{{ url_for('admin_login_page') }}" style="font-weight: 700; color: var(--civic-primary); margin-left: 4px;" id="lnk-admin-login">Admin Login &rarr;</a>
-      </div>
-    </div>
+  </div>
 
+  <!-- Auxiliary Portal Redirection Links -->
+  <div style="margin-top: 1.75rem; text-align: center; font-size: 0.85rem; color: var(--text-muted); display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap;">
+    <div>
+      <span data-i18n="auth_txt_are_worker">{{ t('auth_txt_are_worker', 'Are you a field technician?') }}</span>
+      <a href="{{ url_for('worker_login_page') }}" style="color: #D97706; font-weight: 600; text-decoration: none; margin-left: 0.25rem;" data-i18n="auth_lnk_worker_portal">
+        {{ t('auth_lnk_worker_portal', 'Worker Portal →') }}
+      </a>
+    </div>
+    <div>
+      <span data-i18n="auth_txt_are_admin">{{ t('auth_txt_are_admin', 'Panchayat Secretary or Official?') }}</span>
+      <a href="{{ url_for('admin_login_page') }}" style="color: var(--civic-dark); font-weight: 600; text-decoration: none; margin-left: 0.25rem;" data-i18n="auth_lnk_admin_login">
+        {{ t('auth_lnk_admin_login', 'Admin Login →') }}
+      </a>
+    </div>
   </div>
 
 </div>
 
+<!-- Client Controller Script -->
 <script>
-  // Bilingual dictionary for Citizen Login & Registration
-  const CITIZEN_I18N = {
-    en: {
-      header_subtext: "Rangapuram Gram Panchayat • Citizen Services",
-      nav_home: "Home",
-      tab_citizen: "Citizen Portal",
-      tab_worker: "Worker Login",
-      tab_admin: "Admin Login",
-      toggle_opt_login: "Already registered? Login",
-      toggle_opt_register: "New user? Register",
-      login_title: "Citizen Login",
-      login_subtitle: "Enter your registered details to access citizen grievance services for Rangapuram Panchayat.",
-      reg_title: "Citizen Registration",
-      reg_subtitle: "Register your mobile number to submit complaints and track panchayat service progress.",
-      lbl_name: "Full Name",
-      ph_name: "e.g. Ramesh Naidu",
-      lbl_mobile: "Registered Mobile Number",
-      ph_mobile: "10-digit mobile number",
-      hint_mobile: "Must match your registered citizen phone number (e.g., 9876543210).",
-      lbl_password: "Password / PIN",
-      ph_password: "Enter password",
-      hint_password: "Default demo password: citizen123",
-      btn_submit: "Sign In as Citizen →",
-      btn_submitting: "Signing in...",
-      txt_no_account: "New user?",
-      lnk_switch_register: "Register new citizen account →",
-      reg_lbl_name: "Full Name",
-      reg_ph_name: "Enter your full legal name",
-      reg_lbl_mobile: "Mobile Number",
-      reg_ph_mobile: "10-digit mobile number (e.g. 9876543210)",
-      reg_hint_mobile: "This mobile number will be used for official grievance updates and verification.",
-      reg_lbl_ward: "Ward Number",
-      reg_lbl_address: "Address / Street",
-      reg_ph_address: "Door No, Street or Landmark",
-      reg_lbl_password: "Create Password",
-      reg_ph_password: "Enter password",
-      reg_lbl_confirm_password: "Confirm Password",
-      reg_ph_confirm_password: "Re-enter password",
-      btn_reg_submit: "Register & Sign In →",
-      btn_reg_submitting: "Registering account...",
-      txt_have_account: "Already have an account?",
-      lnk_switch_login: "Sign In here →",
-      txt_are_worker: "Are you a field technician?",
-      lnk_worker: "Worker Portal →",
-      txt_are_admin: "Panchayat Secretary or Official?",
-      lnk_admin: "Admin Login →",
-      err_missing_name: "Please enter your full name.",
-      err_missing_mobile: "Please enter a valid 10-digit mobile number.",
-      err_missing_pass: "Please enter your password.",
-      err_pass_mismatch: "Password and Confirm Password do not match.",
-      err_missing_address: "Please enter your address or street details.",
-      err_failed: "Operation failed. Please check your details and try again."
-    },
-    te: {
-      header_subtext: "రంగపురం గ్రామ పంచాయతీ • పౌరుల సేవలు",
-      nav_home: "హోమ్",
-      tab_citizen: "పౌరుల పోర్టల్",
-      tab_worker: "వర్కర్ లాగిన్",
-      tab_admin: "అడ్మిన్ లాగిన్",
-      toggle_opt_login: "ఇప్పటికే నమోదయ్యారా? లాగిన్",
-      toggle_opt_register: "కొత్త వినియోగదారుడా? నమోదు చేసుకోండి",
-      login_title: "పౌరుల లాగిన్",
-      login_subtitle: "రంగపురం పంచాయతీ ప్రజా ఫిర్యాదుల సేవలను పొందడానికి మీ నమోదైన వివరాలను నమోదు చేయండి.",
-      reg_title: "పౌరుల నమోదు (రిజిస్ట్రేషన్)",
-      reg_subtitle: "ఫిర్యాదులు నమోదు చేయడానికి మరియు పురోగతిని తెలుసుకోవడానికి మీ మొబైల్ నంబర్‌తో నమోదు చేసుకోండి.",
-      lbl_name: "పూర్తి పేరు",
-      ph_name: "ఉదా: రమేష్ నాయుడు",
-      lbl_mobile: "నమోదైన మొబైల్ నంబర్",
-      ph_mobile: "10 అంకెల మొబైల్ నంబర్",
-      hint_mobile: "మీ నమోదైన ఫోన్ నంబర్‌తో సరిపోలాలి (ఉదా: 9876543210).",
-      lbl_password: "పాస్‌వర్డ్ / పిన్",
-      ph_password: "పాస్‌వర్డ్ నమోదు చేయండి",
-      hint_password: "డెమో పాస్‌వర్డ్: citizen123",
-      btn_submit: "పౌరుడిగా లాగిన్ అవ్వండి →",
-      btn_submitting: "లాగిన్ అవుతోంది...",
-      txt_no_account: "కొత్త వినియోగదారుడా?",
-      lnk_switch_register: "కొత్త ఖాతాను నమోదు చేసుకోండి →",
-      reg_lbl_name: "పూర్తి పేరు",
-      reg_ph_name: "మీ పూర్తి పేరు నమోదు చేయండి",
-      reg_lbl_mobile: "మొబైల్ నంబర్",
-      reg_ph_mobile: "10 అంకెల మొబైల్ నంబర్ (ఉదా: 9876543210)",
-      reg_hint_mobile: "ఫిర్యాదు సమాచారం మరియు నిర్ధారణ కోసం ఈ నంబర్ ఉపయోగించబడుతుంది.",
-      reg_lbl_ward: "వార్డు సంఖ్య",
-      reg_lbl_address: "చిరునామా / వీధి",
-      reg_ph_address: "డోర్ నంబర్, వీధి లేదా ఆనవాలు",
-      reg_lbl_password: "పాస్‌వర్డ్ సృష్టించండి",
-      reg_ph_password: "పాస్‌వర్డ్ నమోదు చేయండి",
-      reg_lbl_confirm_password: "పాస్‌వర్డ్ నిర్ధారించండి",
-      reg_ph_confirm_password: "పాస్‌వర్డ్ మళ్లీ నమోదు చేయండి",
-      btn_reg_submit: "నమోదు చేసి లాగిన్ అవ్వండి →",
-      btn_reg_submitting: "నమోదు అవుతోంది...",
-      txt_have_account: "ఇప్పటికే ఖాతా ఉందా?",
-      lnk_switch_login: "ఇక్కడ లాగిన్ అవ్వండి →",
-      txt_are_worker: "మీరు ఫీల్డ్ వర్కరా?",
-      lnk_worker: "వర్కర్ పోర్టల్ →",
-      txt_are_admin: "పంచాయతీ కార్యదర్శి లేదా అధికారులా?",
-      lnk_admin: "అడ్మిన్ లాగిన్ →",
-      err_missing_name: "దయచేసి మీ పూర్తి పేరు నమోదు చేయండి.",
-      err_missing_mobile: "దయచేసి సరైన 10 అంకెల మొబైల్ నంబర్ నమోదు చేయండి.",
-      err_missing_pass: "దయచేసి మీ పాస్‌వర్డ్ నమోదు చేయండి.",
-      err_pass_mismatch: "పాస్‌వర్డ్ మరియు కన్ఫర్మ్ పాస్‌వర్డ్ సరిపోలలేదు.",
-      err_missing_address: "దయచేసి మీ చిరునామా నమోదు చేయండి.",
-      err_failed: "ప్రక్రియ విఫలమైంది. దయచేసి వివరాలను సరిచూసుకోండి."
-    }
-  };
-
-  let activeLang = localStorage.getItem('gramseva_lang') || 'en';
-  let currentTab = "{{ initial_tab|default('login') }}";
+  let currentTab = 'login';
 
   function switchAuthTab(tab) {
     currentTab = tab;
-    hideAlert();
-    const d = CITIZEN_I18N[activeLang] || CITIZEN_I18N.en;
-
     const btnLogin = document.getElementById('tab-btn-login');
-    const btnRegister = document.getElementById('tab-btn-register');
+    const btnReg = document.getElementById('tab-btn-register');
     const formLogin = document.getElementById('citizen-login-form');
-    const formRegister = document.getElementById('citizen-register-form');
-    const pageTitle = document.getElementById('page-title');
-    const pageSubtitle = document.getElementById('page-subtitle');
+    const formReg = document.getElementById('citizen-register-form');
+    const title = document.getElementById('page-title');
+    const subtitle = document.getElementById('page-subtitle');
+    const t = typeof window.t === 'function' ? window.t : (k, d) => d || k;
+
+    hideAlert();
+
     if (tab === 'register') {
-      btnRegister.style.background = '#FFFFFF';
-      btnRegister.style.color = '#202B26';
-      btnRegister.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
       btnLogin.style.background = 'transparent';
-      btnLogin.style.color = '#5D6B63';
+      btnLogin.style.color = '#5F686D';
       btnLogin.style.boxShadow = 'none';
 
+      btnReg.style.background = '#FFFFFF';
+      btnReg.style.color = '#252B2E';
+      btnReg.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+
       formLogin.style.display = 'none';
-      formRegister.style.display = 'block';
+      formReg.style.display = 'block';
 
-      pageTitle.textContent = d.reg_title;
-      pageSubtitle.textContent = d.reg_subtitle;
+      title.setAttribute('data-i18n', 'auth_citizen_reg_title');
+      title.textContent = t('auth_citizen_reg_title', 'Citizen Registration');
+      subtitle.setAttribute('data-i18n', 'auth_citizen_reg_sub');
+      subtitle.textContent = t('auth_citizen_reg_sub', 'Register your mobile number to submit complaints and track panchayat service progress.');
     } else {
-      btnLogin.style.background = '#FFFFFF';
-      btnLogin.style.color = '#202B26';
-      btnLogin.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
-      btnRegister.style.background = 'transparent';
-      btnRegister.style.color = '#5D6B63';
-      btnRegister.style.boxShadow = 'none';
+      btnReg.style.background = 'transparent';
+      btnReg.style.color = '#5F686D';
+      btnReg.style.boxShadow = 'none';
 
-      formRegister.style.display = 'none';
+      btnLogin.style.background = '#FFFFFF';
+      btnLogin.style.color = '#252B2E';
+      btnLogin.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+
+      formReg.style.display = 'none';
       formLogin.style.display = 'block';
 
-      pageTitle.textContent = d.login_title;
-      pageSubtitle.textContent = d.login_subtitle;
+      title.setAttribute('data-i18n', 'auth_citizen_login_title');
+      title.textContent = t('auth_citizen_login_title', 'Citizen Login');
+      subtitle.setAttribute('data-i18n', 'auth_citizen_login_sub');
+      subtitle.textContent = t('auth_citizen_login_sub', 'Enter your registered details to access citizen grievance services for Rangapuram Panchayat.');
     }
-  }
-
-  function setLoginLanguage(lang) {
-    activeLang = lang;
-    localStorage.setItem('gramseva_lang', lang);
-
-    const btnEn = document.getElementById('lang-btn-en');
-    if (btnEn) btnEn.classList.toggle('active', lang === 'en');
-    const btnTe = document.getElementById('lang-btn-te');
-    if (btnTe) btnTe.classList.toggle('active', lang === 'te');
-
-    const d = CITIZEN_I18N[lang] || CITIZEN_I18N.en;
-
-    document.getElementById('header-subtext').textContent = d.header_subtext;
-    document.getElementById('nav-home-text').textContent = d.nav_home;
-    document.getElementById('tab-citizen').textContent = d.tab_citizen;
-    document.getElementById('tab-worker').textContent = d.tab_worker;
-    document.getElementById('tab-admin').textContent = d.tab_admin;
-
-    document.getElementById('toggle-opt-login').textContent = d.toggle_opt_login;
-    document.getElementById('toggle-opt-register').textContent = d.toggle_opt_register;
-
-    if (currentTab === 'register') {
-      document.getElementById('page-title').textContent = d.reg_title;
-      document.getElementById('page-subtitle').textContent = d.reg_subtitle;
-    } else {
-      document.getElementById('page-title').textContent = d.login_title;
-      document.getElementById('page-subtitle').textContent = d.login_subtitle;
-    }
-
-    // Login Form Elements
-    document.getElementById('lbl-name').textContent = d.lbl_name;
-    document.getElementById('citizen-name').placeholder = d.ph_name;
-    document.getElementById('lbl-mobile').textContent = d.lbl_mobile;
-    document.getElementById('citizen-mobile').placeholder = d.ph_mobile;
-    document.getElementById('hint-mobile').textContent = d.hint_mobile;
-    document.getElementById('lbl-password').textContent = d.lbl_password;
-    document.getElementById('citizen-password').placeholder = d.ph_password;
-    document.getElementById('hint-password').textContent = d.hint_password;
-    document.getElementById('btn-submit').textContent = d.btn_submit;
-    document.getElementById('txt-no-account').textContent = d.txt_no_account;
-    document.getElementById('lnk-switch-register').textContent = d.lnk_switch_register;
-
-    // Register Form Elements
-    document.getElementById('reg-lbl-name').textContent = d.reg_lbl_name;
-    document.getElementById('reg-citizen-name').placeholder = d.reg_ph_name;
-    document.getElementById('reg-lbl-mobile').textContent = d.reg_lbl_mobile;
-    document.getElementById('reg-citizen-mobile').placeholder = d.reg_ph_mobile;
-    document.getElementById('reg-hint-mobile').textContent = d.reg_hint_mobile;
-    document.getElementById('reg-lbl-ward').textContent = d.reg_lbl_ward;
-    document.getElementById('reg-lbl-address').textContent = d.reg_lbl_address;
-    document.getElementById('reg-citizen-address').placeholder = d.reg_ph_address;
-    document.getElementById('reg-lbl-password').textContent = d.reg_lbl_password;
-    document.getElementById('reg-citizen-password').placeholder = d.reg_ph_password;
-    document.getElementById('reg-lbl-confirm-password').textContent = d.reg_lbl_confirm_password;
-    document.getElementById('reg-citizen-confirm-password').placeholder = d.reg_ph_confirm_password;
-    document.getElementById('btn-reg-submit').textContent = d.btn_reg_submit;
-    document.getElementById('txt-have-account').textContent = d.txt_have_account;
-    document.getElementById('lnk-switch-login').textContent = d.lnk_switch_login;
-
-    // Footer Switchers
-    document.getElementById('txt-are-worker').textContent = d.txt_are_worker;
-    document.getElementById('lnk-worker-login').textContent = d.lnk_worker;
-    document.getElementById('txt-are-admin').textContent = d.txt_are_admin;
-    document.getElementById('lnk-admin-login').textContent = d.lnk_admin;
   }
 
   function showAlert(msg, isSuccess = false) {
@@ -463,24 +305,26 @@
     const alertInner = document.getElementById('auth-alert-inner');
     const alertText = document.getElementById('auth-alert-text');
     const alertIcon = document.getElementById('auth-alert-icon');
-    
+    if (!alertBox || !alertInner || !alertText) return;
+
     alertText.textContent = msg;
     if (isSuccess) {
-      alertInner.style.background = '#E8F3ED';
-      alertInner.style.border = '1px solid #DCE4DE';
-      alertInner.style.color = '#176B4D';
-      alertIcon.className = 'badge-dot'; alertIcon.style.background = '#176B4D'; alertIcon.textContent = '';
+      alertInner.style.background = '#F1E2D7';
+      alertInner.style.border = '1px solid #E3D8CF';
+      alertInner.style.color = '#34424A';
+      alertIcon.className = 'badge-dot'; alertIcon.style.background = '#34424A';
     } else {
       alertInner.style.background = '#FEE2E2';
       alertInner.style.border = '1px solid #FCA5A5';
       alertInner.style.color = '#991B1B';
-      alertIcon.className = 'badge-dot'; alertIcon.style.background = '#DC2626'; alertIcon.textContent = '';
+      alertIcon.className = 'badge-dot'; alertIcon.style.background = '#DC2626';
     }
     alertBox.style.display = 'block';
   }
 
   function hideAlert() {
-    document.getElementById('auth-alert').style.display = 'none';
+    const el = document.getElementById('auth-alert');
+    if (el) el.style.display = 'none';
   }
 
   // 1. Citizen Login Handler
@@ -488,27 +332,27 @@
     e.preventDefault();
     hideAlert();
 
-    const d = CITIZEN_I18N[activeLang] || CITIZEN_I18N.en;
+    const t = typeof window.t === 'function' ? window.t : (k, d) => d || k;
     const name = document.getElementById('citizen-name').value.trim();
     const mobile = document.getElementById('citizen-mobile').value.trim();
     const password = document.getElementById('citizen-password').value;
 
     if (!name) {
-      showAlert(d.err_missing_name);
+      showAlert(t('err_missing_name', 'Please enter your full name.'));
       return;
     }
     if (!mobile) {
-      showAlert(d.err_missing_mobile);
+      showAlert(t('err_missing_mobile', 'Please enter a valid 10-digit mobile number.'));
       return;
     }
     if (!password) {
-      showAlert(d.err_missing_pass);
+      showAlert(t('err_missing_pass', 'Please enter your password.'));
       return;
     }
 
     const btn = document.getElementById('btn-submit');
     btn.disabled = true;
-    btn.textContent = d.btn_submitting;
+    btn.textContent = t('auth_btn_signing_in', 'Signing in...');
 
     try {
       const res = await fetch('/api/login/citizen', {
@@ -519,16 +363,15 @@
       const data = await res.json();
 
       if (data.success) {
-        localStorage.setItem('gramseva_lang', activeLang);
         window.location.href = data.redirect || '/citizen';
       } else {
-        showAlert(data.error || d.err_failed);
+        showAlert(data.error || t('err_failed', 'Operation failed. Please check your details and try again.'));
       }
     } catch (err) {
-      showAlert(err.message || d.err_failed);
+      showAlert(err.message || t('err_failed', 'Operation failed. Please check your details and try again.'));
     } finally {
       btn.disabled = false;
-      btn.textContent = d.btn_submit;
+      btn.textContent = t('auth_btn_citizen_login', 'Sign In as Citizen →');
     }
   }
 
@@ -537,7 +380,7 @@
     e.preventDefault();
     hideAlert();
 
-    const d = CITIZEN_I18N[activeLang] || CITIZEN_I18N.en;
+    const t = typeof window.t === 'function' ? window.t : (k, d) => d || k;
     const fullName = document.getElementById('reg-citizen-name').value.trim();
     const mobile = document.getElementById('reg-citizen-mobile').value.trim();
     const ward = document.getElementById('reg-citizen-ward').value;
@@ -546,29 +389,29 @@
     const confirmPassword = document.getElementById('reg-citizen-confirm-password').value;
 
     if (!fullName) {
-      showAlert(d.err_missing_name);
+      showAlert(t('err_missing_name', 'Please enter your full name.'));
       return;
     }
     if (!mobile || mobile.length < 10) {
-      showAlert(d.err_missing_mobile);
+      showAlert(t('err_missing_mobile', 'Please enter a valid 10-digit mobile number.'));
       return;
     }
     if (!address) {
-      showAlert(d.err_missing_address);
+      showAlert(t('err_missing_address', 'Please enter your address or street details.'));
       return;
     }
     if (!password) {
-      showAlert(d.err_missing_pass);
+      showAlert(t('err_missing_pass', 'Please enter your password.'));
       return;
     }
     if (password !== confirmPassword) {
-      showAlert(d.err_pass_mismatch);
+      showAlert(t('err_pass_mismatch', 'Password and Confirm Password do not match.'));
       return;
     }
 
     const btn = document.getElementById('btn-reg-submit');
     btn.disabled = true;
-    btn.textContent = d.btn_reg_submitting;
+    btn.textContent = t('auth_btn_reg_submitting', 'Registering account...');
 
     try {
       const res = await fetch('/api/register', {
@@ -587,38 +430,27 @@
       const data = await res.json();
 
       if (data.success) {
-        showAlert("Registration successful! Logging you in...", true);
-        localStorage.setItem('gramseva_lang', activeLang);
+        showAlert(t('Registration successful! Logging you in...', 'Registration successful! Logging you in...'), true);
         setTimeout(() => {
           window.location.href = data.redirect || '/citizen';
         }, 500);
       } else {
-        showAlert(data.error || d.err_failed);
+        showAlert(data.error || t('err_failed', 'Operation failed. Please check your details and try again.'));
       }
     } catch (err) {
-      showAlert(err.message || d.err_failed);
+      showAlert(err.message || t('err_failed', 'Operation failed. Please check your details and try again.'));
     } finally {
       btn.disabled = false;
-      btn.textContent = d.btn_reg_submit;
+      btn.textContent = t('auth_btn_reg_submit', 'Register & Sign In →');
     }
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    // Check if query parameter requests register tab
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('tab') === 'register' || window.location.hash === '#register') {
       currentTab = 'register';
     }
     switchAuthTab(currentTab);
-
-    activeLang = window.currentLang || localStorage.getItem('gramseva_lang') || '{{ current_lang }}' || 'en';
-    setLoginLanguage(activeLang);
-
-    document.addEventListener('languageChanged', (e) => {
-      if (e.detail && e.detail.lang) {
-        setLoginLanguage(e.detail.lang);
-      }
-    });
   });
 </script>
 {% endblock %}

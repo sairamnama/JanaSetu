@@ -21,6 +21,8 @@ def create_app() -> Flask:
     app.config['DEMO_MODE'] = DEMO_MODE
     app.config['DB_PATH'] = DB_PATH
     app.config['DEBUG'] = FLASK_DEBUG
+    app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
 
     # Initialize relational schema and seed default rural dataset
     init_db()

@@ -16,67 +16,68 @@
   --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-telugu: 'Noto Sans Telugu', 'Gautami', 'Nirmala UI', sans-serif;
 
-  /* Brand Civic Palette - Professional Trustworthy Green Palette */
-  --civic-primary: #176B4D;
-  --civic-primary-hover: #10533C;
-  --civic-dark: #10533C;
-  --civic-accent: #176B68;
-  --civic-subtle: #E8F3ED;
-  --civic-border: #DCE4DE;
+  /* Terracotta + Slate + Parchment Color System Tokens */
+  --civic-primary: #34424A;        /* Primary / navigation: Slate */
+  --civic-primary-hover: #263239;  /* Primary hover / pressed: Deep slate */
+  --civic-dark: #263239;           /* Deep slate */
+  --civic-accent: #B85C38;         /* Accent / key actions: Terracotta */
+  --civic-accent-hover: #9E4A28;   /* Deep Terracotta */
+  --civic-subtle: #F1E2D7;         /* Soft accent surface */
+  --civic-border: #E3D8CF;         /* Borders / dividers */
   /* Compatibility token: --civic-primary: #0D5C3A; */
 
   /* Saffron & Solar Gold */
-  --saffron-primary: #EA580C;
-  --saffron-light: #FFEDD5;
-  --panchayat-gold: #D97706;
-  --panchayat-gold-dark: #B45309;
+  --saffron-primary: #B85C38;
+  --saffron-light: #F1E2D7;
+  --panchayat-gold: #B85C38;
+  --panchayat-gold-dark: #9E4A28;
 
   /* Surface & Background */
-  --bg-page: #F8F7F2;
-  --bg-surface: #FFFFFF;
-  --bg-surface-alt: #E8F3ED;
-  --border-subtle: #DCE4DE;
-  --border-strong: #B8C7BE;
-  --border-focus: #176B68;
+  --bg-page: #F8F4EF;              /* Main background: Parchment */
+  --bg-surface: #FFFFFF;           /* Cards / forms: White */
+  --bg-surface-alt: #F1E2D7;       /* Soft accent surface */
+  --border-subtle: #E3D8CF;        /* Borders / dividers */
+  --border-strong: #C8BCB2;
+  --border-focus: #B85C38;
 
   /* Typography Colors - High WCAG Contrast */
-  --text-main: #202B26;
-  --text-muted: #5D6B63;
-  --text-subtle: #5D6B63;
+  --text-main: #252B2E;            /* Main text */
+  --text-muted: #5F686D;           /* Secondary text */
+  --text-subtle: #5F686D;
   --text-inverse: #FFFFFF;
-  --link-color: #176B68;
-  --link-hover: #10533C;
+  --link-color: #B85C38;
+  --link-hover: #9E4A28;
 
   /* Status Tokens */
-  --status-submitted: #176B68;
-  --status-submitted-bg: #E8F3ED;
-  --status-review: #176B4D;
-  --status-review-bg: #E8F3ED;
-  --status-assigned: #176B4D;
-  --status-assigned-bg: #E8F3ED;
-  --status-progress: #B45309;
-  --status-progress-bg: #FEF3C7;
-  --status-resolved: #176B4D;
-  --status-resolved-bg: #E8F3ED;
-  --status-closed: #5D6B63;
-  --status-closed-bg: #E8F3ED;
+  --status-submitted: #34424A;
+  --status-submitted-bg: #F1E2D7;
+  --status-review: #34424A;
+  --status-review-bg: #F1E2D7;
+  --status-assigned: #34424A;
+  --status-assigned-bg: #F1E2D7;
+  --status-progress: #B85C38;
+  --status-progress-bg: #F1E2D7;
+  --status-resolved: #15803D;
+  --status-resolved-bg: #DCFCE7;
+  --status-closed: #5F686D;
+  --status-closed-bg: #F1E2D7;
   --status-rejected: #B91C1C;
   --status-rejected-bg: #FEE2E2;
 
   /* Priority Tokens */
   --priority-high: #B91C1C;
   --priority-high-bg: #FEF2F2;
-  --priority-medium: #B45309;
-  --priority-medium-bg: #FFFBEB;
-  --priority-low: #176B68;
-  --priority-low-bg: #E8F3ED;
+  --priority-medium: #B85C38;
+  --priority-medium-bg: #F1E2D7;
+  --priority-low: #34424A;
+  --priority-low-bg: #F1E2D7;
 
   /* Elevation Shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(32, 43, 38, 0.05);
-  --shadow-md: 0 3px 6px -1px rgba(32, 43, 38, 0.08), 0 2px 4px -1px rgba(32, 43, 38, 0.04);
-  --shadow-lg: 0 8px 16px -2px rgba(32, 43, 38, 0.08), 0 4px 6px -2px rgba(32, 43, 38, 0.04);
-  --shadow-xl: 0 12px 24px -4px rgba(32, 43, 38, 0.1);
-  --shadow-glow: 0 0 16px rgba(23, 107, 77, 0.15);
+  --shadow-sm: 0 1px 2px 0 rgba(37, 43, 46, 0.05);
+  --shadow-md: 0 3px 6px -1px rgba(37, 43, 46, 0.08), 0 2px 4px -1px rgba(37, 43, 46, 0.04);
+  --shadow-lg: 0 8px 16px -2px rgba(37, 43, 46, 0.08), 0 4px 6px -2px rgba(37, 43, 46, 0.04);
+  --shadow-xl: 0 12px 24px -4px rgba(37, 43, 46, 0.1);
+  --shadow-glow: 0 0 16px rgba(184, 92, 56, 0.15);
 
   /* Radii */
   --radius-sm: 6px;
@@ -157,14 +158,14 @@ a:hover {
    HEADER & CIVIC TOPBAR
    ========================================================================== */
 .civic-topbar {
-  background: #10533C;
+  background: #263239;
   color: #FFFFFF;
   padding: 0.4rem 1.5rem;
   font-size: 0.8rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid var(--panchayat-gold);
+  border-bottom: 2px solid var(--civic-accent);
 }
 
 .civic-topbar-left {
@@ -215,9 +216,9 @@ a:hover {
 }
 
 .lang-switch-btn:hover, .lang-switch-btn.active {
-  background: var(--panchayat-gold);
-  color: #000;
-  border-color: var(--panchayat-gold);
+  background: var(--civic-accent);
+  color: #FFFFFF;
+  border-color: var(--civic-accent);
   font-weight: 600;
 }
 
@@ -287,20 +288,24 @@ a:hover {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
   list-style: none;
+  margin: 0;
+  padding: 0;
+  flex-wrap: nowrap;
 }
 
 .nav-link {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.5rem 0.9rem;
+  padding: 0.45rem 0.8rem;
   color: var(--text-muted);
   font-weight: 600;
   font-size: 0.88rem;
   border-radius: var(--radius-md);
   transition: var(--transition);
+  white-space: nowrap;
 }
 
 .nav-link:hover, .nav-link.active {
@@ -337,24 +342,24 @@ a:hover {
 .btn-primary {
   background: var(--civic-primary);
   color: #FFFFFF;
-  box-shadow: 0 2px 4px rgba(23, 107, 77, 0.2);
+  box-shadow: 0 2px 4px rgba(38, 50, 57, 0.2);
 }
 
 .btn-primary:hover {
   background: var(--civic-primary-hover);
   color: #FFFFFF;
-  box-shadow: 0 4px 8px rgba(16, 83, 60, 0.25);
+  box-shadow: 0 4px 8px rgba(38, 50, 57, 0.25);
   transform: translateY(-1px);
 }
 
 .btn-accent {
-  background: var(--panchayat-gold);
-  color: #0F172A;
+  background: var(--civic-accent);
+  color: #FFFFFF;
   font-weight: 700;
 }
 
 .btn-accent:hover {
-  background: var(--panchayat-gold-dark);
+  background: var(--civic-accent-hover);
   color: #FFFFFF;
   transform: translateY(-1px);
 }
@@ -920,7 +925,7 @@ textarea.form-control {
 }
 
 .data-table th {
-  background: #F8F7F2;
+  background: #F1E2D7;
   padding: 0.75rem 1rem;
   font-weight: 700;
   color: #475569;
@@ -939,7 +944,7 @@ textarea.form-control {
 }
 
 .data-table tbody tr:hover {
-  background: #E8F3ED;
+  background: #FAF6F2;
 }
 
 .tracking-link {
@@ -1149,10 +1154,10 @@ textarea.form-control {
    ========================================================================== */
 .civic-footer {
   margin-top: auto;
-  background: #0A3622;
+  background: #263239;
   color: #E2E8F0;
   padding: 2.5rem 1.5rem 1.5rem;
-  border-top: 4px solid var(--panchayat-gold);
+  border-top: 4px solid var(--civic-accent);
 }
 
 .footer-content {
@@ -1195,14 +1200,39 @@ textarea.form-control {
 }
 
 /* Responsive adjustments */
+@media (max-width: 1024px) {
+  .navbar-container {
+    gap: 0.75rem;
+    padding: 0.65rem 1rem;
+  }
+  .nav-links {
+    gap: 0.25rem;
+  }
+  .nav-link {
+    padding: 0.4rem 0.65rem;
+    font-size: 0.84rem;
+  }
+}
+
 @media (max-width: 768px) {
   .navbar-container {
     flex-direction: column;
-    gap: 0.75rem;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.65rem 1rem;
+  }
+  .brand-wrapper {
+    justify-content: center;
   }
   .nav-links {
     flex-wrap: wrap;
     justify-content: center;
+    gap: 0.35rem;
+    padding: 0;
+  }
+  .nav-link {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.82rem;
   }
   .form-grid-2, .form-grid-3, .footer-content {
     grid-template-columns: 1fr;
@@ -1321,7 +1351,7 @@ textarea.form-control {
 .hero-3d-plaque {
   background: #FFFFFF;
   border: 1px solid rgba(203, 213, 225, 0.9);
-  border-top: 4px solid var(--panchayat-gold);
+  border-top: 4px solid var(--civic-accent);
   border-radius: var(--radius-lg);
   padding: 1.75rem 1.5rem;
   width: 100%;

@@ -507,6 +507,132 @@ window.TRANSLATIONS = {
     "Please log in to access this portal.": "Please log in to access this portal.",
     "Error tracking grievance: ": "Error tracking grievance: ",
     "Error: ": "Error: ",
+    "auth_citizen_portal": "Citizen Portal",
+    "auth_worker_login": "Worker Login",
+    "auth_admin_login_short": "Admin Login",
+    "auth_toggle_login": "Already registered? Login",
+    "auth_toggle_register": "New user? Register",
+    "auth_citizen_login_title": "Citizen Login",
+    "auth_citizen_login_sub": "Enter your registered details to access citizen grievance services for Rangapuram Panchayat.",
+    "auth_citizen_reg_title": "Citizen Registration",
+    "auth_citizen_reg_sub": "Register your mobile number to submit complaints and track panchayat service progress.",
+    "auth_lbl_name": "Full Name",
+    "auth_ph_name": "e.g. Ramesh Naidu",
+    "auth_lbl_mobile": "Registered Mobile Number",
+    "auth_ph_mobile": "10-digit mobile number",
+    "auth_hint_mobile": "Must match your registered citizen phone number (e.g., 9876543210).",
+    "auth_lbl_password": "Password / PIN",
+    "auth_ph_password": "Enter password",
+    "auth_hint_password": "Default demo password: citizen123",
+    "auth_btn_citizen_login": "Sign In as Citizen →",
+    "auth_btn_signing_in": "Signing in...",
+    "auth_txt_new_user": "New user?",
+    "auth_lnk_register": "Register new citizen account →",
+    "auth_reg_ph_name": "Enter your full legal name",
+    "auth_reg_ph_mobile": "10-digit mobile number (e.g. 9876543210)",
+    "auth_reg_hint_mobile": "This mobile number will be used for official grievance updates and verification.",
+    "auth_reg_lbl_ward": "Ward Number",
+    "auth_reg_lbl_address": "Address / Street",
+    "auth_reg_ph_address": "Door No, Street or Landmark",
+    "auth_reg_lbl_password": "Create Password",
+    "auth_reg_lbl_confirm_password": "Confirm Password",
+    "auth_reg_ph_confirm_password": "Re-enter password",
+    "auth_btn_reg_submit": "Register & Sign In →",
+    "auth_btn_reg_submitting": "Registering account...",
+    "auth_txt_have_account": "Already have an account?",
+    "auth_lnk_login_here": "Sign In here →",
+    "auth_txt_are_worker": "Are you a field technician?",
+    "auth_lnk_worker_portal": "Worker Portal →",
+    "auth_txt_are_admin": "Panchayat Secretary or Official?",
+    "auth_lnk_admin_login": "Admin Login →",
+    "auth_worker_login_title": "Worker Login",
+    "auth_worker_login_sub": "Sign in to view assigned field tickets, record site remediation progress, and submit proof.",
+    "auth_worker_ph_name": "e.g. Sri Shiva Kumar",
+    "auth_worker_lbl_id": "Worker ID",
+    "auth_worker_ph_id": "e.g. WRK-WAT-01",
+    "auth_worker_lbl_skill": "Work Type / Skill",
+    "opt_select_skill": "-- Select Work Type / Skill --",
+    "skill_electrician": "Electrician",
+    "skill_plumber": "Plumber",
+    "skill_mechanic": "Mechanic",
+    "skill_mason": "Mason",
+    "skill_sanitation": "Sanitation Worker",
+    "skill_other": "Other",
+    "auth_worker_auto_note": "Loaded from DB when available",
+    "auth_worker_hint_pass": "Default demo password: worker123 (e.g. Shiva Kumar: WRK-WAT-01 / 9848077889)",
+    "auth_btn_worker_login": "Sign In as Worker →",
+    "auth_txt_are_citizen": "Are you a village citizen?",
+    "auth_lnk_citizen_login": "Citizen Login →",
+    "auth_txt_new_technician": "New field technician?",
+    "auth_lnk_register_worker": "Register worker profile →",
+    "auth_skill_detected": "Skill identified from database:",
+    "auth_worker_reg_title": "Worker Registration",
+    "auth_worker_reg_sub": "Register your technician profile and skill trade with Rangapuram Gram Panchayat.",
+    "auth_roster_notice": "Newly registered workers are assigned to the departmental roster. Administrative verification ensures ticket dispatch eligibility.",
+    "auth_worker_ph_reg_name": "e.g. Sri Shiva Kumar",
+    "auth_worker_lbl_reg_id": "Unique Worker ID (Worker ID)",
+    "auth_worker_ph_reg_id": "e.g. WRK-WAT-03",
+    "auth_worker_hint_reg_id": "Assigned worker badge/id code.",
+    "auth_worker_hint_reg_mobile": "Must be a unique 10-digit number.",
+    "auth_worker_lbl_exp": "Experience",
+    "auth_worker_ph_exp": "e.g. 4 Years / ITI",
+    "auth_btn_worker_reg_submit": "Register & Open Worker Portal →",
+    "auth_txt_already_worker": "Already registered worker?",
+    "auth_lnk_worker_login_here": "Worker Login here →",
+    "ward_opt_1": "Ward 1 - Old Village Centre",
+    "ward_opt_2": "Ward 2 - School & Health Subcenter",
+    "ward_opt_3": "Ward 3 - Market & Bus Stand",
+    "ward_opt_4": "Ward 4 - Temple Street & Water Tank",
+    "ward_opt_5": "Ward 5 - Harijanawada & Primary School",
+    "ward_opt_6": "Ward 6 - BC Colony & Community Hall",
+    "ward_opt_7": "Ward 7 - Weekly Santha & Bypass",
+    "ward_opt_8": "Ward 8 - East Hamlet (Thanda)",
+    "ward_opt_9": "Ward 9 - West Agriculture Belt",
+    "ward_opt_10": "Ward 10 - Rythu Bharosa Kendra Area",
+    "ward_1": "Ward 1",
+    "ward_2": "Ward 2",
+    "ward_3": "Ward 3",
+    "ward_4": "Ward 4",
+    "ward_5": "Ward 5",
+    "ward_6": "Ward 6",
+    "ward_7": "Ward 7",
+    "ward_8": "Ward 8",
+    "ward_9": "Ward 9",
+    "ward_10": "Ward 10",
+    "ward_11": "Ward 11",
+    "ward_12": "Ward 12",
+    "ward_13": "Ward 13",
+    "ward_14": "Ward 14",
+    "ward_15": "Ward 15",
+    "badge_notice": "NOTICE",
+    "notice_water_title": "Scheduled Drinking Water Supply Maintenance",
+    "notice_water_desc": "Drinking water supply will be paused in Wards 3, 4, and 5 on Sunday between 10:00 AM and 3:00 PM due to pipeline overhaul. Residents are requested to store adequate water.",
+    "hero_digital_mgmt": "Digital Grievance Management",
+    "verified_public_service": "Verified Public Service",
+    "btn_clear_form": "Clear Form",
+    "admin_worker_ranking_hint": "Workers are ranked by lowest active workload and highest loyalty points.",
+    "awaiting_citizen_confirmation": "Awaiting Complainant Confirmation",
+    "cat_opt_water": "Drinking Water & Supply",
+    "cat_opt_electricity": "Electricity & Streetlights",
+    "cat_opt_sanitation": "Waste Management & Sanitation",
+    "cat_opt_roads": "Roads & Drainage Systems",
+    "cat_opt_health": "Public Health & Vector Control",
+    "cat_opt_schools": "Anganwadi & School Civic Issues",
+    "cat_opt_housing": "Rural Housing & Infrastructure",
+    "cat_opt_other": "Other Civic & Community Issues",
+    "opt_choose_dept": "-- Choose Department --",
+    "opt_first_select_dept": "-- First Select Department --",
+    "opt_all_categories": "All Categories",
+    "opt_all_wards": "All Wards",
+    "opt_all_priorities": "All Priorities",
+    "opt_all_statuses": "All Statuses",
+    "alert_citizen_verif_req": "Citizen Resolution Verification Required",
+    "alert_citizen_verif_desc": "The worker has reported that the work is complete. Please confirm whether your original problem has actually been solved.",
+    "alert_awaiting_officer_title": "No Grievances Currently Awaiting Officer Verification",
+    "alert_awaiting_officer_desc": "When field workers complete remediation work and upload proof, grievances will appear here for review and verification approval.",
+    "txt_no_photo_attached": "No photo attached with complaint",
+    "txt_unassigned": "Unassigned",
+    "txt_rejected_notice": "This grievance was rejected after Panchayat verification.",
   },
   "te": {
     "app_name": "గ్రామసేవ",
@@ -1012,6 +1138,132 @@ window.TRANSLATIONS = {
     "Please log in to access this portal.": "\u0c26\u0c2f\u0c1a\u0c47\u0c38\u0c3f \u0c08 \u0c2a\u0c4b\u0c30\u0c4d\u0c1f\u0c32\u0c4d\u200c\u0c28\u0c41 \u0c09\u0c2a\u0c2f\u0c4b\u0c17\u0c3f\u0c02\u0c1a\u0c21\u0c3e\u0c28\u0c3f\u0c15\u0c3f \u0c32\u0c3e\u0c17\u0c3f\u0c28\u0c4d \u0c05\u0c35\u0c4d\u0c35\u0c02\u0c21\u0c3f.",
     "Error tracking grievance: ": "\u0c2b\u0c3f\u0c30\u0c4d\u0c2f\u0c3e\u0c26\u0c41 \u0c1f\u0c4d\u0c30\u0c3e\u0c15\u0c3f\u0c02\u0c17\u0c4d \u0c32\u0c4b\u0c2a\u0c02: ",
     "Error: ": "\u0c32\u0c4b\u0c2a\u0c02: ",
+    "auth_citizen_portal": "పౌరుల పోర్టల్",
+    "auth_worker_login": "వర్కర్ లాగిన్",
+    "auth_admin_login_short": "అడ్మిన్ లాగిన్",
+    "auth_toggle_login": "ఇప్పటికే నమోదయ్యారా? లాగిన్",
+    "auth_toggle_register": "కొత్త వినియోగదారుడా? నమోదు చేసుకోండి",
+    "auth_citizen_login_title": "పౌరుల లాగిన్",
+    "auth_citizen_login_sub": "రంగపురం పంచాయతీ ప్రజా ఫిర్యాదుల సేవలను పొందడానికి మీ నమోదైన వివరాలను నమోదు చేయండి.",
+    "auth_citizen_reg_title": "పౌరుల నమోదు (రిజిస్ట్రేషన్)",
+    "auth_citizen_reg_sub": "ఫిర్యాదులు నమోదు చేయడానికి మరియు పురోగతిని తెలుసుకోవడానికి మీ మొబైల్ నంబర్‌తో నమోదు చేసుకోండి.",
+    "auth_lbl_name": "పూర్తి పేరు",
+    "auth_ph_name": "ఉదా: రమేష్ నాయుడు",
+    "auth_lbl_mobile": "నమోదైన మొబైల్ నంబర్",
+    "auth_ph_mobile": "10 అంకెల మొబైల్ నంబర్",
+    "auth_hint_mobile": "మీ నమోదైన ఫోన్ నంబర్‌తో సరిపోలాలి (ఉదా: 9876543210).",
+    "auth_lbl_password": "పాస్‌వర్డ్ / పిన్",
+    "auth_ph_password": "పాస్‌వర్డ్ నమోదు చేయండి",
+    "auth_hint_password": "డెమో పాస్‌వర్డ్: citizen123",
+    "auth_btn_citizen_login": "పౌరుడిగా లాగిన్ అవ్వండి →",
+    "auth_btn_signing_in": "లాగిన్ అవుతోంది...",
+    "auth_txt_new_user": "కొత్త వినియోగదారుడా?",
+    "auth_lnk_register": "కొత్త పౌరుల ఖాతాను నమోదు చేసుకోండి →",
+    "auth_reg_ph_name": "మీ పూర్తి పేరు నమోదు చేయండి",
+    "auth_reg_ph_mobile": "10 అంకెల మొబైల్ నంబర్ (ఉదా: 9876543210)",
+    "auth_reg_hint_mobile": "అధికారిక ఫిర్యాదు అప్‌డేట్‌లు మరియు ధృవీకరణ కోసం ఈ మొబైల్ నంబర్ ఉపయోగించబడుతుంది.",
+    "auth_reg_lbl_ward": "వార్డు సంఖ్య",
+    "auth_reg_lbl_address": "చిరునామా / వీధి",
+    "auth_reg_ph_address": "ఇంటి నెం, వీధి లేదా ల్యాండ్‌మార్క్",
+    "auth_reg_lbl_password": "పాస్‌వర్డ్ సృష్టించండి",
+    "auth_reg_lbl_confirm_password": "పాస్‌వర్డ్ నిర్ధారించండి",
+    "auth_reg_ph_confirm_password": "పాస్‌వర్డ్‌ను మళ్లీ నమోదు చేయండి",
+    "auth_btn_reg_submit": "నమోదు చేసి లాగిన్ అవ్వండి →",
+    "auth_btn_reg_submitting": "ఖాతా నమోదు అవుతోంది...",
+    "auth_txt_have_account": "ఇప్పటికే ఖాతా ఉందా?",
+    "auth_lnk_login_here": "ఇక్కడ లాగిన్ అవ్వండి →",
+    "auth_txt_are_worker": "మీరు ఫీల్డ్ టెక్నీషియనా?",
+    "auth_lnk_worker_portal": "వర్కర్ పోర్టల్ →",
+    "auth_txt_are_admin": "పంచాయతీ కార్యదర్శి లేదా అధికారులా?",
+    "auth_lnk_admin_login": "అడ్మిన్ లాగిన్ →",
+    "auth_worker_login_title": "వర్కర్ లాగిన్",
+    "auth_worker_login_sub": "కేటాయించిన పనులను చూడటానికి, పురోగతిని నమోదు చేయడానికి మరియు పరిష్కార రుజువును సమర్పించడానికి లాగిన్ అవ్వండి.",
+    "auth_worker_ph_name": "ఉదా: శ్రీ శివ కుమార్",
+    "auth_worker_lbl_id": "వర్కర్ ఐడి",
+    "auth_worker_ph_id": "ఉదా: WRK-WAT-01",
+    "auth_worker_lbl_skill": "పని రకం / నైపుణ్యం",
+    "opt_select_skill": "-- పని రకం / నైపుణ్యాన్ని ఎంచుకోండి --",
+    "skill_electrician": "ఎలక్ట్రీషియన్ (Electrician)",
+    "skill_plumber": "ప్లంబర్ (Plumber)",
+    "skill_mechanic": "మెకానిక్ (Mechanic)",
+    "skill_mason": "మేస్త్రీ (Mason)",
+    "skill_sanitation": "పారిశుద్ధ్య కార్మికుడు (Sanitation Worker)",
+    "skill_other": "ఇతర (Other)",
+    "auth_worker_auto_note": "డేటాబేస్ నుండి లోడ్ చేయబడుతుంది",
+    "auth_worker_hint_pass": "డెమో పాస్‌వర్డ్: worker123 (ఉదా: శివ కుమార్: WRK-WAT-01 / 9848077889)",
+    "auth_btn_worker_login": "వర్కర్‌గా లాగిన్ అవ్వండి →",
+    "auth_txt_are_citizen": "మీరు గ్రామ పౌరులా?",
+    "auth_lnk_citizen_login": "పౌరుల లాగిన్ →",
+    "auth_txt_new_technician": "కొత్త ఫీల్డ్ టెక్నీషియనా?",
+    "auth_lnk_register_worker": "వర్కర్ ప్రొఫైల్ నమోదు చేసుకోండి →",
+    "auth_skill_detected": "డేటాబేస్ నుండి గుర్తించబడిన నైపుణ్యం:",
+    "auth_worker_reg_title": "వర్కర్ రిజిస్ట్రేషన్",
+    "auth_worker_reg_sub": "రంగపురం గ్రామ పంచాయతీలో మీ టెక్నీషియన్ వివరాలు మరియు పని నైపుణ్యాన్ని నమోదు చేసుకోండి.",
+    "auth_roster_notice": "కొత్తగా నమోదైన కార్మికులు రోస్టర్‌లో చేర్చబడతారు. పరిపాలనా ధృవీకరణ తరువాత పనుల కేటాయింపు జరుగుతుంది.",
+    "auth_worker_ph_reg_name": "ఉదా: శ్రీ శివ కుమార్",
+    "auth_worker_lbl_reg_id": "ప్రత్యేక వర్కర్ ఐడి (Worker ID)",
+    "auth_worker_ph_reg_id": "ఉదా: WRK-WAT-03",
+    "auth_worker_hint_reg_id": "కేటాయించిన వర్కర్ బ్యాడ్జ్/ఐడి కోడ్.",
+    "auth_worker_hint_reg_mobile": "ప్రత్యేకమైన 10 అంకెల నంబర్ నమోదు చేయాలి.",
+    "auth_worker_lbl_exp": "అనుభవం",
+    "auth_worker_ph_exp": "ఉదా: 4 సంవత్సరాలు / ITI",
+    "auth_btn_worker_reg_submit": "నమోదు చేసి వర్కర్ పోర్టల్ తెరవండి →",
+    "auth_txt_already_worker": "ఇప్పటికే నమోదైన కార్మికులా?",
+    "auth_lnk_worker_login_here": "వర్కర్ లాగిన్ ఇక్కడ చేయండి →",
+    "ward_opt_1": "వార్డు 1 - పాత గ్రామ కేంద్రం",
+    "ward_opt_2": "వార్డు 2 - పాఠశాల & ఆరోగ్య ఉపకేంద్రం",
+    "ward_opt_3": "వార్డు 3 - మార్కెట్ & బస్ స్టాండ్",
+    "ward_opt_4": "వార్డు 4 - ఆలయ వీధి & నీటి ట్యాంక్",
+    "ward_opt_5": "వార్డు 5 - హరిజనవాడ & ప్రాథమిక పాఠశాల",
+    "ward_opt_6": "వార్డు 6 - బిసి కాలనీ & కమ్యూనిటీ హాల్",
+    "ward_opt_7": "వార్డు 7 - వారపు సంత & బైపాస్",
+    "ward_opt_8": "వార్డు 8 - తూర్పు తండా",
+    "ward_opt_9": "వార్డు 9 - పశ్చిమ వ్యవసాయ ప్రాంతం",
+    "ward_opt_10": "వార్డు 10 - రైతు భరోసా కేంద్ర ప్రాంతం",
+    "ward_1": "వార్డు 1",
+    "ward_2": "వార్డు 2",
+    "ward_3": "వార్డు 3",
+    "ward_4": "వార్డు 4",
+    "ward_5": "వార్డు 5",
+    "ward_6": "వార్డు 6",
+    "ward_7": "వార్డు 7",
+    "ward_8": "వార్డు 8",
+    "ward_9": "వార్డు 9",
+    "ward_10": "వార్డు 10",
+    "ward_11": "వార్డు 11",
+    "ward_12": "వార్డు 12",
+    "ward_13": "వార్డు 13",
+    "ward_14": "వార్డు 14",
+    "ward_15": "వార్డు 15",
+    "badge_notice": "నోటీస్",
+    "notice_water_title": "తాగునీటి సరఫరా షెడ్యూల్డ్ మరమ్మతులు",
+    "notice_water_desc": "పైప్‌లైన్ మరమ్మతుల కారణంగా ఆదివారం ఉదయం 10:00 నుండి మధ్యాహ్నం 3:00 వరకు 3, 4, మరియు 5 వార్డులలో తాగునీటి సరఫరా నిలిపివేయబడుతుంది. గ్రామస్తులు తగినంత నీటిని నిల్వ చేసుకోవాలని మనవి.",
+    "hero_digital_mgmt": "డిజిటల్ ఫిర్యాదుల నిర్వహణ",
+    "verified_public_service": "ధృవీకరించబడిన ప్రజా సేవ",
+    "btn_clear_form": "ఫారమ్‌ను ఖాళీ చేయండి",
+    "admin_worker_ranking_hint": "తక్కువ పెండింగ్ పనులు మరియు ఎక్కువ లాయల్టీ పాయింట్లు ఉన్న సిబ్బందికి ప్రాధాన్యత ఇవ్వబడుతుంది.",
+    "awaiting_citizen_confirmation": "ఫిర్యాదుదారుడి నిర్ధారణ కోసం వేచి ఉంది",
+    "cat_opt_water": "తాగునీరు & సరఫరా",
+    "cat_opt_electricity": "విద్యుత్ & వీధి దీపాలు",
+    "cat_opt_sanitation": "చెత్త నిర్వహణ & పారిశుద్ధ్యం",
+    "cat_opt_roads": "రోడ్లు & డ్రైనేజీ వ్యవస్థ",
+    "cat_opt_health": "ప్రజా ఆరోగ్యం & దోమల నివారణ",
+    "cat_opt_schools": "అంగన్‌వాడీ & పాఠశాల పౌర సమస్యలు",
+    "cat_opt_housing": "గ్రామీణ గృహనిర్మాణం & మౌలిక వసతులు",
+    "cat_opt_other": "ఇతర పౌర & సమాజ సమస్యలు",
+    "opt_choose_dept": "-- శాఖను ఎంచుకోండి --",
+    "opt_first_select_dept": "-- ముందుగా శాఖను ఎంచుకోండి --",
+    "opt_all_categories": "అన్ని విభాగాలు",
+    "opt_all_wards": "అన్ని వార్డులు",
+    "opt_all_priorities": "అన్ని ప్రాధాన్యతలు",
+    "opt_all_statuses": "అన్ని స్థితులు",
+    "alert_citizen_verif_req": "పౌరుల పరిష్కార ధృవీకరణ అవసరం",
+    "alert_citizen_verif_desc": "పని పూర్తయినట్లు వర్కర్ నివేదించారు. మీ అసలు సమస్య నిజంగా పరిష్కరించబడిందో లేదో దయచేసి నిర్ధారించండి.",
+    "alert_awaiting_officer_title": "ప్రస్తుతం ఏ ఫిర్యాదులు అధికారి ధృవీకరణ కోసం వేచి లేవు",
+    "alert_awaiting_officer_desc": "ఫీల్డ్ వర్కర్లు పరిష్కార పనిని పూర్తి చేసి రుజువును అప్‌లోడ్ చేసినప్పుడు, సమీక్ష మరియు ధృవీకరణ ఆమోదం కోసం ఫిర్యాదులు ఇక్కడ కనిపిస్తాయి.",
+    "txt_no_photo_attached": "ఫిర్యాదుతో ఫోటో జతచేయబడలేదు",
+    "txt_unassigned": "కేటాయించబడలేదు",
+    "txt_rejected_notice": "పంచాయతీ ధృవీకరణ తర్వాత ఈ ఫిర్యాదు తిరస్కరించబడింది.",
   }
 };
 
@@ -1047,8 +1299,23 @@ window.applyTranslations = function(lang) {
     if (translated !== null) {
       if (el.tagName === 'INPUT' && (el.type === 'submit' || el.type === 'button')) {
         el.value = translated;
-      } else {
+      } else if (el.tagName === 'OPTION') {
         el.textContent = translated;
+      } else if (el.children.length === 0) {
+        el.textContent = translated;
+      } else {
+        // If element has text node + child elements (like role dots or badges), replace the text node safely
+        var hasTextNode = false;
+        for (var i = 0; i < el.childNodes.length; i++) {
+          if (el.childNodes[i].nodeType === 3 && el.childNodes[i].textContent.trim().length > 0) {
+            el.childNodes[i].textContent = translated;
+            hasTextNode = true;
+            break;
+          }
+        }
+        if (!hasTextNode) {
+          el.textContent = translated;
+        }
       }
     }
   });
@@ -1082,26 +1349,37 @@ window.applyTranslations = function(lang) {
 
   // 5. Re-render dynamic active views if available
   try {
-    if (typeof window.loadMyGrievances === 'function') {
+    if (typeof window.loadCitizenDashboard === 'function') {
+      window.loadCitizenDashboard();
+    } else if (typeof window.loadMyGrievances === 'function') {
       window.loadMyGrievances();
     }
     if (typeof window.renderWorkerTasksTable === 'function') {
       window.renderWorkerTasksTable();
     }
+    if (typeof window.renderWorkerPointsTransactionsTable === 'function') {
+      window.renderWorkerPointsTransactionsTable();
+    }
+    if (typeof window.populateDepartmentDropdowns === 'function') {
+      window.populateDepartmentDropdowns();
+    }
     if (typeof window.renderAdminGrievancesTable === 'function') {
       window.renderAdminGrievancesTable();
     }
-    if (typeof window.renderWorkersTable === 'function') {
-      window.renderWorkersTable();
-    }
-    if (typeof window.renderLoyaltyHistoryTable === 'function') {
-      window.renderLoyaltyHistoryTable();
+    if (typeof window.renderAwaitingVerificationSection === 'function' && window._lastAwaitingList) {
+      window.renderAwaitingVerificationSection(window._lastAwaitingList);
     }
     if (typeof window.renderTimelineStepper === 'function' && window._lastTimelineStatus) {
       window.renderTimelineStepper(window._lastTimelineStatus);
     }
-    if (typeof window.updateNavbarUser === 'function' && window.currentUser) {
+    if (typeof window.updateNavbarUser === 'function') {
       window.updateNavbarUser(window.currentUser);
+    }
+    if (typeof window.loadAnnouncements === 'function') {
+      window.loadAnnouncements();
+    }
+    if (typeof window.loadPublicFeed === 'function') {
+      window.loadPublicFeed();
     }
   } catch (e) {
     console.error('Error re-rendering active dynamic tables:', e);
@@ -1111,7 +1389,7 @@ window.applyTranslations = function(lang) {
   document.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang: lang } }));
 };
 
-window.setLanguage = async function(lang) {
+async function setLanguage(lang) {
   if (lang !== 'en' && lang !== 'te') {
     lang = 'en';
   }
@@ -1124,7 +1402,9 @@ window.setLanguage = async function(lang) {
   document.cookie = "gramseva_lang=" + lang + ";path=/;max-age=31536000;SameSite=Lax";
 
   // Immediately apply translations on the live DOM
-  window.applyTranslations(lang);
+  if (typeof window.applyTranslations === 'function') {
+    window.applyTranslations(lang);
+  }
 
   // Sync to Flask session in background
   try {
@@ -1136,12 +1416,52 @@ window.setLanguage = async function(lang) {
   } catch (err) {
     console.warn('Language server sync warning:', err);
   }
-};
+}
 
-// Aliases for any legacy or page-specific handlers
-window.setLoginLanguage = window.setLanguage;
-window.setWorkerLanguage = window.setLanguage;
-window.setWorkerRegLanguage = window.setLanguage;
+// Global window assignments
+window.setLanguage = setLanguage;
+window.setLoginLanguage = setLanguage;
+window.setWorkerLanguage = setLanguage;
+window.setWorkerRegLanguage = setLanguage;
+
+// Event listeners for seamless click delegation and instant initial apply
+if (typeof document !== 'undefined') {
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest && e.target.closest('.lang-switch-btn');
+    if (btn) {
+      var targetLang = btn.getAttribute('data-lang');
+      if (targetLang) {
+        e.preventDefault();
+        setLanguage(targetLang);
+      }
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var activeLang = window.currentLang || (typeof localStorage !== 'undefined' && localStorage.getItem('gramseva_lang')) || 'en';
+    if (typeof window.applyTranslations === 'function') {
+      window.applyTranslations(activeLang);
+    }
+  });
+}
+
+// Dynamic translation helper calling backend translation service
+window.translateDynamicText = async function(text, targetLang, sourceLang) {
+  if (!text) return text;
+  targetLang = targetLang || window.currentLang || 'te';
+  sourceLang = sourceLang || 'en';
+  if (targetLang === sourceLang) return text;
+  try {
+    var res = await fetch('/api/translate-text', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: text, target: targetLang, source: sourceLang })
+    });
+    var data = await res.json();
+    if (data.success && data.translated) return data.translated;
+  } catch (e) {}
+  return text;
+};
 
 // Initial early check before full render
 (function() {
@@ -1151,5 +1471,5 @@ window.setWorkerRegLanguage = window.setLanguage;
   } catch(e) {}
   if (saved !== 'en' && saved !== 'te') saved = 'en';
   window.currentLang = saved;
+  document.cookie = "gramseva_lang=" + saved + ";path=/;max-age=31536000;SameSite=Lax";
 })();
-

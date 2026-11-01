@@ -247,6 +247,66 @@ class TestLanguageSwitching(unittest.TestCase):
         self.assertIn('GramSeva', html)
         self.assertIn('Rural Civic Redressal', html)
 
+    def test_08_header_clean_navigation_and_bilingual_cycling(self):
+        """Verify removal of duplicate sign-in buttons and clean English -> Telugu -> English header cycling."""
+        routes_to_test = ['/', '/track', '/analytics']
+
+        for route in routes_to_test:
+            # Step 1: English
+            self.client.set_cookie('gramseva_lang', 'en')
+            res_en = self.client.get(route)
+            self.assertEqual(res_en.status_code, 200)
+            html_en = res_en.get_data(as_text=True)
+
+            # Ensure duplicate sign-in buttons are NOT in navbar
+            navbar_en = html_en.split('<nav class="main-navbar">')[1].split('</nav>')[0]
+            self.assertNotIn('btn_sign_in_citizen', navbar_en)
+            self.assertNotIn('btn_sign_in_worker', navbar_en)
+            self.assertNotIn('Sign In as Citizen', navbar_en)
+            self.assertNotIn('Sign In as Worker', navbar_en)
+            self.assertNotIn('Sign In as Administrator', navbar_en)
+
+            # Ensure all 6 clean navigation links are present in English
+            self.assertIn('>Home<', html_en)
+            self.assertIn('>Citizen Portal<', html_en)
+            self.assertIn('>Worker Portal<', html_en)
+            self.assertIn('>Admin / Officials<', html_en)
+            self.assertIn('>Track Grievance<', html_en)
+            self.assertIn('>Analytics<', html_en)
+
+            # Step 2: Switch to Telugu
+            self.client.set_cookie('gramseva_lang', 'te')
+            res_te = self.client.get(route)
+            self.assertEqual(res_te.status_code, 200)
+            html_te = res_te.get_data(as_text=True)
+
+            self.assertIn('>హోమ్<', html_te)
+            self.assertIn('>పౌరుల పోర్టల్<', html_te)
+            self.assertIn('>వర్కర్ పోర్టల్<', html_te)
+            self.assertIn('>పంచాయతీ అధికారులు / అడ్మిన్<', html_te)
+            self.assertIn('>ఫిర్యాదు ట్రాకింగ్<', html_te)
+            self.assertIn('>విశ్లేషణ &amp; నివేదికలు<', html_te)
+
+            # Step 3: Switch BACK to English
+            self.client.set_cookie('gramseva_lang', 'en')
+            res_en_back = self.client.get(route)
+            self.assertEqual(res_en_back.status_code, 200)
+            html_en_back = res_en_back.get_data(as_text=True)
+
+            # Confirm English is restored cleanly
+            self.assertIn('<html lang="en">', html_en_back)
+            self.assertIn('>Home<', html_en_back)
+            self.assertIn('>Citizen Portal<', html_en_back)
+            self.assertIn('>Worker Portal<', html_en_back)
+            self.assertIn('>Admin / Officials<', html_en_back)
+            self.assertIn('>Track Grievance<', html_en_back)
+            self.assertIn('>Analytics<', html_en_back)
+
+            # Confirm no leftover Telugu labels in navbar
+            self.assertNotIn('>పౌరుల పోర్టల్<', html_en_back)
+            self.assertNotIn('>వర్కర్ పోర్టల్<', html_en_back)
+            self.assertNotIn('లాగిన్ అవ్వండి', html_en_back.split('<nav class="main-navbar">')[1].split('</nav>')[0])
+
 if __name__ == '__main__':
     if hasattr(sys.stdout, 'reconfigure'):
         sys.stdout.reconfigure(encoding='utf-8', errors='replace')

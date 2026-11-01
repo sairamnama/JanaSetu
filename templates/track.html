@@ -47,7 +47,7 @@
     <div class="card" style="margin-bottom:1.5rem; border-top:4px solid var(--civic-primary);">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
         <div>
-          <span style="font-size:0.75rem; color:#5D6B63; font-weight:600;" data-i18n="track_num_label">{{ t('track_num_label', 'GRIEVANCE TRACKING NUMBER') }}</span>
+          <span style="font-size:0.75rem; color:#5F686D; font-weight:600;" data-i18n="track_num_label">{{ t('track_num_label', 'GRIEVANCE TRACKING NUMBER') }}</span>
           <div id="t-tracking-id" style="font-size:1.5rem; font-weight:800; font-family:monospace; color:var(--civic-dark);"></div>
         </div>
         <div style="display:flex; gap:0.5rem; align-items:center;">
@@ -66,10 +66,10 @@
 
       <div style="display:flex; gap:0.5rem; margin-bottom:1rem; flex-wrap:wrap;">
         <span id="t-category"></span>
-        <span class="category-pill" id="t-date" style="background:#E8F3ED; color:#5D6B63;"></span>
+        <span class="category-pill" id="t-date" style="background:#F1E2D7; color:#5F686D;"></span>
       </div>
 
-      <div style="background:#F8F7F2; border:1px solid #DCE4DE; border-radius:8px; padding:0.85rem 1rem; font-size:0.85rem; color:#5D6B63;">
+      <div style="background:#F8F4EF; border:1px solid #E3D8CF; border-radius:8px; padding:0.85rem 1rem; font-size:0.85rem; color:#5F686D;">
         <strong data-i18n="track_transparency_title">{{ t('track_transparency_title', 'Public Transparency Portal:') }}</strong> <span data-i18n="track_transparency_desc">{{ t('track_transparency_desc', 'Sensitive citizen personal data and internal Panchayat notes are protected and omitted from public tracking.') }}</span>
       </div>
     </div>
@@ -150,17 +150,17 @@
       const histBox = document.getElementById('t-history-list');
       if (g.timeline && g.timeline.length > 0) {
         histBox.innerHTML = g.timeline.map(item => `
-          <div style="padding:0.75rem 0; border-bottom:1px solid #DCE4DE; display:flex; justify-content:space-between; align-items:center;">
+          <div style="padding:0.75rem 0; border-bottom:1px solid #E3D8CF; display:flex; justify-content:space-between; align-items:center;">
             <div>
-              <div style="font-weight:600; font-size:0.85rem; color:#202B26;">
+              <div style="font-weight:600; font-size:0.85rem; color:#252B2E;">
                 ${getStatusBadge(item.status || item.to_status)}
               </div>
             </div>
-            <div style="font-size:0.8rem; color:#5D6B63;">${escapeHtml(item.created_at)}</div>
+            <div style="font-size:0.8rem; color:#5F686D;">${escapeHtml(item.created_at)}</div>
           </div>
         `).join('');
       } else {
-        histBox.innerHTML = `<div style="color:#5D6B63; padding:0.5rem 0;">${window.t('no_grievances_desc', 'Timeline initialized.')}</div>`;
+        histBox.innerHTML = `<div style="color:#5F686D; padding:0.5rem 0;">${window.t('no_grievances_desc', 'Timeline initialized.')}</div>`;
       }
 
     } catch (err) {
@@ -212,12 +212,12 @@
 
     let html = `
       <div class="double-verif-card" style="box-shadow:none; border:none; padding:0; margin:0;" role="region" aria-label="Double Verification Tracking Stepper">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem; border-bottom:1px solid #DCE4DE; padding-bottom:0.5rem; flex-wrap:wrap; gap:0.5rem;">
-          <div style="font-weight:700; font-size:0.85rem; color:#10533C;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem; border-bottom:1px solid #E3D8CF; padding-bottom:0.5rem; flex-wrap:wrap; gap:0.5rem;">
+          <div style="font-weight:700; font-size:0.85rem; color:#263239;">
             <strong>${window.t('track_double_verif_title', 'Double Verification Grievance Lifecycle')}</strong>
           </div>
-          <div style="font-size:0.8rem; color:#5D6B63;">
-            ${window.t('track_current_state', 'Current State:')} <strong style="color:#176B68;">${activeStageObj.label}</strong> ${stageModifierNote}
+          <div style="font-size:0.8rem; color:#5F686D;">
+            ${window.t('track_current_state', 'Current State:')} <strong style="color:#B85C38;">${activeStageObj.label}</strong> ${stageModifierNote}
           </div>
         </div>
         <div class="double-verif-stepper">

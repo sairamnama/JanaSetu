@@ -117,7 +117,7 @@ function renderWorkerTasksTable() {
     const tNoTasksFilter = typeof window.t === 'function' ? window.t('empty_no_tasks_filter', 'No grievances match your current filter.') : 'No grievances match your current filter.';
     tableBody.innerHTML = `
       <tr>
-        <td colspan="7" style="text-align:center; padding:2.5rem; color:#5D6B63;">
+        <td colspan="7" style="text-align:center; padding:2.5rem; color:#5F686D;">
           <div style="font-weight:600; font-size:1.05rem;">${tNoTasks}</div>
           <p style="font-size:0.85rem; margin-top:0.25rem;">${tNoTasksFilter}</p>
         </td>
@@ -140,10 +140,10 @@ function renderWorkerTasksTable() {
 
     let actionButtons = '';
     if (g.status === 'ASSIGNED') {
-      actionButtons += `<button onclick="openWorkerAcceptModal(${g.id})" class="btn btn-sm btn-primary" style="background:#176B4D; border-color:#176B4D; font-weight:700;" title="Accept task assignment">${tAccept}</button>`;
+      actionButtons += `<button onclick="openWorkerAcceptModal(${g.id})" class="btn btn-sm btn-primary" style="background:#34424A; border-color:#34424A; font-weight:700;" title="Accept task assignment">${tAccept}</button>`;
       actionButtons += `<button onclick="openWorkerRejectModal(${g.id})" class="btn btn-sm btn-outline" style="color:#DC2626; border-color:#DC2626; font-weight:600;" title="Reject task assignment">${tReject}</button>`;
     } else if (g.status === 'ACCEPTED') {
-      actionButtons += `<button onclick="handleStartWork(${g.id}, '${g.tracking_id}')" class="btn btn-sm btn-primary" style="background:#176B68; border-color:#176B68; font-weight:700;" title="Start remediation work">${tStartWork}</button>`;
+      actionButtons += `<button onclick="handleStartWork(${g.id}, '${g.tracking_id}')" class="btn btn-sm btn-primary" style="background:#B85C38; border-color:#B85C38; font-weight:700;" title="Start remediation work">${tStartWork}</button>`;
     }
 
     if (canComplete) {
@@ -164,14 +164,14 @@ function renderWorkerTasksTable() {
         </td>
         <td>
           <div style="font-weight:700; color:var(--text-main);">${escapeHtml(g.title)}</div>
-          <div style="font-size:0.75rem; color:#5D6B63;">Ward ${g.ward_number} • ${escapeHtml(g.location_landmark)}</div>
+          <div style="font-size:0.75rem; color:#5F686D;">Ward ${g.ward_number} • ${escapeHtml(g.location_landmark)}</div>
         </td>
         <td>
           <span class="category-pill">${getCategoryIcon(g.category)} ${escapeHtml(catLabel)}</span>
         </td>
         <td>${getPriorityBadge(g.priority)}</td>
         <td>${getStatusBadge(g.status)}</td>
-        <td style="font-size:0.8rem; color:#5D6B63;">${dateDisplay}</td>
+        <td style="font-size:0.8rem; color:#5F686D;">${dateDisplay}</td>
         <td>
           <div style="display:flex; gap:0.35rem; align-items:center; flex-wrap:wrap;">
             ${actionButtons}
@@ -465,7 +465,7 @@ function setupWorkerProofPreview() {
       const reader = new FileReader();
       reader.onload = (re) => {
         previewArea.innerHTML = `
-          <div style="margin-top:0.5rem; display:inline-block; position:relative; border-radius:8px; overflow:hidden; border:1px solid #DCE4DE;">
+          <div style="margin-top:0.5rem; display:inline-block; position:relative; border-radius:8px; overflow:hidden; border:1px solid #E3D8CF;">
             <img src="${re.target.result}" style="max-height:120px; display:block; object-fit:cover;" />
             <div style="background:rgba(0,0,0,0.6); color:#fff; font-size:0.7rem; padding:2px 6px; text-align:center;">Resolution Proof</div>
           </div>
@@ -473,7 +473,7 @@ function setupWorkerProofPreview() {
       };
       reader.readAsDataURL(file);
     } else if (file) {
-      previewArea.innerHTML = `<div style="font-size:0.82rem; color:#5D6B63; margin-top:0.4rem;">${file.name} selected</div>`;
+      previewArea.innerHTML = `<div style="font-size:0.82rem; color:#5F686D; margin-top:0.4rem;">${file.name} selected</div>`;
     }
   });
 }
@@ -492,18 +492,18 @@ async function loadWorkerNotifications() {
 
     const notifs = data.notifications;
     if (notifs.length === 0) {
-      listEl.innerHTML = `<div style="color:#5D6B63; padding:1rem; font-size:0.85rem;">No notifications yet.</div>`;
+      listEl.innerHTML = `<div style="color:#5F686D; padding:1rem; font-size:0.85rem;">No notifications yet.</div>`;
       return;
     }
 
     listEl.innerHTML = notifs.map(n => `
-      <div style="padding:0.75rem 0; border-bottom:1px solid #DCE4DE; ${n.is_read ? 'opacity:0.65;' : ''}">
+      <div style="padding:0.75rem 0; border-bottom:1px solid #E3D8CF; ${n.is_read ? 'opacity:0.65;' : ''}">
         <div style="display:flex; justify-content:space-between; align-items:flex-start;">
           <div>
             <div style="font-weight:${n.is_read ? '400' : '700'}; font-size:0.88rem; color:var(--text-main);">${escapeHtml(n.title)}</div>
-            <div style="font-size:0.82rem; color:#5D6B63; margin-top:0.2rem;">${escapeHtml(n.message)}</div>
+            <div style="font-size:0.82rem; color:#5F686D; margin-top:0.2rem;">${escapeHtml(n.message)}</div>
           </div>
-          <div style="font-size:0.72rem; color:#5D6B63; white-space:nowrap; margin-left:0.5rem;">${n.created_at.split(' ')[0]}</div>
+          <div style="font-size:0.72rem; color:#5F686D; white-space:nowrap; margin-left:0.5rem;">${n.created_at.split(' ')[0]}</div>
         </div>
         ${!n.is_read ? `<button onclick="markWorkerNotificationRead(${n.id})" style="font-size:0.72rem; color:var(--civic-green); background:none; border:none; cursor:pointer; padding:0.2rem 0; font-weight:600;">Mark Read</button>` : ''}
       </div>
@@ -563,8 +563,8 @@ async function loadWorkerLoyaltyPoints() {
     if (elStatusBadge) {
       elStatusBadge.textContent = `${points} Verified Points`;
       if (points >= 100) {
-        elStatusBadge.style.background = '#E8F3ED';
-        elStatusBadge.style.color = '#176B4D';
+        elStatusBadge.style.background = '#F1E2D7';
+        elStatusBadge.style.color = '#34424A';
       } else if (points >= 50) {
         elStatusBadge.style.background = '#FEF3C7';
         elStatusBadge.style.color = '#B45309';
@@ -585,38 +585,45 @@ function renderWorkerPointsTransactionsTable(transactions) {
   if (!tbody) return;
 
   if (!transactions || transactions.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:1.75rem; color:#5D6B63;">No points transactions recorded yet.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:1.75rem; color:#5F686D;">No points transactions recorded yet.</td></tr>';
     return;
   }
 
   tbody.innerHTML = transactions.map(tx => {
     const isPositive = tx.points_changed > 0;
     const changeBadge = isPositive 
-      ? `<span class="badge" style="background:#E8F3ED; color:#176B4D; font-weight:700; font-size:0.85rem;">+${tx.points_changed} pts</span>`
+      ? `<span class="badge" style="background:#F1E2D7; color:#34424A; font-weight:700; font-size:0.85rem;">+${tx.points_changed} pts</span>`
       : `<span class="badge" style="background:#FEE2E2; color:#B91C1C; font-weight:700; font-size:0.85rem;">${tx.points_changed} pts</span>`;
 
     const formattedDate = tx.created_at ? tx.created_at.replace('T', ' ').substring(0, 19) : 'N/A';
 
     return `
       <tr>
-        <td style="font-size:0.82rem; color:#5D6B63; white-space:nowrap;">
+        <td style="font-size:0.82rem; color:#5F686D; white-space:nowrap;">
           ${formattedDate}
         </td>
         <td>
           <div style="font-weight:600; color:var(--text-main);">${escapeHtml(tx.reason)}</div>
-          <div style="font-size:0.75rem; color:#5D6B63;">Audit Ref: <code>#TX-${tx.id}</code></div>
+          <div style="font-size:0.75rem; color:#5F686D;">Audit Ref: <code>#TX-${tx.id}</code></div>
         </td>
         <td style="text-align:center;">
           ${changeBadge}
         </td>
         <td style="text-align:right; font-family:monospace; font-size:0.9rem;">
-          <span style="color:#5D6B63;">${tx.previous_balance}</span> &rarr; 
+          <span style="color:#5F686D;">${tx.previous_balance}</span> &rarr; 
           <strong style="color:var(--civic-dark);">${tx.new_balance}</strong>
         </td>
-        <td style="font-size:0.82rem; color:#5D6B63;">
+        <td style="font-size:0.82rem; color:#5F686D;">
           ${escapeHtml(tx.actor_source || 'System')}
         </td>
       </tr>
     `;
   }).join('');
 }
+
+
+// Expose worker dashboard controllers for global localization re-rendering
+window.renderWorkerTasksTable = renderWorkerTasksTable;
+window.renderWorkerPointsTransactionsTable = renderWorkerPointsTransactionsTable;
+window.loadWorkerDashboard = loadWorkerDashboard;
+window.loadWorkerLoyaltyPoints = loadWorkerLoyaltyPoints;

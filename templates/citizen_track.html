@@ -57,7 +57,7 @@
   </div>
 
   <!-- Loading State -->
-  <div id="track-loading-state" class="card" style="text-align: center; padding: 3rem 1.5rem; color: #5D6B63;">
+  <div id="track-loading-state" class="card" style="text-align: center; padding: 3rem 1.5rem; color: #5F686D;">
         <div style="font-weight: 600;" data-i18n="loading_grievances">{{ t('loading_grievances', 'Loading your grievances from Rangapuram Panchayat...') }}</div>
   </div>
 
@@ -86,7 +86,7 @@
   <div class="modal-box" style="max-width: 480px;">
     <div class="modal-header">
       <div>
-        <div style="font-size: 0.75rem; color: #5D6B63; font-weight: 700; text-transform: uppercase;" data-i18n="feedback_modal_title">{{ t('feedback_modal_title', 'Service Feedback') }}</div>
+        <div style="font-size: 0.75rem; color: #5F686D; font-weight: 700; text-transform: uppercase;" data-i18n="feedback_modal_title">{{ t('feedback_modal_title', 'Service Feedback') }}</div>
         <h3 id="feedback-tracking-id" style="font-size: 1.2rem; color: var(--civic-dark); font-family: monospace; font-weight: 800;"></h3>
       </div>
       <button class="modal-close-btn" onclick="closeModal('modal-feedback')">&times;</button>
@@ -245,7 +245,7 @@
 
     if (!list || list.length === 0) {
       listContainer.innerHTML = `
-        <div class="card" style="text-align:center; padding:2.5rem 1.5rem; color:#5D6B63;">
+        <div class="card" style="text-align:center; padding:2.5rem 1.5rem; color:#5F686D;">
           <div style="font-weight:600; font-size:1.05rem; color:var(--civic-dark);">${window.t('no_grievances_found', 'No matching grievances found')}</div>
           <p style="font-size:0.88rem; margin-top:0.25rem;">${window.t('no_grievances_desc', 'Try adjusting your search filter.')}</p>
         </div>
@@ -268,14 +268,14 @@
           <!-- Top Row: Grievance ID, Date, Status -->
           <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.85rem;">
             <div>
-              <span style="font-size: 0.72rem; color: #5D6B63; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">${window.t('th_tracking_id', 'Grievance ID')}</span>
+              <span style="font-size: 0.72rem; color: #5F686D; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">${window.t('th_tracking_id', 'Grievance ID')}</span>
               <div style="font-size: 1.25rem; font-weight: 800; font-family: monospace; color: var(--civic-dark); letter-spacing: 0.02em;">
                 ${g.tracking_id}
               </div>
             </div>
 
             <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
-              <span style="font-size: 0.8rem; color: #5D6B63;">
+              <span style="font-size: 0.8rem; color: #5F686D;">
                 ${formatDate(g.created_at)}
               </span>
               <div>
@@ -290,8 +290,8 @@
           </h2>
 
           <!-- Category and Location details -->
-          <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; font-size: 0.88rem; color: #5D6B63; margin-bottom: 1rem;">
-            <span class="category-pill" style="background: #E8F3ED; color: #202B26; font-weight: 600; padding: 0.25rem 0.65rem; border-radius: 6px;">
+          <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; font-size: 0.88rem; color: #5F686D; margin-bottom: 1rem;">
+            <span class="category-pill" style="background: #F1E2D7; color: #252B2E; font-weight: 600; padding: 0.25rem 0.65rem; border-radius: 6px;">
               ${escapeHtml(catLabel)}
             </span>
             <span>
@@ -301,15 +301,15 @@
 
           <!-- Citizen Verification Prompt Box (When Worker reports completion) -->
           ${isPendingVerification ? `
-            <div style="background: #E8F3ED; border: 2px solid #176B4D; border-radius: 8px; padding: 1.25rem; margin-bottom: 1.25rem;">
-              <div style="font-weight: 800; color: #14532D; font-size: 1rem; display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.35rem;">
+            <div style="background: #F1E2D7; border: 2px solid #34424A; border-radius: 8px; padding: 1.25rem; margin-bottom: 1.25rem;">
+              <div style="font-weight: 800; color: #263239; font-size: 1rem; display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.35rem;">
                 ${window.t('feedback_modal_title', 'Work Reported Complete — Confirm Resolution')}
               </div>
-              <div style="font-size: 0.9rem; color: #10533C; margin-bottom: 1rem; line-height: 1.45;">
+              <div style="font-size: 0.9rem; color: #263239; margin-bottom: 1rem; line-height: 1.45;">
                 ${window.t('feedback_prompt', 'The field worker has reported that the repair work is completed. Please confirm whether your original problem has actually been solved.')}
               </div>
               <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
-                <button type="button" onclick="submitVerification('${g.id}', '${g.tracking_id}', 'YES')" class="btn btn-sm" style="background:#176B4D; color:#FFFFFF; font-weight:700; border:none; padding:0.6rem 1.2rem; border-radius:6px; cursor:pointer;">
+                <button type="button" onclick="submitVerification('${g.id}', '${g.tracking_id}', 'YES')" class="btn btn-sm" style="background:#34424A; color:#FFFFFF; font-weight:700; border:none; padding:0.6rem 1.2rem; border-radius:6px; cursor:pointer;">
                   ✓ ${window.t('opt_satisfied', 'Yes, Completely Solved')}
                 </button>
                 <button type="button" onclick="submitVerification('${g.id}', '${g.tracking_id}', 'NO')" class="btn btn-sm" style="background:#DC2626; color:#FFFFFF; font-weight:700; border:none; padding:0.6rem 1.2rem; border-radius:6px; cursor:pointer;">
@@ -323,11 +323,11 @@
           ` : ''}
 
           <!-- Progress Updates Container (Collapsible / Expandable) -->
-          <div id="updates-box-${g.tracking_id}" style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #DCE4DE; display: none;">
+          <div id="updates-box-${g.tracking_id}" style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #E3D8CF; display: none;">
             <div style="font-size: 0.85rem; font-weight: 700; color: var(--civic-dark); margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em;">
               ${window.t('track_timeline_title', 'Progress Updates & Timeline')}
             </div>
-            <div id="updates-list-${g.tracking_id}" style="font-size: 0.88rem; color: #5D6B63;">
+            <div id="updates-list-${g.tracking_id}" style="font-size: 0.88rem; color: #5F686D;">
               ${window.t('loading', 'Loading updates...')}
             </div>
           </div>
@@ -365,11 +365,11 @@
   }
 
   function getStatusBorderColor(status) {
-    if (status === 'RESOLVED' || status === 'CLOSED' || status === 'VERIFIED') return '#176B4D';
+    if (status === 'RESOLVED' || status === 'CLOSED' || status === 'VERIFIED') return '#34424A';
     if (status === 'CITIZEN_VERIFICATION') return '#D97706';
-    if (status === 'IN_PROGRESS' || status === 'WORK_COMPLETED') return '#176B68';
+    if (status === 'IN_PROGRESS' || status === 'WORK_COMPLETED') return '#B85C38';
     if (status === 'REJECTED' || status === 'REOPENED') return '#DC2626';
-    return '#176B4D';
+    return '#34424A';
   }
 
   function formatDate(dtStr) {
@@ -404,7 +404,7 @@
 
         if (timeline.length === 0) {
           listEl.innerHTML = `
-            <div style="padding:0.75rem; background:#F8F7F2; border-radius:6px; font-size:0.85rem; color:#5D6B63;">
+            <div style="padding:0.75rem; background:#F8F4EF; border-radius:6px; font-size:0.85rem; color:#5F686D;">
               ${window.t('no_grievances_desc', 'Grievance submitted. Awaiting Panchayat worker assignment.')}
             </div>
           `;
@@ -412,20 +412,20 @@
         }
 
         listEl.innerHTML = `
-          <div style="position:relative; padding-left:1.5rem; border-left:2px solid #DCE4DE; display:flex; flex-direction:column; gap:1rem; margin-top:0.5rem;">
+          <div style="position:relative; padding-left:1.5rem; border-left:2px solid #E3D8CF; display:flex; flex-direction:column; gap:1rem; margin-top:0.5rem;">
             ${timeline.map(item => `
               <div style="position:relative;">
-                <div style="position:absolute; left:-1.95rem; top:0.2rem; width:12px; height:12px; border-radius:50%; background:#176B4D; border:2px solid #fff;"></div>
+                <div style="position:absolute; left:-1.95rem; top:0.2rem; width:12px; height:12px; border-radius:50%; background:#34424A; border:2px solid #fff;"></div>
                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
                   <div style="font-weight:700; color:var(--text-main); font-size:0.9rem;">
                     ${getStatusBadge(item.to_status)}
                   </div>
-                  <div style="font-size:0.75rem; color:#5D6B63;">
+                  <div style="font-size:0.75rem; color:#5F686D;">
                     ${item.created_at}
                   </div>
                 </div>
                 ${item.remarks ? `
-                  <div style="font-size:0.85rem; color:#5D6B63; margin-top:0.35rem; background:#F8F7F2; padding:0.5rem 0.75rem; border-radius:6px; border:1px solid #DCE4DE;">
+                  <div style="font-size:0.85rem; color:#5F686D; margin-top:0.35rem; background:#F8F4EF; padding:0.5rem 0.75rem; border-radius:6px; border:1px solid #E3D8CF;">
                     ${escapeHtml(item.remarks)}
                   </div>
                 ` : ''}

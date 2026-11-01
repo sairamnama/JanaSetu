@@ -60,23 +60,23 @@ function renderStatusBreakdown(s) {
   if (!el) return;
 
   const items = [
-    { label: window.t('status_submitted', 'Submitted'), value: s.submitted, color: '#5D6B63' },
-    { label: window.t('status_under_review', 'Under Review'), value: s.under_review, color: '#176B68' },
+    { label: window.t('status_submitted', 'Submitted'), value: s.submitted, color: '#5F686D' },
+    { label: window.t('status_under_review', 'Under Review'), value: s.under_review, color: '#B85C38' },
     { label: window.t('status_in_progress', 'In Progress'), value: s.in_progress, color: '#D97706' },
     { label: window.t('status_work_completed', 'Work Completed'), value: s.work_completed, color: '#059669' },
     { label: window.t('status_officer_verification', 'Officer Verification'), value: s.officer_verification, color: '#7C3AED' },
-    { label: window.t('status_citizen_verification', 'Citizen Verification'), value: s.citizen_verification, color: '#176B68' },
+    { label: window.t('status_citizen_verification', 'Citizen Verification'), value: s.citizen_verification, color: '#B85C38' },
     { label: window.t('status_rework_required', 'Rework Required'), value: s.rework, color: '#DC2626' },
     { label: window.t('status_reopened', 'Reopened'), value: s.reopened, color: '#EA580C' },
     { label: window.t('status_escalated', 'Escalated'), value: s.escalated, color: '#BE123C' },
-    { label: window.t('status_resolved', 'Resolved'), value: s.resolved, color: '#176B4D' },
+    { label: window.t('status_resolved', 'Resolved'), value: s.resolved, color: '#34424A' },
     { label: window.t('status_rejected', 'Rejected'), value: s.rejected, color: '#78716C' },
   ];
 
   el.innerHTML = items.map(i => `
-    <div style="background:#F8F7F2; border:1px solid #DCE4DE; border-left:4px solid ${i.color}; border-radius:6px; padding:0.6rem 0.8rem;">
+    <div style="background:#F8F4EF; border:1px solid #E3D8CF; border-left:4px solid ${i.color}; border-radius:6px; padding:0.6rem 0.8rem;">
       <div style="font-size:1.4rem; font-weight:800; color:${i.color};">${i.value}</div>
-      <div style="font-size:0.75rem; font-weight:600; color:#5D6B63;">${i.label}</div>
+      <div style="font-size:0.75rem; font-weight:600; color:#5F686D;">${i.label}</div>
     </div>
   `).join('');
 }
@@ -101,8 +101,8 @@ function renderCategoryChart(categories) {
   const counts = categories.map(c => c.count);
 
   const brandColors = [
-    '#176B4D', '#10B981', '#176B68', '#6366F1',
-    '#F59E0B', '#EA580C', '#8B5CF6', '#5D6B63'
+    '#34424A', '#10B981', '#B85C38', '#6366F1',
+    '#F59E0B', '#EA580C', '#8B5CF6', '#5F686D'
   ];
 
   if (categoryChart) categoryChart.destroy();
@@ -154,7 +154,7 @@ function renderWardChart(wards) {
         {
           label: window.t('kpi_total_tickets', 'Total Complaints'),
           data: totalCounts,
-          backgroundColor: '#176B4D',
+          backgroundColor: '#34424A',
           borderRadius: 6
         },
         {
@@ -252,13 +252,13 @@ function renderDeptPerformanceTable(departments) {
         <td style="font-weight:700; color:var(--text-main);">${d.name} (${d.code})</td>
         <td style="text-align:center; font-weight:600;">${total}</td>
         <td style="text-align:center; color:#D97706; font-weight:700;">${d.active_tickets || 0}</td>
-        <td style="text-align:center; color:#176B4D; font-weight:700;">${resolved}</td>
+        <td style="text-align:center; color:#34424A; font-weight:700;">${resolved}</td>
         <td>
           <div style="display:flex; align-items:center; gap:0.5rem;">
-            <div style="flex:1; background:#DCE4DE; height:8px; border-radius:4px; overflow:hidden;">
+            <div style="flex:1; background:#E3D8CF; height:8px; border-radius:4px; overflow:hidden;">
               <div style="width:${rate}%; background:#10B981; height:100%;"></div>
             </div>
-            <span style="font-size:0.75rem; font-weight:700; color:#5D6B63; width:36px;">${rate}%</span>
+            <span style="font-size:0.75rem; font-weight:700; color:#5F686D; width:36px;">${rate}%</span>
           </div>
         </td>
       </tr>

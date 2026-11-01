@@ -7,13 +7,13 @@
      ADMIN / OFFICIALS NAVIGATION LAYOUT
      Permitted Navigation: Home, Solve Grievances, Workers
      ========================================== -->
-<nav class="main-navbar admin-navbar" style="border-bottom: 3px solid #176B4D; background: #FFFFFF;">
+<nav class="main-navbar admin-navbar" style="border-bottom: 3px solid #34424A; background: #FFFFFF;">
   <div class="navbar-container">
     <a href="{{ url_for('admin_portal') }}" class="brand-wrapper">
       <img src="{{ url_for('static', filename='img/crest.svg') }}" alt="GramSeva Seal" class="brand-crest">
       <div class="brand-text-col">
         <div class="brand-title">
-          GramSeva <span class="badge" style="background:#176B4D; color:#FFFFFF; font-size:0.65rem; padding:2px 7px; border-radius:4px; vertical-align:middle; letter-spacing:0.5px;" data-i18n="badge_panchayat_admin">{{ t('badge_panchayat_admin') }}</span>
+          GramSeva <span class="badge" style="background:#34424A; color:#FFFFFF; font-size:0.65rem; padding:2px 7px; border-radius:4px; vertical-align:middle; letter-spacing:0.5px;" data-i18n="badge_panchayat_admin">{{ t('badge_panchayat_admin') }}</span>
           <span class="telugu-sub">పంచాయతీ పాలన</span>
         </div>
         <div class="brand-subtext" data-i18n="panchayat_admin_tag">{{ t('panchayat_admin_tag') }}</div>
@@ -46,10 +46,10 @@
 {% endblock %}
 
 {% block footer_quick_links %}
-<ul style="list-style:none; font-size:0.85rem; color:#DCE4DE; display:flex; flex-direction:column; gap:0.4rem;">
-  <li><a href="{{ url_for('admin_portal') }}" style="color:#DCE4DE;" data-i18n="nav_admin_home">{{ t('nav_admin_home') }}</a></li>
-  <li><a href="{{ url_for('admin_solve') }}" style="color:#DCE4DE;" data-i18n="nav_admin_solve">{{ t('nav_admin_solve') }}</a></li>
-  <li><a href="{{ url_for('admin_workers') }}" style="color:#DCE4DE;" data-i18n="nav_admin_workers">{{ t('nav_admin_workers') }}</a></li>
+<ul style="list-style:none; font-size:0.85rem; color:#E3D8CF; display:flex; flex-direction:column; gap:0.4rem;">
+  <li><a href="{{ url_for('admin_portal') }}" style="color:#E3D8CF;" data-i18n="nav_admin_home">{{ t('nav_admin_home') }}</a></li>
+  <li><a href="{{ url_for('admin_solve') }}" style="color:#E3D8CF;" data-i18n="nav_admin_solve">{{ t('nav_admin_solve') }}</a></li>
+  <li><a href="{{ url_for('admin_workers') }}" style="color:#E3D8CF;" data-i18n="nav_admin_workers">{{ t('nav_admin_workers') }}</a></li>
   <li><a href="{{ url_for('analytics_page') }}" style="color:#FDE68A;" data-i18n="nav_analytics">{{ t('nav_analytics') }}</a></li>
 </ul>
 {% endblock %}

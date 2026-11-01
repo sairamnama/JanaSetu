@@ -30,13 +30,13 @@
   </div>
 
   <!-- Dedicated Officer Awaiting Verification Section -->
-  <div class="card" id="officer-awaiting-verification-section" style="margin-bottom:2rem; border-top: 4px solid var(--panchayat-gold); background: #FAFDFB;">
-    <div class="card-header" style="flex-wrap:wrap; gap:1rem; border-bottom:1.5px solid #DCE4DE; padding-bottom:0.75rem;">
+  <div class="card" id="officer-awaiting-verification-section" style="margin-bottom:2rem; border-top: 4px solid var(--panchayat-gold); background: #FAF6F2;">
+    <div class="card-header" style="flex-wrap:wrap; gap:1rem; border-bottom:1.5px solid #E3D8CF; padding-bottom:0.75rem;">
       <div>
         <div style="font-size:0.8rem; font-weight:700; color:#D97706; text-transform:uppercase; letter-spacing:0.04em;" data-i18n="track_double_verif_title">
           {{ t('track_double_verif_title', 'Double Verification Grievance Lifecycle') }}
         </div>
-        <h2 class="card-title" style="font-size:1.4rem; color:#10533C; margin-top:0.2rem;" data-i18n="admin_awaiting_verification_title">
+        <h2 class="card-title" style="font-size:1.4rem; color:#263239; margin-top:0.2rem;" data-i18n="admin_awaiting_verification_title">
           {{ t('admin_awaiting_verification_title', 'Awaiting Verification') }}
         </h2>
         <p style="font-size:0.85rem; color:var(--text-muted); margin-top:0.2rem;" data-i18n="admin_awaiting_verification_desc">
@@ -52,7 +52,7 @@
 
     <!-- Grievances Awaiting Verification List -->
     <div id="awaiting-verification-container" style="padding:1.25rem 0;">
-      <div style="text-align:center; padding:2rem; color:#5D6B63;" data-i18n="loading_grievances">
+      <div style="text-align:center; padding:2rem; color:#5F686D;" data-i18n="loading_grievances">
         {{ t('loading_grievances', 'Loading grievances awaiting officer verification...') }}
       </div>
     </div>
@@ -104,12 +104,16 @@
 
         <select id="admin-filter-ward" class="form-control" style="width:110px;" onchange="renderAdminGrievancesTable()">
           <option value="ALL" data-i18n="opt_all_wards">{{ t('opt_all_wards', 'All Wards') }}</option>
-          <option value="1">Ward 1</option>
-          <option value="2">Ward 2</option>
-          <option value="3">Ward 3</option>
-          <option value="4">Ward 4</option>
-          <option value="5">Ward 5</option>
-          <option value="7">Ward 7</option>
+          <option value="1" data-i18n="ward_1">{{ t('ward_1', 'Ward 1') }}</option>
+          <option value="2" data-i18n="ward_2">{{ t('ward_2', 'Ward 2') }}</option>
+          <option value="3" data-i18n="ward_3">{{ t('ward_3', 'Ward 3') }}</option>
+          <option value="4" data-i18n="ward_4">{{ t('ward_4', 'Ward 4') }}</option>
+          <option value="5" data-i18n="ward_5">{{ t('ward_5', 'Ward 5') }}</option>
+          <option value="6" data-i18n="ward_6">{{ t('ward_6', 'Ward 6') }}</option>
+          <option value="7" data-i18n="ward_7">{{ t('ward_7', 'Ward 7') }}</option>
+          <option value="8" data-i18n="ward_8">{{ t('ward_8', 'Ward 8') }}</option>
+          <option value="9" data-i18n="ward_9">{{ t('ward_9', 'Ward 9') }}</option>
+          <option value="10" data-i18n="ward_10">{{ t('ward_10', 'Ward 10') }}</option>
         </select>
       </div>
     </div>
@@ -147,7 +151,7 @@
   <div class="modal-box" style="max-width:580px; max-height:92vh; overflow-y:auto;">
     <div class="modal-header">
       <div>
-        <div style="font-size:0.78rem; color:#5D6B63; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;" data-i18n="modal_assign_title">
+        <div style="font-size:0.78rem; color:#5F686D; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;" data-i18n="modal_assign_title">
           {{ t('modal_assign_title', 'Grievance Assignment & Worker Allocation') }}
         </div>
         <h3 id="assign-modal-tracking-id" style="font-size:1.25rem; color:var(--civic-dark); font-family:monospace; margin-top:2px;"></h3>
@@ -156,27 +160,27 @@
     </div>
 
     <!-- Grievance Review Card -->
-    <div style="background:#F8F7F2; border:1px solid #DCE4DE; border-radius:8px; padding:0.9rem 1.1rem; margin:1rem 1.25rem 0.5rem; font-size:0.85rem;">
+    <div style="background:#F8F4EF; border:1px solid #E3D8CF; border-radius:8px; padding:0.9rem 1.1rem; margin:1rem 1.25rem 0.5rem; font-size:0.85rem;">
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem 1rem;">
         <div>
-          <span style="color:#5D6B63; font-size:0.75rem; text-transform:uppercase; font-weight:600;" data-i18n="th_category">{{ t('th_category', 'Category') }}:</span>
+          <span style="color:#5F686D; font-size:0.75rem; text-transform:uppercase; font-weight:600;" data-i18n="th_category">{{ t('th_category', 'Category') }}:</span>
           <div id="assign-modal-category" style="font-weight:700; color:var(--civic-dark);">--</div>
         </div>
         <div>
-          <span style="color:#5D6B63; font-size:0.75rem; text-transform:uppercase; font-weight:600;" data-i18n="lbl_location">{{ t('lbl_location', 'Location') }}:</span>
+          <span style="color:#5F686D; font-size:0.75rem; text-transform:uppercase; font-weight:600;" data-i18n="lbl_location">{{ t('lbl_location', 'Location') }}:</span>
           <div id="assign-modal-location" style="font-weight:600; color:var(--text-main);">--</div>
         </div>
         <div>
-          <span style="color:#5D6B63; font-size:0.75rem; text-transform:uppercase; font-weight:600;" data-i18n="track_submitted_on">{{ t('track_submitted_on', 'Submission Date') }}:</span>
-          <div id="assign-modal-date" style="color:#5D6B63;">--</div>
+          <span style="color:#5F686D; font-size:0.75rem; text-transform:uppercase; font-weight:600;" data-i18n="track_submitted_on">{{ t('track_submitted_on', 'Submission Date') }}:</span>
+          <div id="assign-modal-date" style="color:#5F686D;">--</div>
         </div>
         <div>
-          <span style="color:#5D6B63; font-size:0.75rem; text-transform:uppercase; font-weight:600;" data-i18n="th_status">{{ t('th_status', 'Current Status') }}:</span>
+          <span style="color:#5F686D; font-size:0.75rem; text-transform:uppercase; font-weight:600;" data-i18n="th_status">{{ t('th_status', 'Current Status') }}:</span>
           <div id="assign-modal-status">--</div>
         </div>
       </div>
-      <div style="margin-top:0.5rem; padding-top:0.4rem; border-top:1px dashed #DCE4DE;">
-        <span style="color:#5D6B63; font-size:0.75rem; text-transform:uppercase; font-weight:600;" data-i18n="lbl_subject">{{ t('lbl_subject', 'Subject / Description') }}:</span>
+      <div style="margin-top:0.5rem; padding-top:0.4rem; border-top:1px dashed #E3D8CF;">
+        <span style="color:#5F686D; font-size:0.75rem; text-transform:uppercase; font-weight:600;" data-i18n="lbl_subject">{{ t('lbl_subject', 'Subject / Description') }}:</span>
         <div id="assign-modal-title" style="font-weight:600; color:var(--civic-dark); margin-top:2px;">--</div>
       </div>
     </div>
@@ -213,7 +217,7 @@
           <select id="assign-worker-select" class="form-control" required>
             <option value="">-- First Select Department --</option>
           </select>
-          <div id="assign-worker-hint" style="font-size:0.75rem; color:#5D6B63; margin-top:3px;">
+          <div id="assign-worker-hint" style="font-size:0.75rem; color:#5F686D; margin-top:3px;">
             Workers are ranked by lowest active workload and highest loyalty points.
           </div>
         </div>

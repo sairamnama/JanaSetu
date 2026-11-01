@@ -26,26 +26,26 @@
   </div>
 
   <!-- Success Notification Box with Generated Grievance ID -->
-  <div id="submit-success-card" class="card" style="display:none; background:#E8F3ED; border:2px solid #176B4D; padding:2rem; border-radius:12px; margin-bottom:1.5rem; text-align:center; box-shadow:var(--shadow-md);">
-    <div style="width:64px; height:64px; background:#E8F3ED; color:#176B4D; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2rem; margin:0 auto 1rem;">
+  <div id="submit-success-card" class="card" style="display:none; background:#F1E2D7; border:2px solid #34424A; padding:2rem; border-radius:12px; margin-bottom:1.5rem; text-align:center; box-shadow:var(--shadow-md);">
+    <div style="width:64px; height:64px; background:#F1E2D7; color:#34424A; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2rem; margin:0 auto 1rem;">
       ✓
     </div>
-    <h2 style="font-size:1.5rem; color:#14532D; font-weight:800; margin-bottom:0.4rem;" data-i18n="msg_grievance_submitted">
+    <h2 style="font-size:1.5rem; color:#263239; font-weight:800; margin-bottom:0.4rem;" data-i18n="msg_grievance_submitted">
       {{ t('msg_grievance_submitted', 'Grievance Submitted Successfully!') }}
     </h2>
-    <p style="font-size:0.95rem; color:#10533C; margin-bottom:1.25rem;" data-i18n="rangapuram_panchayat">
+    <p style="font-size:0.95rem; color:#263239; margin-bottom:1.25rem;" data-i18n="rangapuram_panchayat">
       {{ t('rangapuram_panchayat', 'Your complaint has been registered with Rangapuram Gram Panchayat.') }}
     </p>
 
     <!-- Prominent Grievance ID Callout -->
-    <div style="background:#FFFFFF; border:2px dashed #176B4D; border-radius:8px; padding:1.25rem; max-width:420px; margin:0 auto 1.5rem;">
-      <div style="font-size:0.75rem; text-transform:uppercase; color:#5D6B63; font-weight:700; letter-spacing:0.05em; margin-bottom:0.25rem;" data-i18n="th_tracking_id">
+    <div style="background:#FFFFFF; border:2px dashed #34424A; border-radius:8px; padding:1.25rem; max-width:420px; margin:0 auto 1.5rem;">
+      <div style="font-size:0.75rem; text-transform:uppercase; color:#5F686D; font-weight:700; letter-spacing:0.05em; margin-bottom:0.25rem;" data-i18n="th_tracking_id">
         {{ t('th_tracking_id', 'Your Grievance ID') }}
       </div>
-      <div id="generated-grievance-id" style="font-size:1.85rem; font-weight:800; font-family:monospace; color:#14532D;">
+      <div id="generated-grievance-id" style="font-size:1.85rem; font-weight:800; font-family:monospace; color:#263239;">
         GRV-XXXX-XXXXX
       </div>
-      <div style="font-size:0.8rem; color:#5D6B63; margin-top:0.35rem;" data-i18n="hero_track_desc">
+      <div style="font-size:0.8rem; color:#5F686D; margin-top:0.35rem;" data-i18n="hero_track_desc">
         {{ t('hero_track_desc', 'Please save this ID for tracking your complaint.') }}
       </div>
     </div>
@@ -84,14 +84,14 @@
         </label>
         <select id="grievance-category" name="category" class="form-control" required style="font-size: 0.95rem; padding: 0.75rem 1rem;">
           <option value="" data-i18n="opt_all_categories">-- {{ t('opt_all_categories', 'Select Problem Category') }} --</option>
-          <option value="Drinking Water & Supply">Drinking Water & Supply</option>
-          <option value="Electricity & Streetlights">Electricity & Streetlights</option>
-          <option value="Waste Management & Sanitation">Waste Management & Sanitation</option>
-          <option value="Roads & Drainage Systems">Roads & Drainage Systems</option>
-          <option value="Public Health & Vector Control">Public Health & Vector Control</option>
-          <option value="Anganwadi & School Civic Issues">Anganwadi & School Civic Issues</option>
-          <option value="Rural Housing & Infrastructure">Rural Housing & Infrastructure</option>
-          <option value="Other Civic & Community Issues">Other Civic & Community Issues</option>
+          <option value="Drinking Water & Supply" data-i18n="cat_opt_water">{{ t('cat_opt_water', 'Drinking Water & Supply') }}</option>
+          <option value="Electricity & Streetlights" data-i18n="cat_opt_electricity">{{ t('cat_opt_electricity', 'Electricity & Streetlights') }}</option>
+          <option value="Waste Management & Sanitation" data-i18n="cat_opt_sanitation">{{ t('cat_opt_sanitation', 'Waste Management & Sanitation') }}</option>
+          <option value="Roads & Drainage Systems" data-i18n="cat_opt_roads">{{ t('cat_opt_roads', 'Roads & Drainage Systems') }}</option>
+          <option value="Public Health & Vector Control" data-i18n="cat_opt_health">{{ t('cat_opt_health', 'Public Health & Vector Control') }}</option>
+          <option value="Anganwadi & School Civic Issues" data-i18n="cat_opt_schools">{{ t('cat_opt_schools', 'Anganwadi & School Civic Issues') }}</option>
+          <option value="Rural Housing & Infrastructure" data-i18n="cat_opt_housing">{{ t('cat_opt_housing', 'Rural Housing & Infrastructure') }}</option>
+          <option value="Other Civic & Community Issues" data-i18n="cat_opt_other">{{ t('cat_opt_other', 'Other Civic & Community Issues') }}</option>
         </select>
       </div>
 
@@ -104,21 +104,21 @@
           </label>
           <select id="grievance-ward" name="ward_number" class="form-control" required style="font-size: 0.95rem; padding: 0.75rem 1rem;">
             <option value="" data-i18n="opt_all_wards">-- {{ t('opt_all_wards', 'Choose Ward') }} --</option>
-            <option value="1">Ward 1</option>
-            <option value="2">Ward 2</option>
-            <option value="3">Ward 3</option>
-            <option value="4" selected>Ward 4</option>
-            <option value="5">Ward 5</option>
-            <option value="6">Ward 6</option>
-            <option value="7">Ward 7</option>
-            <option value="8">Ward 8</option>
-            <option value="9">Ward 9</option>
-            <option value="10">Ward 10</option>
-            <option value="11">Ward 11</option>
-            <option value="12">Ward 12</option>
-            <option value="13">Ward 13</option>
-            <option value="14">Ward 14</option>
-            <option value="15">Ward 15</option>
+            <option value="1" data-i18n="ward_1">{{ t('ward_1', 'Ward 1') }}</option>
+            <option value="2" data-i18n="ward_2">{{ t('ward_2', 'Ward 2') }}</option>
+            <option value="3" data-i18n="ward_3">{{ t('ward_3', 'Ward 3') }}</option>
+            <option value="4" selected data-i18n="ward_4">{{ t('ward_4', 'Ward 4') }}</option>
+            <option value="5" data-i18n="ward_5">{{ t('ward_5', 'Ward 5') }}</option>
+            <option value="6" data-i18n="ward_6">{{ t('ward_6', 'Ward 6') }}</option>
+            <option value="7" data-i18n="ward_7">{{ t('ward_7', 'Ward 7') }}</option>
+            <option value="8" data-i18n="ward_8">{{ t('ward_8', 'Ward 8') }}</option>
+            <option value="9" data-i18n="ward_9">{{ t('ward_9', 'Ward 9') }}</option>
+            <option value="10" data-i18n="ward_10">{{ t('ward_10', 'Ward 10') }}</option>
+            <option value="11" data-i18n="ward_11">{{ t('ward_11', 'Ward 11') }}</option>
+            <option value="12" data-i18n="ward_12">{{ t('ward_12', 'Ward 12') }}</option>
+            <option value="13" data-i18n="ward_13">{{ t('ward_13', 'Ward 13') }}</option>
+            <option value="14" data-i18n="ward_14">{{ t('ward_14', 'Ward 14') }}</option>
+            <option value="15" data-i18n="ward_15">{{ t('ward_15', 'Ward 15') }}</option>
           </select>
         </div>
 
@@ -182,17 +182,17 @@
         const reader = new FileReader();
         reader.onload = (e) => {
           previewArea.innerHTML = `
-            <div style="display:inline-block; position:relative; margin-top:0.75rem; border-radius:8px; overflow:hidden; border:2px solid #DCE4DE;">
+            <div style="display:inline-block; position:relative; margin-top:0.75rem; border-radius:8px; overflow:hidden; border:2px solid #E3D8CF;">
               <img src="${e.target.result}" style="max-height:140px; display:block; object-fit:cover;" alt="Selected Photo Preview">
               <button type="button" onclick="event.stopPropagation(); removePhoto();" style="position:absolute; top:4px; right:4px; background:#DC2626; color:#fff; border:none; border-radius:50%; width:24px; height:24px; cursor:pointer; font-weight:bold; font-size:12px;">&times;</button>
             </div>
-            <div style="font-size:0.78rem; color:#176B4D; font-weight:600; margin-top:4px;">Photo selected: ${escapeHtml(file.name)}</div>
+            <div style="font-size:0.78rem; color:#34424A; font-weight:600; margin-top:4px;">Photo selected: ${escapeHtml(file.name)}</div>
           `;
         };
         reader.readAsDataURL(file);
       } else {
         previewArea.innerHTML = `
-          <div style="font-size:0.85rem; color:#176B4D; font-weight:600; margin-top:0.5rem;">
+          <div style="font-size:0.85rem; color:#34424A; font-weight:600; margin-top:0.5rem;">
             File selected: ${escapeHtml(file.name)}
             <button type="button" onclick="event.stopPropagation(); removePhoto();" class="btn btn-sm btn-outline" style="margin-left:0.5rem; padding:0.1rem 0.4rem;">Remove</button>
           </div>
